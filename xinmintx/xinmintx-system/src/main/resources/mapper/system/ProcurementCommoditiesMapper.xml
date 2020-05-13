@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.ProcurementCommoditiesMapper">
+    
+    <resultMap type="ProcurementCommodities" id="ProcurementCommoditiesResult">
+        <result property="id"    column="id"    />
+        <result property="merchantId"    column="merchant_id"    />
+        <result property="sampleName"    column="sample_name"    />
+        <result property="sampleType"    column="sample_type"    />
+        <result property="trackingNumber"    column="tracking_number"    />
+        <result property="supplier"    column="supplier"    />
+        <result property="cellphone"    column="cellphone"    />
+        <result property="detailedAddress"    column="detailed_address"    />
+        <result property="marketValue"    column="market_value"    />
+        <result property="procurementPrice"    column="procurement_price"    />
+        <result property="pictureId"    column="picture_id"    />
+        <result property="commonone"    column="commonone"    />
+        <result property="commontwo"    column="commontwo"    />
+        <result property="isReview"    column="is_review"    />
+    </resultMap>
+
+    <sql id="selectProcurementCommoditiesVo">
+        select id, merchant_id, sample_name, sample_type, tracking_number, supplier, cellphone, detailed_address, market_value, procurement_price, picture_id, commonone, commontwo, is_review from procurement_commodities
+    </sql>
+
+    <select id="selectProcurementCommoditiesList" parameterType="ProcurementCommodities" resultMap="ProcurementCommoditiesResult">
+        <include refid="selectProcurementCommoditiesVo"/>
+        <where>  
+            <if test="merchantId != null "> and merchant_id = #{merchantId}</if>
+            <if test="sampleName != null  and sampleName != ''"> and sample_name like concat('%', #{sampleName}, '%')</if>
+            <if test="sampleType != null  and sampleType != ''"> and sample_type = #{sampleType}</if>
+            <if test="trackingNumber != null  and trackingNumber != ''"> and tracking_number = #{trackingNumber}</if>
+            <if test="supplier != null  and supplier != ''"> and supplier = #{supplier}</if>
+            <if test="cellphone != null  and cellphone != ''"> and cellphone = #{cellphone}</if>
+            <if test="detailedAddress != null  and detailedAddress != ''"> and detailed_address = #{detailedAddress}</if>
+            <if test="marketValue != null "> and market_value = #{marketValue}</if>
+            <if test="procurementPrice != null "> and procurement_price = #{procurementPrice}</if>
+            <if test="pictureId != null "> and picture_id = #{pictureId}</if>
+            <if test="commonone != null  and commonone != ''"> and commonone = #{commonone}</if>
+            <if test="commontwo != null  and commontwo != ''"> and commontwo = #{commontwo}</if>
+            <if test="isReview != null "> and is_review = #{isReview}</if>
+        </where>
+    </select>
+    
+    <select id="selectProcurementCommoditiesById" parameterType="Long" resultMap="ProcurementCommoditiesResult">
+        <include refid="selectProcurementCommoditiesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProcurementCommodities" parameterType="ProcurementCommodities" useGeneratedKeys="true" keyProperty="id">
+        insert into procurement_commodities
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merchantId != null ">merchant_id,</if>
+            <if test="sampleName != null  and sampleName != ''">sample_name,</if>
+            <if test="sampleType != null  and sampleType != ''">sample_type,</if>
+            <if test="trackingNumber != null  and trackingNumber != ''">tracking_number,</if>
+            <if test="supplier != null  and supplier != ''">supplier,</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone,</if>
+            <if test="detailedAddress != null  and detailedAddress != ''">detailed_address,</if>
+            <if test="marketValue != null ">market_value,</if>
+            <if test="procurementPrice != null ">procurement_price,</if>
+            <if test="pictureId != null ">picture_id,</if>
+            <if test="commonone != null  and commonone != ''">commonone,</if>
+            <if test="commontwo != null  and commontwo != ''">commontwo,</if>
+            <if test="isReview != null ">is_review,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merchantId != null ">#{merchantId},</if>
+            <if test="sampleName != null  and sampleName != ''">#{sampleName},</if>
+            <if test="sampleType != null  and sampleType != ''">#{sampleType},</if>
+            <if test="trackingNumber != null  and trackingNumber != ''">#{trackingNumber},</if>
+            <if test="supplier != null  and supplier != ''">#{supplier},</if>
+            <if test="cellphone != null  and cellphone != ''">#{cellphone},</if>
+            <if test="detailedAddress != null  and detailedAddress != ''">#{detailedAddress},</if>
+            <if test="marketValue != null ">#{marketValue},</if>
+            <if test="procurementPrice != null ">#{procurementPrice},</if>
+            <if test="pictureId != null ">#{pictureId},</if>
+            <if test="commonone != null  and commonone != ''">#{commonone},</if>
+            <if test="commontwo != null  and commontwo != ''">#{commontwo},</if>
+            <if test="isReview != null ">#{isReview},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProcurementCommodities" parameterType="ProcurementCommodities">
+        update procurement_commodities
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="merchantId != null ">merchant_id = #{merchantId},</if>
+            <if test="sampleName != null  and sampleName != ''">sample_name = #{sampleName},</if>
+            <if test="sampleType != null  and sampleType != ''">sample_type = #{sampleType},</if>
+            <if test="trackingNumber != null  and trackingNumber != ''">tracking_number = #{trackingNumber},</if>
+            <if test="supplier != null  and supplier != ''">supplier = #{supplier},</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone = #{cellphone},</if>
+            <if test="detailedAddress != null  and detailedAddress != ''">detailed_address = #{detailedAddress},</if>
+            <if test="marketValue != null ">market_value = #{marketValue},</if>
+            <if test="procurementPrice != null ">procurement_price = #{procurementPrice},</if>
+            <if test="pictureId != null ">picture_id = #{pictureId},</if>
+            <if test="commonone != null  and commonone != ''">commonone = #{commonone},</if>
+            <if test="commontwo != null  and commontwo != ''">commontwo = #{commontwo},</if>
+            <if test="isReview != null ">is_review = #{isReview},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProcurementCommoditiesById" parameterType="Long">
+        delete from procurement_commodities where id = #{id}
+    </delete>
+
+    <delete id="deleteProcurementCommoditiesByIds" parameterType="String">
+        delete from procurement_commodities where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

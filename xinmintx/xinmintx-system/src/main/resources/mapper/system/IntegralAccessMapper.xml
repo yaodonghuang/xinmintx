@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.IntegralAccessMapper">
+    
+    <resultMap type="IntegralAccess" id="IntegralAccessResult">
+        <result property="id"    column="id"    />
+        <result property="accessType"    column="access_type"    />
+        <result property="description"    column="description"    />
+        <result property="integralValue"    column="integral_value"    />
+    </resultMap>
+
+    <sql id="selectIntegralAccessVo">
+        select id, access_type, description, integral_value from integral_access
+    </sql>
+
+    <select id="selectIntegralAccessList" parameterType="IntegralAccess" resultMap="IntegralAccessResult">
+        <include refid="selectIntegralAccessVo"/>
+        <where>  
+            <if test="accessType != null "> and access_type = #{accessType}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="integralValue != null "> and integral_value = #{integralValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectIntegralAccessById" parameterType="Long" resultMap="IntegralAccessResult">
+        <include refid="selectIntegralAccessVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertIntegralAccess" parameterType="IntegralAccess" useGeneratedKeys="true" keyProperty="id">
+        insert into integral_access
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accessType != null ">access_type,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="integralValue != null ">integral_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accessType != null ">#{accessType},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="integralValue != null ">#{integralValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIntegralAccess" parameterType="IntegralAccess">
+        update integral_access
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="accessType != null ">access_type = #{accessType},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="integralValue != null ">integral_value = #{integralValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIntegralAccessById" parameterType="Long">
+        delete from integral_access where id = #{id}
+    </delete>
+
+    <delete id="deleteIntegralAccessByIds" parameterType="String">
+        delete from integral_access where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.MerchantBankCardMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into merchant_bank_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merchantBankCard.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="merchantBankCard.bankName != null">
+                bank_name,
+            </if>
+            <if test="merchantBankCard.idCard != null">
+                id_card,
+            </if>
+            <if test="merchantBankCard.cardNum != null">
+                card_num,
+            </if>
+            <if test="merchantBankCard.name != null">
+                name,
+            </if>
+            <if test="merchantBankCard.phone != null">
+                phone,
+            </if>
+            <if test="merchantBankCard.createTime != null">
+                create_time,
+            </if>
+            <if test="merchantBankCard.shortName != null">
+                short_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merchantBankCard.merchantId != null">
+                #{merchantBankCard.merchantId},
+            </if>
+            <if test="merchantBankCard.bankName != null">
+                #{merchantBankCard.bankName},
+            </if>
+            <if test="merchantBankCard.idCard != null">
+                #{merchantBankCard.idCard},
+            </if>
+            <if test="merchantBankCard.cardNum != null">
+                #{merchantBankCard.cardNum},
+            </if>
+            <if test="merchantBankCard.name != null">
+                #{merchantBankCard.name},
+            </if>
+            <if test="merchantBankCard.phone != null">
+                #{merchantBankCard.phone},
+            </if>
+            <if test="merchantBankCard.createTime != null">
+                #{merchantBankCard.createTime},
+            </if>
+            <if test="merchantBankCard.shortName != null">
+                #{merchantBankCard.shortName},
+            </if>
+        </trim>
+    </insert>
+    <select id="queryByMerchantId" resultType="com.xinmintx.merchant.model.MerchantBankCard">
+        select *
+         from merchant_bank_card
+         where merchant_id =#{merchantId}
+    </select>
+    <select id="getByCardNum" resultType="java.lang.Integer">
+        select count(id) from merchant_bank_card where card_num =#{cardNum}
+    </select>
+
+</mapper>

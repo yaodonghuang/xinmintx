@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.factory.mapper.StatisticsMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.factory.model.GoodsOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="order_state" property="orderState" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="if_pay" property="ifPay" jdbcType="INTEGER" />
+    <result column="receive_address" property="receiveAddress" jdbcType="VARCHAR" />
+    <result column="receive_name" property="receiveName" jdbcType="VARCHAR" />
+    <result column="receive_phone" property="receivePhone" jdbcType="VARCHAR" />
+    <result column="receive_message" property="receiveMessage" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="u_order_id" property="uOrderId" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List">
+       id,memberId,rorderNum,orderState,createTime,updateTime,
+       ifPay,receiveAddress,receiveName,receivePhone,receiveMessage,totalAmount,uOrderId
+    </sql>
+    <select id="queryOrderSize" resultType="java.lang.Long">
+      select count(id) from goods_order_detail
+      where factory_id = #{id} AND
+      create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+      AND FROM_UNIXTIME(#{endDate})
+    </select>
+    <select id="queryTurnover" resultType="java.lang.Double">
+      select sum(total_amount) from goods_order_detail
+      where factory_id = #{id} AND order_state=#{orderStatu} AND
+      create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+      AND FROM_UNIXTIME(#{endDate})
+    </select>
+</mapper>

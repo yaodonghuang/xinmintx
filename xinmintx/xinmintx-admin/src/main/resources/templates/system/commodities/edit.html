@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改商品审核')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-commodities-edit" th:object="${procurementCommodities}">
+            <input name="id" th:field="*{id}" type="hidden">
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">样品名称：</label>
+                <div class="col-sm-8">
+                    <input name="sampleName" th:field="*{sampleName}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">样品类型：</label>
+                <div class="col-sm-8">
+                    <input name="description" th:field="*{sampleType}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">快递单号：</label>
+                <div class="col-sm-8">
+                    <input name="trackingNumber" th:field="*{trackingNumber}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">供货商：</label>
+                <div class="col-sm-8">
+                    <input name="supplier" th:field="*{supplier}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">电话号：</label>
+                <div class="col-sm-8">
+                    <input name="cellphone" th:field="*{cellphone}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">详细地址：</label>
+                <div class="col-sm-8">
+                    <input name="detailedAddress" th:field="*{detailedAddress}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">市场价格：</label>
+                <div class="col-sm-8">
+                    <input name=" marketValue" th:field="*{marketValue}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">采购价格：</label>
+                <div class="col-sm-8">
+                    <input name="procurementPrice" th:field="*{procurementPrice}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否审核：</label>
+                <div class="col-sm-8">
+                    <select name="isReview" th:field="*{isReview}" class="form-control">
+                        <option value="0">未审核</option>
+                        <option value="1">已审核</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/commodities";
+        $("#form-commodities-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-commodities-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

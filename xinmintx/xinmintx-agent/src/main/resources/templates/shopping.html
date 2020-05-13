@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品采购</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/load.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="title">
+    <p class="title_p">
+        <span class="back" onclick="window.history.go(-1)"></span>
+        商品采购
+    </p>
+</div>
+<form action="" id="form_shopping" class="up_images">
+    <div class="upLoad_images">
+        <p class="upLoad_images_p">请上传商品图片</p>
+        <ul class="upLoad_images_content" id="photo">
+            <li class="pic">
+                <input type="file" accept="image/*" id="picture">
+            </li>
+        </ul>
+    </div>
+    <ul class="list_images">
+        <li style="display:block;text-align:center;" class="list_images_title">
+            请输入商户信息
+        </li>
+        <li>
+            <label for="name">样品名称</label>
+            <input type="text" id="name" name="sampleName">
+        </li>
+        <li>
+            <label for="card">样品类别</label>
+            <input type="text" id="card" name="sampleType" >
+        </li>
+        <li>
+            <label for="map">样品快递单号</label>
+            <input type="number" id="map" name="trackingNumber">
+        </li>
+        <li>
+            <label for="maps">供货商</label>
+            <input type="text" id="maps" name="supplier">
+        </li>
+        <li>
+            <label>电话</label>
+            <input type="number"  id="cellphone" name="cellphone">
+        </li>
+        <li>
+            <label>详细地址</label>
+            <input type="text" id="detailedAddress"  name="detailedAddress">
+        </li>
+        <li>
+            <label>市场价格</label>
+            <div class="box">
+                <input type="num" id="marketValue" name="marketValue" class="input_cont">元
+            </div>
+        </li>
+        <li>
+            <label>采购价格</label>
+            <div class="box">
+                <input type="num" id="procurementPrice" name="procurementPrice" class="input_cont">元
+            </div>
+        </li>
+        <input type="button" value="提交" class="img_btn" onclick="addShopping()">
+    </ul>
+</form>
+<div class="warning">
+    <div class="warning_content">
+        <p class="warning_title">提示</p>
+        <p class="warning_text"></p>
+        <p class="warning_btn"  onclick="fn()">确定</p>
+    </div>
+</div>
+<div class="success">
+    <div class="success_content">
+        <p class="success_text">添加成功</p>
+        <div class="success_btn" onclick="success()">我知道了</div>
+    </div>
+</div>
+<script>
+    document.getElementById("picture").onchange = function () {
+        addPhoto();
+    };
+    function addPhoto() {
+        var formData = new FormData();
+        formData.append('file', $("#picture")[0].files[0]);
+        $.ajax({
+            url: "/api/imageUpload?type=10",
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                //成功
+                var _html = "";
+                _html += "<li>";
+                _html += "<img src='"+ data.photoUrl +"'>";
+                _html += "<input name='photo' class='photo' type='hidden' value='"+ data.id +"'>";
+                _html += "</li>";
+                $("#photo").prepend(_html);
+            }
+        });
+    }
+    function addShopping() {
+        var idCardQ = $(".photo").val();
+        var  name=$("#name").val();
+        var  card=$("#card").val();
+        var  map=$("#map").val();
+        var  maps=$("#maps").val();
+        var  cellphone=$("#cellphone").val();
+        var  detailedAddress=$("#detailedAddress").val();
+        var  procurementPrice=$("#procurementPrice").val();
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (idCardQ === undefined || idCardQ === null || idCardQ === "" || idCardQ.length < 1) {
+             alert("至少选择一张图片");
+            return;
+        };
+        if(name === "" ){
+            alert("样品名称不能为空！");
+            return;
+        }
+        if(card === "" ){
+            alert("样品类别不能为空！");return;
+        }
+        if(map === "" ){
+            alert("样品单号不能为空！");return;
+        }if(maps === "" ){
+            alert("样品供货商不能为空！");return;
+        }
+        if(!myreg.test(cellphone)){
+            alert("电话有误！");return;
+        }
+        if(detailedAddress === "" ){
+            alert("市场价格不能为空！");return;
+        }
+        if(procurementPrice === "" ){
+            alert("采购价格不能为空！");return;
+        }
+        $.ajax({
+            url: "/agent/shopping/addShopping",
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: $("#form_shopping").serialize(),
+            success: function (res) {
+                if(res){
+                    $(".success").show();
+                }else {
+                    $('.warning').show();
+                }
+            }
+        });
+    }
+    function fn(){
+        $('.warning').hide();
+        return;
+    }
+    function success() {
+        $('.success').hide();
+        location.href="/agent/shopping/goShopping"
+    }
+</script>
+</body>
+</html>

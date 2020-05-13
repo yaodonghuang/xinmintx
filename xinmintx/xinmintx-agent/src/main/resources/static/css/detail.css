@@ -1,0 +1,148 @@
+body {
+  background-color: #F5F4F4 ;
+  overflow-x: hidden;
+}
+.header {
+  width: 7.5rem;
+  height: 3.54rem;
+  background-image: url("/images/detail.img/bg.png");
+  background-size: 100%;
+}
+.header .detail_title {
+  padding: 0.54rem 0 0 3.01rem;
+  font-size: 0.38rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #ffffff;
+}
+.header .detail_titles {
+  font-size: 0.32rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #ffffff;
+  line-height: 0.4rem;
+  padding-top: 0.35rem;
+  text-align: center;
+}
+.header .detail_total {
+  width: 2.61rem;
+  height: 2.61rem;
+  border-radius: 50%;
+  position: relative;
+  left: 2.45rem;
+  top: 0.24rem;
+  background-image: url("/images/detail.img/total.png");
+  background-repeat: no-repeat;
+  background-size: 2.61rem 2.61rem;
+  z-index: 6;
+}
+.header .detail_total span {
+  font-size: 0.48rem;
+  font-family: Adobe Heiti Std;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1.22rem;
+  position: relative;
+  left: 0.54rem;
+  top: 0.43rem;
+}
+.income {
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+.income .income_t {
+  width: 45%;
+}
+.income .income_t .income_tp1 {
+  font-size: 0.26rem;
+  color: #333333;
+  line-height: 0.4rem;
+  margin-top: 0.54rem;
+  margin-left: 1.07rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+}
+.income .income_t .income_tp2 {
+  font-size: 0.4rem;
+  font-weight: bold;
+  color: #333333;
+  margin-left: 0.85rem;
+  margin-top: 0.1rem;
+  font-family: PingFang SC;
+}
+.income .income_k {
+  width: 1.1rem;
+}
+.detail_list {
+  width: 100%;
+  margin-top: 0.14rem;
+}
+.detail_list .detail_list_p {
+  font-size: 0.26rem;
+  color: #333333;
+  line-height: 0.4rem;
+  text-indent: 0.5rem;
+  margin-bottom: 0.05rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+}
+.detail_list .detail_list_ul {
+  width: 100%;
+}
+.detail_list .detail_list_ul li {
+  width: 100%;
+  height: 1.29rem;
+  background-color: #FFF;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.01rem solid #d0d0d0;
+}
+.detail_list .detail_list_ul li .list_left {
+  display: flex;
+  margin: 0.42rem 0 0 0.44rem;
+}
+.detail_list .detail_list_ul li .list_left .list_left_y {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: #f8f8f8;
+  border: 1px solid #d0d0d0;
+  border-radius: 50%;
+}
+.detail_list .detail_list_ul li .list_left .list_left_y img {
+  width: 0.21rem;
+  height: 0.23rem;
+  margin: 0.12rem 0 0 0.13rem;
+}
+.detail_list .detail_list_ul li .list_left .list_left_text {
+  margin-left: 0.2rem;
+  margin-top: -0.04rem;
+}
+.detail_list .detail_list_ul li .list_left .list_left_text .list_left_text1 {
+  font-size: 0.26rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #666666;
+}
+.detail_list .detail_list_ul li .list_left .list_left_text .list_left_text2 {
+  font-size: 0.2rem;
+  color: #999999;
+  font-family: PingFang SC;
+  font-weight: 500;
+}
+.detail_list .detail_list_ul li .list_right {
+  font-size: 0.46rem;
+  color: #333333;
+  margin: 0.5rem 0.68rem 0 0;
+  font-family: PingFang SC;
+  font-weight: 500;
+}
+.detail_list .detail_list_ul li .list_right .list_right_y {
+  font-size: 0.28rem;
+  color: #333333;
+  font-family: PingFang SC;
+  font-weight: 500;
+  position: relative;
+  left: 0.1rem;
+}

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增商品')"/>
+    <th:block th:include="include :: summernote-css"/>
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+    <!--<link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--<link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">-->
+    <!--<script src="../../../static/js/jquery.min.js"></script>-->
+    <!--<link rel="stylesheet" href="../../../static/css/fileinput.css" media="all">-->
+
+    <!--<script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>-->
+
+    <!-- 如果你想在上传之前修改图片大小需要加入canvas-to-blob.min.js  它必须在fileinput.min.js之前引入 -->
+    <!--<script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.js"></script>-->
+
+    <!--&lt;!&ndash; 如果你想在最初的预览中排序/重新排列需要引入sortable.min.js  它必须在fileinput.min.js之前引入 &ndash;&gt;-->
+    <!--<script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>-->
+
+    <!--&lt;!&ndash; 如果你想在HTML文件预览中净化HTML内容则要引入purify.min.js is  它必须在fileinput.min.js之前引入 &ndash;&gt;-->
+    <!--<script src="https://cdn.bootcss.com/dompurify/1.0.10/purify.min.js"></script>-->
+
+    <!--&lt;!&ndash; 主要的 fileinput 插件库 &ndash;&gt;-->
+    <!--<script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>-->
+
+    <!--&lt;!&ndash; 如果你想在放大的模态页面中查看文件详细信息需要引入bootstrap.js &ndash;&gt;-->
+    <!--<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+
+    <!--&lt;!&ndash; 可选，如果你需要像font awesome 这样的主题，就像下面的代码一样引入它 &ndash;&gt;-->
+    <!--<script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/fa.min.js"></script>-->
+
+    <!--&lt;!&ndash; 可选，如果你需要转换语言或翻译，就包含这个库 &ndash;&gt;-->
+    <!--<script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/zh.min.js"></script>-->
+
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-goods-add">
+        <input id="relateId" name="relateId" type="hidden"/>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">提供者类型：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="source" id="source" onclick="showMerchant()">
+                        <option value="1">厂家</option>
+                        <option value="2">商家</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">提供者：</label>
+                <div class="col-sm-9">
+                    <input name="factoryName" id="factoryName" class="form-control" onclick="selectGoods()" type="text"
+                           placeholder="请选择厂家" required readonly>
+                </div>
+            </div>
+        </div>
+        <!--<div class="col-md-12">-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">提供者：</label>-->
+        <!--<div class="col-sm-9">-->
+        <!--<select class="form-control" name="relateId" id="relateId"></select>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">商品分类：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="parentId" id="parentId" onchange="getSecond()"></select>
+                </div>
+                <!--<div class="col-sm-3">-->
+                <!--<select class="form-control" name="typeId" id="typeId" onchange="getThreeType()"></select>-->
+                <!--</div>-->
+                <!--<div class="col-sm-3">-->
+                <!--<select class="form-control" name="threeType" id="threeType"></select>-->
+                <!--</div>-->
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">今日精选：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="choiceness" id="choiceness">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">热销：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="hotSale" id="hotSale">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+<!--        <div class="col-md-12">-->
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">预购：</label>-->
+<!--                <div class="col-sm-9">-->
+<!--                    <select class="form-control" name="preorder" id="preorder">-->
+<!--                        <option value="0">否</option>-->
+<!--                        <option value="1">是</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">礼包：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="giftBag" id="giftBag">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否上架：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="status" id="status">
+                        <option value="1">上架</option>
+                        <option value="0">下架</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商品简称：</label>
+            <div class="col-sm-9">
+                <input id="goodsListName" name="goodsListName" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商品详情名称：</label>
+            <div class="col-sm-9">
+                <input id="goodsName" name="goodsName" class="form-control" type="text" maxlength="27" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商品轮播图片：</label>
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash;<label class="font-noraml">多文件上传</label>&ndash;&gt;-->
+            <!--<div class="file-loading">-->
+            <!--<input id="fileinput-demo-1" type="file" name="img" multiple="true">-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="col-sm-6">
+                <input type="file" id="files" class="imgsl" multiple="multiple" accept="image/*" required
+                       onchange="carousel()">
+                <input type="hidden" id="turnsPhoto" name="turnsPhoto" required>
+            </div>
+        </div>
+        <div id="Photo" style="margin-left: 190px"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">划线价：</label>
+            <div class="col-sm-9">
+                <input id="linePrice" name="linePrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">售价：</label>
+            <div class="col-sm-9">
+                <input id="price" name="price" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理价：</label>
+            <div class="col-sm-9">
+                <input id="agencyPrice" name="agencyPrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">市场价：</label>
+            <div class="col-sm-9">
+                <input id="bazaarPrice" name="bazaarPrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">采购价：</label>
+            <div class="col-sm-9">
+                <input id="procurementPrice" name="procurementPrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">初始销量：</label>
+            <div class="col-sm-9">
+                <input id="salesInitial" name="salesInitial" class="form-control" type="text" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">活动标题：</label>
+            <div class="col-sm-9">
+                <input id="activityTitle" name="activityTitle" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库存：</label>
+            <div class="col-sm-9">
+                <input id="stockNum" name="stockNum" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">排序：</label>
+            <div class="col-sm-9">
+                <input id="sort" name="sort" class="form-control" type="text" required>
+            </div>
+        </div>
+        <!--<div class="col-md-12">-->
+        <!--<div class="form-group" onclick="addModel()">-->
+        <!--<label class="col-sm-3 control-label">选择规格：</label>-->
+        <!--<div class="col-sm-9">-->
+        <!--<select class="form-control" name="speType" id="speType" required>-->
+        <!--<option value="">请选择&#45;&#45;</option>-->
+        <!--<option value="1">单规格</option>-->
+        <!--<option value="2">多规格</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group" id="divM">
+            <label class="col-sm-3 control-label">规格参数：</label>
+            <div class="col-sm-9" id="typeValue">
+                <input id='specName' name='specName' class='form-control' type='text'>
+            </div>
+            <label class="col-sm-3 control-label">规格属性：</label>
+            <div class="col-sm-9" id="specification">
+                <div style="border: 1px solid black">
+                    规格属性<input name="specValue" class="form-control" type="text">
+                    编号<input name="skuId" class="form-control" type="text">
+                    重量(克)<input name="goodsWeight" class="form-control" type="text">
+                    库存<input name="skuStockNum" class="form-control" type="text">
+                    价格<input name="skuPrice" class="form-control" type="text">
+                    代理价<input name="agentPrice" class="form-control" type="text">
+                    图片<input class="form-control" type="file" accept="image/*" onchange="uploadPhoto(event)">
+                    <input name="skuPhoto" class="form-control" type="hidden" value="">
+                </div>
+            </div>
+            <input id="bt" type="button" value="添加属性" onclick="addDiv()"/>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content no-padding">
+                        <div class="summernote" id="summernote">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="content" name="content" value="">
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: summernote-js"/>
+<th:block th:include="include :: bootstrap-fileinput-js"/>
+<script type="text/javascript">
+    /*商品分类管理-新增-选择菜单树*/
+    function selectGoods() {
+        var source = $("#source").val();
+        var url = prefix + "/selectMerchant/" + source;
+        var options = {
+            title: '厂家选择',
+            //width: "380",
+            url: url,
+            callBack: selectGood
+        };
+        $.modal.openOptions(options);
+    }
+
+    function selectGood(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#relateId").val(body.find('#factoryId').val());
+        $("#factoryName").val(body.find('#factoryName').val());
+        layer.close(index);
+    }
+
+    var prefix = ctx + "system/goods"
+    $("#form-goods-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        var content = $('.summernote').summernote('code');
+        $("#content").val(content);
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-goods-add').serialize());
+        }
+    }
+
+    $(function () {
+        showMerchant();
+        getParent();
+        $("#divM").hide();
+        $("#divType").hide();
+    });
+
+    function carousel() {
+        var files = document.getElementById("files").files;
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            formData.append("file", files[i]);
+        }
+        $.ajax({
+            url: "/system/goods/imageListUpload",
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                var turnPhoto = data.filese.split("#");
+                var photoId = data.photoIds.split("#");
+                var _html = "";
+                var photo = $("#turnsPhoto").val();
+                for (var i = 0; i < turnPhoto.length; i++) {
+                    _html += "<div>";
+                    _html += "<img src='" + turnPhoto[i] + "' width='100px' height='100px'>";
+                    _html += "<input type='hidden' value='" + photoId[i] + "'>";
+                    _html += "<button type='button' onclick='deletePhoto(event)'>删除</button>";
+                    _html += "</div>";
+                    photo += ","+photoId[i];
+                }
+                $("#Photo").append(_html);
+                $("#turnsPhoto").val(photo);
+            }
+        });
+    };
+
+    function deletePhoto(event) {
+        var photoId = event.target.parentNode.children[1].value
+        var v = event.target.parentNode
+        v.parentNode.removeChild(v);
+        var photoIdList = $("#turnsPhoto").val();
+        var photo = photoIdList.split(",");
+        var p = "";
+        for (var i = 0; i < photo.length; i++) {
+            if (photo[i] !== photoId){
+                p += photo[i]+",";
+            }
+        }
+        p = p.substr(0,p.length-1);
+        $("#turnsPhoto").val(p)
+    }
+
+    // function carousel() {
+    //     var files = document.getElementById("files").files;
+    //     var formData = new FormData();
+    //     for (var i = 0; i < files.length; i++) {
+    //         formData.append("file", files[i]);
+    //     }
+    //
+    //     $.ajax({
+    //         url: "/system/goods/imagesUpload",
+    //         data: formData,
+    //         type: "POST",
+    //         async: false,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         success: function (data) {
+    //             var turnPhoto = data.split("#");
+    //             var _html = "";
+    //             for (var i = 0; i < turnPhoto.length; i++) {
+    //                 _html += "<img src='" + turnPhoto[i] + "' width='100px' height='100px'>"
+    //             }
+    //             $("#Photo").html(_html);
+    //             //成功
+    //             $("#turnsPhoto").val(data);
+    //         }
+    //     });
+    // };
+
+    // function uploadPhoto(e) {
+    //     var file = e.target.files[0];
+    //     var formData = new FormData();
+    //     formData.append("file", file);
+    //     $.ajax({
+    //         url: '/system/goods/imageUpload',
+    //         data: formData,
+    //         type: 'post',
+    //         async: false,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         success: function (data) {
+    //             //成功
+    //             var _input = e.target.parentNode.children[6];
+    //             _input.value = data;
+    //         }
+    //     });
+    // }
+
+    //富文本格式转换
+    $('#summernote').summernote({
+        callbacks: {
+            onImageUpload: function (file) { //图片默认以二进制的形式存储到数据库，调用此方法将请求后台将图片存储到服务器，返回图片请求地址到前端
+                //将图片放入Formdate对象中
+                //‘picture'为后台获取的文件名，file[0]是要上传的文件
+                for (var i = 0; i < file.length; i++) {
+                    var formData = new FormData();
+                    formData.append("file", file[i]);
+                    $.ajax({
+                        type: 'post',
+                        url: '/system/goods/imageUpload',
+                        cache: false,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        dataType: 'text', //请求成功后，后台返回图片访问地址字符串，故此以text格式获取，而不是json格式
+                        success: function (picture) {
+                            $('#summernote').summernote('insertImage', picture);
+                        },
+                        error: function () {
+                            alert("上传失败");
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+    function addModel() {
+        var speType = $("#speType").val();
+        if (speType === "1") {
+            $("#divM").show();
+        } else {
+            $("#divM").hide();
+        }
+    }
+
+    function addDiv() {
+        $("#specification").append(
+            "<div style='border: 1px solid black'>" +
+            "规格属性<input name='specValue' class='form-control' type='text'>" +
+            "编号<input name='skuId' class='form-control' type='text'>" +
+            "重量<input name='goodsWeight' class='form-control' type='text'>" +
+            "库存<input name='skuStockNum' class='form-control' type='text'>" +
+            "价格<input name='skuPrice' class='form-control' type='text'>" +
+            "代理价<input name='agentPrice' class='form-control' type='text'>" +
+            "图片<input class='form-control' type='file' accept='image/*' onchange='uploadPhoto(event)'>" +
+            "<input name='skuPhoto' class='form-control' type='hidden' value=''>" +
+            "</div>"
+        )
+    }
+
+    //一级分类
+    function getParent() {
+        $.ajax({
+            url: "/system/goods/getParent",
+            method: "post",
+            contentType: "application/x-www-form-urlencoded",
+            async: false,
+            success: function (res) {
+                for (var i = 0; i < res.length; i++) {
+                    $("#parentId").append("<option value='" + res[i].id + "'>" + res[i].typeName + "</option>");
+                }
+                getSecond()
+            }
+        });
+
+    }
+
+    //二级分类
+    function getSecond() {
+        var parentCode = $('#parentId option:selected').val();
+        $.ajax({
+            url: "/system/goods/getParentId",
+            method: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "parentCode": parentCode
+            },
+            dataType: 'json',
+            success: function (res) {
+                var _html = "";
+                for (var i = 0; i < res.length; i++) {
+                    _html += "<option value='" + res[i].id + "'>" + res[i].typeName + "</option>";
+                }
+                $("#typeId").html(_html);
+                getThreeType();
+            }
+        });
+    }
+
+    //三级分类
+    function getThreeType() {
+        var typeId = $("#typeId").val();
+        $.ajax({
+            url: "/system/goods/getThreeType",
+            method: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "typeId": typeId
+            },
+            dataType: 'json',
+            success: function (res) {
+                var _html = "";
+                for (var i = 0; i < res.length; i++) {
+                    _html += "<option value='" + res[i].id + "'>" + res[i].typeName + "</option>";
+                }
+                $("#threeType").html(_html);
+            }
+        });
+    }
+
+    //查询商户
+    function showMerchant() {
+        var source = $("#source").val();
+        $.ajax({
+            url: "/system/goods/getMerchantId",
+            method: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "source": source
+            },
+            success: function (res) {
+                var _html = "";
+                for (var i = 0; i < res.length; i++) {
+                    _html += "<option value='" + res[i].factoryId + "'>" + res[i].name + "</option>";
+                }
+                $("#relateId").html(_html);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('.summernote').summernote({
+            lang: 'zh-CN'
+        });
+    });
+    var edit = function () {
+        $("#eg").addClass("no-padding");
+        $('.click2edit').summernote({
+            lang: 'zh-CN',
+            focus: true
+        });
+    };
+    var save = function () {
+        $("#eg").removeClass("no-padding");
+        var aHTML = $('.click2edit').summernote('code');
+        $('.click2edit').summernote('destroy');
+    };
+
+    // $(document).ready(function () {
+    //     var url = "/system/goods/insert";
+    //     $("#fileinput-demo-1").fileinput({
+    //         language: 'zh', //设置语言
+    //         uploadUrl: url,
+    //         overwriteInitial: false,
+    //         initialPreviewAsData: true,
+    //         maxFileCount: 10,
+    //         dropZoneEnabled : false,//是否显示拖拽区域
+    //         allowedFileExtensions: ["jpg", "gif", "png", "txt"],
+    //         allowedFileTypes: ["image", "video"],
+    //         initialPreview: [
+    //             // "/img/profile.png"
+    //         ]
+    //     })
+    // });
+    //
+    // $("#file1").on("fileuploaded",function(event, data, previewId, index) {
+    //     alert(data)
+    //     //event当前事件，data则是数据，包括上传后服务器返回的数据+ 自身的一些数据
+    //     //data.response才为服务器返回的数据，如果是data.filenames则为当前要上传的文件名(不包括上传的)
+    //     //previewId 预览的下标，从0开始计算，注意并不是数字，而是一串字符串 + _index
+    //     //index 下标，预览下标与index不一致，因为当你导入sortable.js可以排序就可能会不一致
+    //
+    // });
+
+    // //异步上传返回结果处理
+    // $('.myfile').on('fileerror', function(event, data, msg) {
+    //     console.log("fileerror");
+    //     console.log(data);
+    // });
+</script>
+</body>
+</html>

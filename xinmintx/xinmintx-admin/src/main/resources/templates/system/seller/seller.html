@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('【请填写功能名称】列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <!--<li>-->
+                                <!--<p>公司名：</p>-->
+                                <!--<input type="text" name="name"/>-->
+                            <!--</li>-->
+                            <li>
+                                <p>店铺名称：</p>
+                                <input type="text" name="nickName"/>
+                            </li>
+                            <!--<li>-->
+                                <!--<p>密码：</p>-->
+                                <!--<input type="text" name="password"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>EMAIL：</p>-->
+                                <!--<input type="text" name="email"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>公司手机：</p>-->
+                                <!--<input type="text" name="mobile"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>公司电话：</p>-->
+                                <!--<input type="text" name="telephone"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>状态：</p>-->
+                                <!--<select name="status">-->
+                                    <!--<option value="">所有</option>-->
+                                <!--</select>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>详细地址：</p>-->
+                                <!--<input type="text" name="addressDetail"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>联系人姓名：</p>-->
+                                <!--<input type="text" name="linkmanName"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>联系人QQ：</p>-->
+                                <!--<input type="text" name="linkmanQq"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>联系人电话：</p>-->
+                                <!--<input type="text" name="linkmanMobile"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>联系人EMAIL：</p>-->
+                                <!--<input type="text" name="linkmanEmail"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>营业执照号：</p>-->
+                                <!--<input type="text" name="licenseNumber"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>税务登记证号：</p>-->
+                                <!--<input type="text" name="taxNumber"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>组织机构代码：</p>-->
+                                <!--<input type="text" name="orgNumber"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>公司地址：</p>-->
+                                <!--<input type="text" name="address"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>公司LOGO图：</p>-->
+                                <!--<input type="text" name="logoPic"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>法定代表人：</p>-->
+                                <!--<input type="text" name="legalPerson"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>法定代表人身份证：</p>-->
+                                <!--<input type="text" name="legalPersonCardId"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>开户行账号名称：</p>-->
+                                <!--<input type="text" name="bankUser"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>开户行：</p>-->
+                                <!--<input type="text" name="bankName"/>-->
+                            <!--</li>-->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:seller:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:seller:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:seller:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:seller:export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:seller:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:seller:remove')}]];
+        var prefix = ctx + "system/seller";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "【请填写功能名称】",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'sellerId', 
+                    title : '用户ID',
+                    visible: false
+                },
+                {
+                    field : 'name', 
+                    title : '公司名'
+                },
+                {
+                    field : 'nickName', 
+                    title : '店铺名称'
+                },
+                {
+                    field : 'password', 
+                    title : '密码'
+                },
+                {
+                    field : 'email', 
+                    title : 'EMAIL'
+                },
+                {
+                    field : 'mobile', 
+                    title : '公司手机'
+                },
+                {
+                    field : 'telephone', 
+                    title : '公司电话'
+                },
+                {
+                    field : 'status', 
+                    title : '状态'
+                },
+                {
+                    field : 'addressDetail', 
+                    title : '详细地址'
+                },
+                {
+                    field : 'linkmanName', 
+                    title : '联系人姓名'
+                },
+                {
+                    field : 'linkmanQq', 
+                    title : '联系人QQ'
+                },
+                {
+                    field : 'linkmanMobile', 
+                    title : '联系人电话'
+                },
+                {
+                    field : 'linkmanEmail', 
+                    title : '联系人EMAIL'
+                },
+                {
+                    field : 'licenseNumber', 
+                    title : '营业执照号'
+                },
+                {
+                    field : 'taxNumber', 
+                    title : '税务登记证号'
+                },
+                {
+                    field : 'orgNumber', 
+                    title : '组织机构代码'
+                },
+                {
+                    field : 'address', 
+                    title : '公司地址'
+                },
+                {
+                    field : 'logoPic', 
+                    title : '公司LOGO图'
+                },
+                {
+                    field : 'brief', 
+                    title : '简介'
+                },
+                {
+                    field : 'legalPerson', 
+                    title : '法定代表人'
+                },
+                {
+                    field : 'legalPersonCardId', 
+                    title : '法定代表人身份证'
+                },
+                {
+                    field : 'bankUser', 
+                    title : '开户行账号名称'
+                },
+                {
+                    field : 'bankName', 
+                    title : '开户行'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sellerId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sellerId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

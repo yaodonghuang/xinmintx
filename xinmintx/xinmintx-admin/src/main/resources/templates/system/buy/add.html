@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增限时抢购')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-buy-add">
+        <input id="goodsId" name="goodsId" type="hidden"/>
+        <!--<div class="form-group">    -->
+        <!--<label class="col-sm-3 control-label">商品id：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input name="goodsId" class="form-control" type="text" required>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">    -->
+        <!--<label class="col-sm-3 control-label">商品名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input name="goodsName" class="form-control" type="text" required>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">选择商品：</label>
+            <div class="col-sm-8">
+                <input name="goodsName" id="goodsListName" class="form-control" onclick="selectGoods()" type="text"
+                       placeholder="请选择商品" required readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">售价：</label>
+            <div class="col-sm-8">
+                <input name="price" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">划线价格：</label>
+            <div class="col-sm-8">
+                <input name="linePrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">普通会员优惠金额：</label>
+            <div class="col-sm-8">
+                <input name="generalPrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">E卡会员优惠金额：</label>
+            <div class="col-sm-8">
+                <input name="ePrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">新民金卡优惠金额：</label>
+            <div class="col-sm-8">
+                <input name="goldPrice" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢购开始时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="startTime" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text"
+                           id="datetimepicker-demo-3">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢购结束时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="endTime" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text"
+                           id="datetimepicker-demo-4">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商品抢购库存数量：</label>
+            <div class="col-sm-8">
+                <input name="stockNum" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">展示图片：</label>
+            <div class="col-sm-8">
+                <input id="pictureUrl" name="activityImg" type="hidden" required>
+                <input id="picture" type="file" name="file" accept="image/*"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <img src="/img/profile.png" id="buyPicture" width="200px" height="200px">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">活动标题：</label>
+            <div class="col-sm-8">
+                <input name="activityTitle" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">启用：</label>
+            <div class="col-sm-8">
+                <select name="isSale" class="form-control" id="isSale">
+                    <option value="1">启用</option>
+                    <option value="0">未启用</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <select name="status" class="form-control" id="status">
+                    <option value="1">上架</option>
+                    <option value="0">下架</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">初始销量(虚拟销量)：</label>
+            <div class="col-sm-8">
+                <input name="salesInitial" class="form-control" type="text">
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">实际销量：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input name="salesActual" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">选择虚拟抢购用户</label>
+            <div class="col-sm-8">
+                <button type="button" class="btn btn-info" onclick="selectUsersToParent()">请选择会员</button>
+                <input id="member" name="virtualMember" type="hidden" required>
+                <p id="memberIds"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">每人限购数(-1为不限)：</label>
+            <div class="col-sm-8">
+                <input name="restriction" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script type="text/javascript">
+    var prefix = ctx + "system/buy"
+    $("#form-buy-add").validate({
+        focusCleanup: true
+    });
+
+    $("#datetimepicker-demo-3").datetimepicker({
+        format: "yyyy-mm-dd hh:ii:ss",
+        autoclose: true
+    });
+
+    $("#datetimepicker-demo-4").datetimepicker({
+        format: "yyyy-mm-dd hh:ii:ss",
+        autoclose: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-buy-add').serialize());
+        }
+    }
+
+    $("input[name='startTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $("input[name='endTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+
+    /*商品分类管理-新增-选择菜单树*/
+    function selectGoods() {
+        var url = prefix + "/selectGoods";
+        var options = {
+            title: '商品选择',
+            //width: "380",
+            url: url,
+            callBack: selectGood
+        };
+        $.modal.openOptions(options);
+    }
+
+    function selectGood(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $.ajax({
+            url: "/system/buy/checkGoods/" + body.find('#goodsId').val(),
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data == true) {
+                    $("#goodsId").val(body.find('#goodsId').val());
+                    $("#goodsListName").val(body.find('#goodsListName').val());
+                    layer.close(index);
+                } else {
+                    alert("该商品已经参与限时抢购")
+                }
+            }
+        });
+
+    }
+
+    /*选择会员*/
+    function selectUsersToParent() {
+        $.modal.open("选择会员", prefix + "/selectMembers");
+    }
+
+    /*图片上传*/
+    document.getElementById("picture").onchange = function () {
+        imageUpload("picture", "pictureUrl");
+    };
+
+    function imageUpload(file, info) {
+        var formData = new FormData();
+        formData.append('file', $("#" + file)[0].files[0]);
+        $.ajax({
+            url: "/system/api/fileUpload/" + 4,
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                //成功
+                $("#" + info).val(data);
+                $("#buyPicture").attr('src',data);
+            }
+        });
+    }
+</script>
+</body>
+</html>

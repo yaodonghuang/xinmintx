@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberCardInfoMapper">
+    
+    <resultMap type="MemberCardInfo" id="MemberCardInfoResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="cardNumber"    column="card_number"    />
+        <result property="name"    column="name"    />
+        <result property="pyCode"    column="py_code"    />
+        <result property="gender"    column="gender"    />
+        <result property="idcard"    column="idcard"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="cellphone"    column="cellphone"    />
+        <result property="address"    column="address"    />
+        <result property="entityCard"    column="entity_card"    />
+        <result property="cardType"    column="card_type"    />
+        <result property="blood"    column="blood"    />
+        <result property="constellation"    column="constellation"    />
+        <result property="height"    column="height"    />
+        <result property="weight"    column="weight"    />
+        <result property="education"    column="education"    />
+        <result property="carNumber"    column="car_number"    />
+        <result property="carType"    column="car_type"    />
+        <result property="carSkeletonNumber"    column="car_skeleton_number"    />
+        <result property="carBrand"    column="car_brand"    />
+        <result property="carBuyTime"    column="car_buy_time"    />
+        <result property="carInsuranceTime"    column="car_insurance_time"    />
+        <result property="drivingLicensePhoto"    column="driving_license_photo"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMemberCardInfoVo">
+        select id, member_id, card_number, name, py_code, gender, idcard, birthday, cellphone, address, entity_card, card_type, blood, constellation, height, weight, education, car_number, car_type, car_skeleton_number, car_brand, car_buy_time, car_insurance_time, driving_license_photo, pay_status, status, create_time, update_time from member_card_info
+    </sql>
+
+    <select id="selectMemberCardInfoList" parameterType="MemberCardInfo" resultMap="MemberCardInfoResult">
+        <include refid="selectMemberCardInfoVo"/>
+        <where>  
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="cardNumber != null  and cardNumber != ''"> and card_number = #{cardNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="pyCode != null  and pyCode != ''"> and py_code = #{pyCode}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="idcard != null  and idcard != ''"> and idcard = #{idcard}</if>
+            <if test="birthday != null  and birthday != ''"> and birthday = #{birthday}</if>
+            <if test="cellphone != null  and cellphone != ''"> and cellphone = #{cellphone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="entityCard != null "> and entity_card = #{entityCard}</if>
+            <if test="cardType != null "> and card_type = #{cardType}</if>
+            <if test="blood != null  and blood != ''"> and blood = #{blood}</if>
+            <if test="constellation != null  and constellation != ''"> and constellation = #{constellation}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="education != null  and education != ''"> and education = #{education}</if>
+            <if test="carNumber != null  and carNumber != ''"> and car_number = #{carNumber}</if>
+            <if test="carType != null  and carType != ''"> and car_type = #{carType}</if>
+            <if test="carSkeletonNumber != null  and carSkeletonNumber != ''"> and car_skeleton_number = #{carSkeletonNumber}</if>
+            <if test="carBrand != null  and carBrand != ''"> and car_brand = #{carBrand}</if>
+            <if test="carBuyTime != null "> and car_buy_time = #{carBuyTime}</if>
+            <if test="carInsuranceTime != null "> and car_insurance_time = #{carInsuranceTime}</if>
+            <if test="drivingLicensePhoto != null  and drivingLicensePhoto != ''"> and driving_license_photo = #{drivingLicensePhoto}</if>
+            <if test="payStatus != null "> and pay_status = #{payStatus}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberCardInfoById" parameterType="Long" resultMap="MemberCardInfoResult">
+        <include refid="selectMemberCardInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMemberCardInfo" parameterType="MemberCardInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into member_card_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null ">member_id,</if>
+            <if test="cardNumber != null  and cardNumber != ''">card_number,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="pyCode != null  and pyCode != ''">py_code,</if>
+            <if test="gender != null ">gender,</if>
+            <if test="idcard != null  and idcard != ''">idcard,</if>
+            <if test="birthday != null  and birthday != ''">birthday,</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="entityCard != null ">entity_card,</if>
+            <if test="cardType != null ">card_type,</if>
+            <if test="blood != null  and blood != ''">blood,</if>
+            <if test="constellation != null  and constellation != ''">constellation,</if>
+            <if test="height != null ">height,</if>
+            <if test="weight != null ">weight,</if>
+            <if test="education != null  and education != ''">education,</if>
+            <if test="carNumber != null  and carNumber != ''">car_number,</if>
+            <if test="carType != null  and carType != ''">car_type,</if>
+            <if test="carSkeletonNumber != null  and carSkeletonNumber != ''">car_skeleton_number,</if>
+            <if test="carBrand != null  and carBrand != ''">car_brand,</if>
+            <if test="carBuyTime != null ">car_buy_time,</if>
+            <if test="carInsuranceTime != null ">car_insurance_time,</if>
+            <if test="drivingLicensePhoto != null  and drivingLicensePhoto != ''">driving_license_photo,</if>
+            <if test="payStatus != null ">pay_status,</if>
+            <if test="status != null ">status,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null ">#{memberId},</if>
+            <if test="cardNumber != null  and cardNumber != ''">#{cardNumber},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="pyCode != null  and pyCode != ''">#{pyCode},</if>
+            <if test="gender != null ">#{gender},</if>
+            <if test="idcard != null  and idcard != ''">#{idcard},</if>
+            <if test="birthday != null  and birthday != ''">#{birthday},</if>
+            <if test="cellphone != null  and cellphone != ''">#{cellphone},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="entityCard != null ">#{entityCard},</if>
+            <if test="cardType != null ">#{cardType},</if>
+            <if test="blood != null  and blood != ''">#{blood},</if>
+            <if test="constellation != null  and constellation != ''">#{constellation},</if>
+            <if test="height != null ">#{height},</if>
+            <if test="weight != null ">#{weight},</if>
+            <if test="education != null  and education != ''">#{education},</if>
+            <if test="carNumber != null  and carNumber != ''">#{carNumber},</if>
+            <if test="carType != null  and carType != ''">#{carType},</if>
+            <if test="carSkeletonNumber != null  and carSkeletonNumber != ''">#{carSkeletonNumber},</if>
+            <if test="carBrand != null  and carBrand != ''">#{carBrand},</if>
+            <if test="carBuyTime != null ">#{carBuyTime},</if>
+            <if test="carInsuranceTime != null ">#{carInsuranceTime},</if>
+            <if test="drivingLicensePhoto != null  and drivingLicensePhoto != ''">#{drivingLicensePhoto},</if>
+            <if test="payStatus != null ">#{payStatus},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberCardInfo" parameterType="MemberCardInfo">
+        update member_card_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null ">member_id = #{memberId},</if>
+            <if test="cardNumber != null  and cardNumber != ''">card_number = #{cardNumber},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="pyCode != null  and pyCode != ''">py_code = #{pyCode},</if>
+            <if test="gender != null ">gender = #{gender},</if>
+            <if test="idcard != null  and idcard != ''">idcard = #{idcard},</if>
+            <if test="birthday != null  and birthday != ''">birthday = #{birthday},</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone = #{cellphone},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="entityCard != null ">entity_card = #{entityCard},</if>
+            <if test="cardType != null ">card_type = #{cardType},</if>
+            <if test="blood != null  and blood != ''">blood = #{blood},</if>
+            <if test="constellation != null  and constellation != ''">constellation = #{constellation},</if>
+            <if test="height != null ">height = #{height},</if>
+            <if test="weight != null ">weight = #{weight},</if>
+            <if test="education != null  and education != ''">education = #{education},</if>
+            <if test="carNumber != null  and carNumber != ''">car_number = #{carNumber},</if>
+            <if test="carType != null  and carType != ''">car_type = #{carType},</if>
+            <if test="carSkeletonNumber != null  and carSkeletonNumber != ''">car_skeleton_number = #{carSkeletonNumber},</if>
+            <if test="carBrand != null  and carBrand != ''">car_brand = #{carBrand},</if>
+            <if test="carBuyTime != null ">car_buy_time = #{carBuyTime},</if>
+            <if test="carInsuranceTime != null ">car_insurance_time = #{carInsuranceTime},</if>
+            <if test="drivingLicensePhoto != null  and drivingLicensePhoto != ''">driving_license_photo = #{drivingLicensePhoto},</if>
+            <if test="payStatus != null ">pay_status = #{payStatus},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberCardInfoById" parameterType="Long">
+        delete from member_card_info where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberCardInfoByIds" parameterType="String">
+        delete from member_card_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.factory.mapper.DeliveryMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.factory.model.GoodsOrder">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="order_num" jdbcType="VARCHAR" property="orderNum"/>
+        <result column="order_state" jdbcType="INTEGER" property="orderState"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="if_pay" jdbcType="INTEGER" property="ifPay"/>
+        <result column="receive_address" jdbcType="VARCHAR" property="receiveAddress"/>
+        <result column="receive_name" jdbcType="VARCHAR" property="receiveName"/>
+        <result column="receive_phone" jdbcType="VARCHAR" property="receivePhone"/>
+        <result column="receive_message" jdbcType="VARCHAR" property="receiveMessage"/>
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount"/>
+        <result column="u_order_id" jdbcType="INTEGER" property="uOrderId"/>
+        <result column="goods_id" jdbcType="INTEGER" property="goodsId"/>
+        <result column="sku_id" jdbcType="INTEGER" property="skuId"/>
+        <result column="factory_id" jdbcType="INTEGER" property="factoryId"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="goods_pic" jdbcType="VARCHAR" property="goodsPic"/>
+        <result column="evaluate" jdbcType="VARCHAR" property="evaluate"/>
+        <result column="courier_number" jdbcType="VARCHAR" property="courierNumber"/>
+        <result column="if_delete" jdbcType="INTEGER" property="ifDelete"/>
+        <result column="if_remind" jdbcType="INTEGER" property="ifRemind"/>
+    </resultMap>
+
+    <resultMap id="VomMap" type="com.xinmintx.factory.model.VenderOrderMain">
+        <constructor>
+            <idArg column="order_id" javaType="String"/>
+        </constructor>
+        <collection property="voList" ofType="com.xinmintx.factory.model.VenderOrder"
+                    resultMap="VenderOrderMap"
+                    columnPrefix="vom_">
+        </collection>
+    </resultMap>
+
+    <sql id="goColumnss">
+        ${alias}.receive_name	         ${prefix}receive_name,
+        ${alias}.receive_phone	         ${prefix}receive_phone,
+        ${alias}.receive_address	     ${prefix}receive_address,
+        ${alias}.refund_information	     ${prefix}refund_information,
+        ${alias}.return_message	         ${prefix}return_message,
+        ${alias}.refund_time	         ${prefix}refund_time,
+        ${alias}.if_remind	             ${prefix}if_remind,
+        ${alias}.courier_number	         ${prefix}courier_number
+    </sql>
+
+    <sql id="gdColumnss">
+        ${alias}.create_time	        ${prefix}create_time,
+        ${alias}.goods_pic	            ${prefix}goods_pic,
+        ${alias}.refund_msg	            ${prefix}refund_msg,
+        ${alias}.id	                    ${prefix}id,
+        ${alias}.returns_single_number	${prefix}returns_single_number,
+        ${alias}.goods_name	            ${prefix}goods_name,
+        ${alias}.price	                ${prefix}price,
+        ${alias}.quantity	            ${prefix}quantity
+    </sql>
+
+    <sql id="gsColumnss">
+        ${alias}.spec_value_id	     ${prefix}spec_value_id
+    </sql>
+
+    <resultMap id="VenderOrderMap" type="com.xinmintx.factory.model.VenderOrder">
+        <result column="receive_address" jdbcType="VARCHAR" property="receiveAddress"/>
+        <result column="receive_name" jdbcType="VARCHAR" property="receiveName"/>
+        <result column="receive_phone" jdbcType="VARCHAR" property="receivePhone"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="spec_value_id" jdbcType="VARCHAR" property="specValueId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="goods_pic" jdbcType="VARCHAR" property="goodsPic"/>
+        <result column="if_remind" jdbcType="INTEGER" property="ifRemind"/>
+        <result column="refund_msg" jdbcType="VARCHAR" property="refundMsg"/>
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="refund_information" jdbcType="VARCHAR" property="refundInformation"/>
+        <result column="returns_single_number" jdbcType="VARCHAR" property="returnsSingleNumber"/>
+        <result column="return_message" jdbcType="VARCHAR" property="returnMessage"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+       id,member_id,order_num,order_state,create_time,update_time,if_pay,receive_address,
+       receive_name,receive_phone,receive_message,total_amount,u_order_id,goods_id,sku_id,factory_id,
+       price,quantity,goods_name,goods_pic,evaluate,courier_number,if_delete,if_remind
+    </sql>
+
+    <select id="query" parameterType="map" resultType="com.xinmintx.factory.model.VenderOrder">
+        SELECT receive_name,receive_phone,receive_address,gd.goods_name,gd.price,gd.quantity,gs.spec_value_id,gd.create_time,gd.goods_pic,
+        go.if_remind,gd.refund_msg,gd.id,gd.refund_information,gd.returns_single_number,gd.return_message,gd.order_id,go.courier_number
+        FROM goods_order go
+        LEFT JOIN goods_order_detail gd
+        on go.id = gd.order_id
+        LEFT JOIN goods_sku gs
+        ON gd.sku_id = gs.id
+        WHERE go.factory_id = #{id}
+        <if test="statu != null and statu != ''">
+            AND gd.order_state = #{statu}
+        </if>
+
+        <if test="str != null and str != ''">
+            ${str}
+        </if>
+        AND go.if_delete = 0
+        order by gd.create_time desc
+    </select>
+
+    <select id="queryVom" parameterType="map" resultMap="VomMap">
+        SELECT
+        <include refid="goColumnss">
+            <property name="alias" value="go"/>
+            <property name="prefix" value="vom_"/>
+        </include>,
+        <include refid="gdColumnss">
+            <property name="alias" value="gd"/>
+            <property name="prefix" value="vom_"/>
+        </include>,
+        <include refid="gsColumnss">
+            <property name="alias" value="gs"/>
+            <property name="prefix" value="vom_"/>
+        </include>,
+        gd.order_id
+        FROM goods_order go
+        LEFT JOIN goods_order_detail gd
+        on go.id = gd.order_id
+        LEFT JOIN goods_sku gs
+        ON gd.sku_id = gs.id
+        WHERE go.factory_id = #{id}
+        <if test="statu != null and statu != ''">
+            AND gd.order_state = #{statu}
+        </if>
+
+        <if test="str != null and str != ''">
+            ${str}
+        </if>
+        AND go.if_delete = 0
+        order by gd.create_time desc
+    </select>
+
+    <select id="queryEvaluate" resultType="com.xinmintx.factory.model.VenderOrder">
+    SELECT receive_name,receive_phone,receive_address,gd.goods_name,gd.price,gd.quantity,gs.spec_value_id,gd.create_time,gd.goods_pic,
+    gd.evaluate,gd.if_remind,gd.id
+    FROM goods_order go
+    LEFT JOIN goods_sku gs
+    ON go.sku_id = gs.id
+	LEFT JOIN goods_order_detail gd
+    on go.id = gd.order_id
+    WHERE  factory_id = #{id}
+     order by gd.create_time desc
+    </select>
+    <select id="queryByTime" parameterType="map" resultType="com.xinmintx.factory.model.VenderOrder">
+    SELECT receive_name,receive_phone,receive_address,gd.goods_name,gd.price,gd.quantity,gs.spec_value_id,gd.create_time,gd.goods_pic,
+    gd.evaluate,gd.id,gd.order_state
+    FROM goods_order go
+    LEFT JOIN goods_sku gs
+    ON go.sku_id = gs.id
+	LEFT JOIN goods_order_detail gd
+    on go.id = gd.order_id
+        WHERE go.factory_id = #{id} AND
+        gd.create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+AND FROM_UNIXTIME(#{endDate})
+order by gd.create_time desc
+    </select>
+    <select id="queryId" resultType="com.xinmintx.factory.model.Specs">
+        select value,spec_id from goods_spec_value
+        where id=#{s1}
+    </select>
+    <select id="queryNum" resultType="java.lang.String">
+        select name from goods_spec
+    where id =#{specId}
+    </select>
+    <select id="queryAll" resultType="com.xinmintx.factory.model.GoodsOrder">
+        select god.id,god.member_id,god.order_id,god.goods_id,god.price,god.quantity,god.goods_name,god.goods_pic,
+        god.evaluate,god.create_time,god.order_state,god.total_amount,god.weight,god.if_remind,god.refund_msg,
+        god.if_pay,god.lack
+        from goods_order_detail god
+        left join goods_order go
+        on god.order_id = go.id
+        where go.factory_id=#{id}
+    </select>
+</mapper>

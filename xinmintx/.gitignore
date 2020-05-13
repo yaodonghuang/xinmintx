@@ -1,0 +1,31 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+/xinmintx-system/target
+/xinmintx-quartz/target
+/xinmintx-generator/target
+/xinmintx-admin/target
+/.idea
+/logs
+*.iml
+/xinmintx-agent/target
+/xinmintx-mall/target
+/xinmintx-mall/target/
+/xinmintx-api/target
+/xinmintx-vue/vue/dist
+/xinmintx-factory/target
+/xinmintx-common/target
+/xinmintx-framework/target
+/xinmintx-api/src/main/resources/generator.xml
+/xinmintx-api/logs/
+/xinmintx-community/target
+/xinmintx-merchant/target

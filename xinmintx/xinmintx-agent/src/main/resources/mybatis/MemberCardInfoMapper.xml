@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.agent.mapper.MemberCardInfoMapper">
+  <resultMap id="BaseResultMap" type="com.xinmintx.agent.model.MemberCardInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="py_code" jdbcType="VARCHAR" property="pyCode" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="cellphone" jdbcType="VARCHAR" property="cellphone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="entity_card" jdbcType="INTEGER" property="entityCard" />
+    <result column="card_type" jdbcType="INTEGER" property="cardType" />
+    <result column="blood" jdbcType="VARCHAR" property="blood" />
+    <result column="constellation" jdbcType="VARCHAR" property="constellation" />
+    <result column="height" jdbcType="DOUBLE" property="height" />
+    <result column="weight" jdbcType="DOUBLE" property="weight" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="car_number" jdbcType="VARCHAR" property="carNumber" />
+    <result column="car_type" jdbcType="VARCHAR" property="carType" />
+    <result column="car_skeleton_number" jdbcType="VARCHAR" property="carSkeletonNumber" />
+    <result column="car_brand" jdbcType="VARCHAR" property="carBrand" />
+    <result column="car_buy_time" jdbcType="TIMESTAMP" property="carBuyTime" />
+    <result column="car_insurance_time" jdbcType="TIMESTAMP" property="carInsuranceTime" />
+    <result column="driving_license_photo" jdbcType="VARCHAR" property="drivingLicensePhoto" />
+    <result column="pay_status" jdbcType="INTEGER" property="payStatus" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, member_id, card_number, name, py_code, gender, idcard, birthday, cellphone, address, 
+    entity_card, card_type, blood, constellation, height, weight, education, car_number, 
+    car_type, car_skeleton_number, car_brand, car_buy_time, car_insurance_time, driving_license_photo, 
+    pay_status, status, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.xinmintx.agent.model.MemberCardInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from member_card_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member_card_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from member_card_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinmintx.agent.model.MemberCardInfoExample">
+    delete from member_card_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xinmintx.agent.model.MemberCardInfo" useGeneratedKeys="true">
+    insert into member_card_info (member_id, card_number, name, 
+      py_code, gender, idcard, 
+      birthday, cellphone, address, 
+      entity_card, card_type, blood, 
+      constellation, height, weight, 
+      education, car_number, car_type, 
+      car_skeleton_number, car_brand, car_buy_time, 
+      car_insurance_time, driving_license_photo, 
+      pay_status, status, create_time, 
+      update_time)
+    values (#{memberId,jdbcType=INTEGER}, #{cardNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{pyCode,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{idcard,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{entityCard,jdbcType=INTEGER}, #{cardType,jdbcType=INTEGER}, #{blood,jdbcType=VARCHAR}, 
+      #{constellation,jdbcType=VARCHAR}, #{height,jdbcType=DOUBLE}, #{weight,jdbcType=DOUBLE}, 
+      #{education,jdbcType=VARCHAR}, #{carNumber,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}, 
+      #{carSkeletonNumber,jdbcType=VARCHAR}, #{carBrand,jdbcType=VARCHAR}, #{carBuyTime,jdbcType=TIMESTAMP}, 
+      #{carInsuranceTime,jdbcType=TIMESTAMP}, #{drivingLicensePhoto,jdbcType=VARCHAR}, 
+      #{payStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xinmintx.agent.model.MemberCardInfo" useGeneratedKeys="true">
+    insert into member_card_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="cardNumber != null">
+        card_number,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="pyCode != null">
+        py_code,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="idcard != null">
+        idcard,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="cellphone != null">
+        cellphone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="entityCard != null">
+        entity_card,
+      </if>
+      <if test="cardType != null">
+        card_type,
+      </if>
+      <if test="blood != null">
+        blood,
+      </if>
+      <if test="constellation != null">
+        constellation,
+      </if>
+      <if test="height != null">
+        height,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="carNumber != null">
+        car_number,
+      </if>
+      <if test="carType != null">
+        car_type,
+      </if>
+      <if test="carSkeletonNumber != null">
+        car_skeleton_number,
+      </if>
+      <if test="carBrand != null">
+        car_brand,
+      </if>
+      <if test="carBuyTime != null">
+        car_buy_time,
+      </if>
+      <if test="carInsuranceTime != null">
+        car_insurance_time,
+      </if>
+      <if test="drivingLicensePhoto != null">
+        driving_license_photo,
+      </if>
+      <if test="payStatus != null">
+        pay_status,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNumber != null">
+        #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pyCode != null">
+        #{pyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="entityCard != null">
+        #{entityCard,jdbcType=INTEGER},
+      </if>
+      <if test="cardType != null">
+        #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="blood != null">
+        #{blood,jdbcType=VARCHAR},
+      </if>
+      <if test="constellation != null">
+        #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=DOUBLE},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="carNumber != null">
+        #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="carSkeletonNumber != null">
+        #{carSkeletonNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrand != null">
+        #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="carBuyTime != null">
+        #{carBuyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carInsuranceTime != null">
+        #{carInsuranceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="drivingLicensePhoto != null">
+        #{drivingLicensePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null">
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinmintx.agent.model.MemberCardInfoExample" resultType="java.lang.Long">
+    select count(*) from member_card_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update member_card_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null">
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardNumber != null">
+        card_number = #{record.cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pyCode != null">
+        py_code = #{record.pyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.idcard != null">
+        idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellphone != null">
+        cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entityCard != null">
+        entity_card = #{record.entityCard,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardType != null">
+        card_type = #{record.cardType,jdbcType=INTEGER},
+      </if>
+      <if test="record.blood != null">
+        blood = #{record.blood,jdbcType=VARCHAR},
+      </if>
+      <if test="record.constellation != null">
+        constellation = #{record.constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.height != null">
+        height = #{record.height,jdbcType=DOUBLE},
+      </if>
+      <if test="record.weight != null">
+        weight = #{record.weight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.education != null">
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carNumber != null">
+        car_number = #{record.carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carType != null">
+        car_type = #{record.carType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carSkeletonNumber != null">
+        car_skeleton_number = #{record.carSkeletonNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carBrand != null">
+        car_brand = #{record.carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carBuyTime != null">
+        car_buy_time = #{record.carBuyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.carInsuranceTime != null">
+        car_insurance_time = #{record.carInsuranceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.drivingLicensePhoto != null">
+        driving_license_photo = #{record.drivingLicensePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payStatus != null">
+        pay_status = #{record.payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update member_card_info
+    set id = #{record.id,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      card_number = #{record.cardNumber,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      py_code = #{record.pyCode,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=INTEGER},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=VARCHAR},
+      cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      entity_card = #{record.entityCard,jdbcType=INTEGER},
+      card_type = #{record.cardType,jdbcType=INTEGER},
+      blood = #{record.blood,jdbcType=VARCHAR},
+      constellation = #{record.constellation,jdbcType=VARCHAR},
+      height = #{record.height,jdbcType=DOUBLE},
+      weight = #{record.weight,jdbcType=DOUBLE},
+      education = #{record.education,jdbcType=VARCHAR},
+      car_number = #{record.carNumber,jdbcType=VARCHAR},
+      car_type = #{record.carType,jdbcType=VARCHAR},
+      car_skeleton_number = #{record.carSkeletonNumber,jdbcType=VARCHAR},
+      car_brand = #{record.carBrand,jdbcType=VARCHAR},
+      car_buy_time = #{record.carBuyTime,jdbcType=TIMESTAMP},
+      car_insurance_time = #{record.carInsuranceTime,jdbcType=TIMESTAMP},
+      driving_license_photo = #{record.drivingLicensePhoto,jdbcType=VARCHAR},
+      pay_status = #{record.payStatus,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinmintx.agent.model.MemberCardInfo">
+    update member_card_info
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pyCode != null">
+        py_code = #{pyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="idcard != null">
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="entityCard != null">
+        entity_card = #{entityCard,jdbcType=INTEGER},
+      </if>
+      <if test="cardType != null">
+        card_type = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="blood != null">
+        blood = #{blood,jdbcType=VARCHAR},
+      </if>
+      <if test="constellation != null">
+        constellation = #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        height = #{height,jdbcType=DOUBLE},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="carNumber != null">
+        car_number = #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        car_type = #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="carSkeletonNumber != null">
+        car_skeleton_number = #{carSkeletonNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrand != null">
+        car_brand = #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="carBuyTime != null">
+        car_buy_time = #{carBuyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carInsuranceTime != null">
+        car_insurance_time = #{carInsuranceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="drivingLicensePhoto != null">
+        driving_license_photo = #{drivingLicensePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null">
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinmintx.agent.model.MemberCardInfo">
+    update member_card_info
+    set member_id = #{memberId,jdbcType=INTEGER},
+      card_number = #{cardNumber,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      py_code = #{pyCode,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      entity_card = #{entityCard,jdbcType=INTEGER},
+      card_type = #{cardType,jdbcType=INTEGER},
+      blood = #{blood,jdbcType=VARCHAR},
+      constellation = #{constellation,jdbcType=VARCHAR},
+      height = #{height,jdbcType=DOUBLE},
+      weight = #{weight,jdbcType=DOUBLE},
+      education = #{education,jdbcType=VARCHAR},
+      car_number = #{carNumber,jdbcType=VARCHAR},
+      car_type = #{carType,jdbcType=VARCHAR},
+      car_skeleton_number = #{carSkeletonNumber,jdbcType=VARCHAR},
+      car_brand = #{carBrand,jdbcType=VARCHAR},
+      car_buy_time = #{carBuyTime,jdbcType=TIMESTAMP},
+      car_insurance_time = #{carInsuranceTime,jdbcType=TIMESTAMP},
+      driving_license_photo = #{drivingLicensePhoto,jdbcType=VARCHAR},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.xinmintx.agent.model.MemberCardInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from member_card_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

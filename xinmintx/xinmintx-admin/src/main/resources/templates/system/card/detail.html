@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('查看打卡人详情')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="panel panel-default" th:each="user : ${users}">
+        <div class="panel-heading"><font color="#4876FF">打卡人管理</font></div>
+        <table class="table">
+            <tr>
+                <th>打卡表Id</th>
+                <th>打卡人名字</th>
+                <th>打卡时间</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td>
+                    <span th:text="${user.id}"></span>
+                </td>
+                <td>
+                    <span th:text="${user.username}"></span>
+                </td>
+                <td>
+                    <span th:text="${#dates.format(user.time, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </td>
+                <td>
+                    <button class="btn btn-danger" th:onclick="|javascript:deleteMemberCard(${user.id})|">删除</button>
+                </td>
+            </tr>
+        </table>
+
+        <div class="panel-heading"><font color="#CDCD00">评论管理</font></div>
+        <table class="table">
+            <tr>
+                <th>评论人</th>
+                <th>评论内容</th>
+                <th>评论时间</th>
+                <th>操作</th>
+            </tr>
+            <div th:each="comment : ${user.comments}">
+                <tr>
+                    <td>
+                        <span th:text="${comment.name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${comment.comment}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${#dates.format(comment.create_time, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" th:onclick="|javascript:deleteComment(${comment.id})|">删除
+                        </button>
+                    </td>
+                </tr>
+            </div>
+        </table>
+
+        <div class="panel-heading"><font color=" #9932CC">点赞管理</font></div>
+        <table class="table">
+            <tr>
+                <th>点赞人</th>
+                <th>点赞时间</th>
+                <th>操作</th>
+            </tr>
+            <div th:each="likenum : ${user.likenumLists}">
+                <tr>
+                    <td>
+                        <span th:text="${likenum.likenum_name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${#dates.format(likenum.create_time, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" th:onclick="|javascript:deleteLike(${likenum.id})|">删除</button>
+                    </td>
+                </tr>
+            </div>
+        </table>
+        <p class="bg-primary">.</p>
+
+
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script type="text/javascript">
+
+    function deleteMemberCard(id) {
+        $.ajax({
+            url: "/system/card/deleteMemberCheckIn/" + id,
+            data: id,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function () {
+                //成功
+                location.reload();
+            }
+        });
+    }
+
+    function deleteComment(id) {
+        $.ajax({
+            url: "/system/card/deleteComment/" + id,
+            data: id,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function () {
+                //成功
+                location.reload();
+            }
+        });
+    }
+
+    function deleteLike(id) {
+        $.ajax({
+            url: "/system/card/deleteLike/" + id,
+            data: id,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function () {
+                //成功
+                location.reload();
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改消费分润')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-benefit-edit" th:object="${memberBenefit}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">类型：</label>
+                <div class="col-sm-8">
+                    <select name="type" class="form-control m-b" th:field="*{type}" disabled>
+                        <option value = "1">合伙人(商品提供商)</option>
+                        <option value = "2">分公司</option>
+                        <option value = "3">消费推荐人</option>
+                        <option value = "4">矩阵</option>
+                        <option value = "5">通证池</option>
+                        <option value = "6">分公司推荐人</option>
+                        <option value = "7">消费本人获得新民币</option>
+                        <option value = "8">利润分润比例</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">比例：</label>
+                <div class="col-sm-8">
+                    <input name="percent" th:field="*{percent}" class="form-control" type="text" required>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/benefit";
+        $("#form-benefit-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-benefit-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

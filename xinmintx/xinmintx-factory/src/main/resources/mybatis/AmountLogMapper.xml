@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.factory.mapper.AmountLogMapper">
+
+    <update id="updateMemberCash" parameterType="map">
+        UPDATE `member` SET freezing_amount = freezing_amount - #{cost},cash_amount = #{cashAmount} WHERE id = #{memberId}
+    </update>
+
+    <update id="updateMerchantCash" parameterType="map">
+        UPDATE `merchant` SET freezing_amount = freezing_amount - #{cost},cash_amount = cash_amount + #{cost} WHERE id = #{merchantId}
+    </update>
+
+    <insert id="insertLogs" parameterType="map">
+        insert into member_amount_log (member_id, type, price, balance,
+          remark)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.memberId,jdbcType=BIGINT}, #{item.type,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, #{item.balance,jdbcType=DECIMAL},
+          #{item.remark,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <insert id="insertMerchantLogs" parameterType="map">
+        insert into merchant_amount_log (merchant_id, type, price, balance,
+          remark)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.merchantId,jdbcType=BIGINT}, #{item.type,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, #{item.balance,jdbcType=DECIMAL},
+        #{item.remark,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="getMemberCashAmount" parameterType="map" resultType="java.math.BigDecimal">
+        select cash_amount from member where id = #{memberId}
+    </select>
+
+    <select id="getMerchantCashAmount" parameterType="map" resultType="java.math.BigDecimal">
+        select cash_amount from merchant where id = #{merchantId}
+    </select>
+
+    <select id="getMerchantFreezAmount" parameterType="map" resultType="java.math.BigDecimal">
+        select freezing_amount from merchant where id = #{merchantId}
+    </select>
+
+    <select id="getMerchantServiceCharge" parameterType="map" resultType="java.math.BigDecimal">
+        select service_charge from merchant where id = #{merchantId}
+    </select>
+
+    <update id="updateMerchantCashAmount" parameterType="map">
+        update merchant set cash_amount = cash_amount - #{cost} where id = #{merchantId}
+    </update>
+
+    <select id="getUserCashAmount" parameterType="map" resultType="java.math.BigDecimal">
+        select money from user_account where user_id = #{userId}
+    </select>
+
+    <update id="updateUserCashAmount" parameterType="map">
+        update user_account
+        set money = #{money},
+        freeze_money = freeze_money - #{finalCost}
+        where user_id = #{userId}
+    </update>
+
+    <insert id="insertAccountRecord" parameterType="com.xinmintx.factory.model.UserAccountRecord">
+        insert into user_account_record (user_id, order_id,
+      user_account_id, money_change, description,
+      chang_price)
+    values (#{userId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER},
+      #{userAccountId,jdbcType=INTEGER}, #{moneyChange,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR},
+      #{changPrice,jdbcType=DECIMAL})
+    </insert>
+
+    <select id="getUserAccountId" parameterType="map" resultType="java.lang.Integer">
+        select id from user_account where user_id = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.MerchantExtMapper">
+    <update id="updateShopInfo">
+        update merchant
+        <set>
+            <if test="shopAddress != null">
+                shop_address = #{shopAddress},
+            </if>
+            <if test="shopName != null">
+                shop_name = #{shopName},
+            </if>
+        </set>
+        where token = #{token}
+    </update>
+    <select id="getByPhone" resultType="map">
+         select
+            id,
+            name,
+            phone
+        from merchant
+        where cellphone = #{phone}
+    </select>
+    <select id="getInfo" resultType="java.util.Map">
+         select
+            cash_amount,
+            name,
+            merchant_category merchantCategory,
+            avatar,
+            announcement,
+            merchant_category_detail merchantCategoryDetail
+          from merchant where token = #{token}
+    </select>
+    <select id="getIdByToken" resultType="java.lang.Integer">
+        select id from merchant where token =#{token}
+    </select>
+    <select id="getShopInfo" resultType="java.util.Map">
+        select shop_name,shop_address from merchant where token =#{token}
+    </select>
+
+</mapper>

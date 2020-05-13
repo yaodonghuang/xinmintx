@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增【请填写功能名称】')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-profit-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">本人提成：</label>
+                <div class="col-sm-8">
+                    <input name="selfProfit" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">上级提成：</label>
+                <div class="col-sm-8">
+                    <input name="superProfit" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">需要交纳费用：</label>
+                <div class="col-sm-8">
+                    <input name="cost" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">用户角色(1,合伙人;2,代理;3,黄金商户;4,普通商户;5,银卡) ：</label>
+                <div class="col-sm-8">
+                    <input name="role" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">描述：</label>
+                <div class="col-sm-8">
+                    <input name="description" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/profit"
+        $("#form-profit-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-profit-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

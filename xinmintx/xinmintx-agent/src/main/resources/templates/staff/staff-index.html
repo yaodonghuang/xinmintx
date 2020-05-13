@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>员工</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/agent.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <h2 class="header_h">代理商服务</h2>
+    <div class="header_content">
+        <div class="header_top">
+            <div class="header_top_left">
+                <div class="use">
+                    <img th:src="${numberMedol.avatar}">
+                </div>
+                <ul class="user_cont">
+                    <li>
+                        <span class="name" th:text="${numberMedol.username}"></span>
+                        <span class="user_cont_span1">员工</span>
+                    </li>
+                    <li>
+                        <span class="money" onclick="balanceStatement()">余额:</span>
+                        <span class="money_n" th:text="${numberMedol.balance}" onclick="balanceStatement()"></span>
+                        <span class="user_cont_span2" onclick="deposit()">提现</span>
+                    </li>
+                </ul>
+            </div>
+            <ul class="header_top_right">
+
+            </ul>
+        </div>
+        <ul class="header_bottom">
+            <li class="staff_list" onclick="listMerchant()">
+                <p th:text="${numberMedol.merchantNumber}" class="header_top_right_p"></p>
+                <span class="span3">推荐商户</span>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<!--代理商主页头部结束-->
+
+<div class="essential">
+    <img src="/images/agent.img/icon1.png" alt="" class="essential_icon">
+    必备功能
+    <span class="essential_y1"></span>
+    <span class="essential_y2"></span>
+</div>
+<ul class="essential_list">
+    <li>
+        <img src="/images/agent.img/agentIcon2.png" alt="" class="agentIcon2" onclick="addCommercialTenant()">
+        增加商户
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon1.png" alt="" class="agentIcon1">
+        申请代理
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon8.png" alt="" class="agentIcon7" onclick="setIndex()">
+        设置
+    </li>
+    <li onclick="goProcurementMarket()">
+        <img src="/images/agent.img/agentIcon14.png" alt="" class="agentIcon15">
+        采购市场</li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+<!--必备功能结束-->
+</body>
+
+</html>

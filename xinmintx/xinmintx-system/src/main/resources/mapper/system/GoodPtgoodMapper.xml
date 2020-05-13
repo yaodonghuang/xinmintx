@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodPtgoodMapper">
+    
+    <resultMap type="com.xinmintx.system.domain.GoodPtgood" id="GoodPtgoodResult">
+        <result property="ptgoodsId"    column="ptgoods_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="ptgoodsName"    column="ptgoods_name"    />
+        <result property="price"    column="price"    />
+        <result property="ptPrice"    column="pt_price"    />
+        <result property="ptSize"    column="pt_size"    />
+        <result property="ptValidhours"    column="pt_validhours"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="ptgoodsNumber"    column="ptgoods_number"    />
+        <result property="description"    column="description"    />
+        <result property="content"    column="content"    />
+        <result property="ptgoodsThumb"    column="ptgoods_thumb"    />
+        <result property="ptgoodsImgs"    column="ptgoods_imgs"    />
+        <result property="addtime"    column="addtime"    />
+        <result property="uptime"    column="uptime"    />
+        <result property="isSale"    column="is_sale"    />
+        <result property="groupTimes"    column="pt_times"    />
+        <result property="groupType"    column="group_type"    />
+        <result property="common"    column="common"    />
+        <result property="nameActivity"    column="name_activity"    />
+    </resultMap>
+
+    <sql id="selectGoodPtgoodVo">
+        select ptgoods_id, goods_id, ptgoods_name, price, pt_price, pt_size, pt_validhours, start_time, end_time, ptgoods_number, description, content, ptgoods_thumb, ptgoods_imgs, addtime, uptime, is_sale, pt_times, group_type, common, name_activity from good_ptgood
+    </sql>
+
+    <select id="selectGoodPtgoodList" parameterType="com.xinmintx.system.domain.GoodPtgood" resultMap="GoodPtgoodResult">
+        <include refid="selectGoodPtgoodVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="ptgoodsName != null  and ptgoodsName != ''"> and ptgoods_name like concat('%', #{ptgoodsName}, '%')</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="ptPrice != null "> and pt_price = #{ptPrice}</if>
+            <if test="ptSize != null "> and pt_size = #{ptSize}</if>
+            <if test="ptValidhours != null "> and pt_validhours = #{ptValidhours}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="ptgoodsNumber != null "> and ptgoods_number = #{ptgoodsNumber}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="ptgoodsThumb != null  and ptgoodsThumb != ''"> and ptgoods_thumb = #{ptgoodsThumb}</if>
+            <if test="ptgoodsImgs != null  and ptgoodsImgs != ''"> and ptgoods_imgs = #{ptgoodsImgs}</if>
+            <if test="addtime != null "> and addtime = #{addtime}</if>
+            <if test="uptime != null "> and uptime = #{uptime}</if>
+            <if test="isSale != null "> and is_sale = #{isSale}</if>
+            <if test="groupTimes != null "> and pt_times = #{groupTimes}</if>
+            <if test="groupType != null "> and group_type = #{groupType}</if>
+            <if test="common != null  and common != ''"> and common = #{common}</if>
+            <if test="nameActivity != null  and nameActivity != ''"> and name_activity = #{nameActivity}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodPtgoodById" parameterType="Long" resultMap="GoodPtgoodResult">
+        <include refid="selectGoodPtgoodVo"/>
+        where ptgoods_id = #{ptgoodsId}
+    </select>
+    <select id="selectList" resultMap="GoodPtgoodResult">
+        <include refid="selectGoodPtgoodVo"/>
+    </select>
+    <select id="select" resultMap="GoodPtgoodResult">
+        <include refid="selectGoodPtgoodVo"/>
+        where goods_id = #{goodsId} and pt_size = #{ptSize} and is_sale = #{isSale} and group_type = #{groupType}
+    </select>
+
+    <insert id="insertGoodPtgood" parameterType="com.xinmintx.system.domain.GoodPtgood" useGeneratedKeys="true" keyProperty="ptgoodsId">
+        insert into good_ptgood
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="ptgoodsName != null  and ptgoodsName != ''">ptgoods_name,</if>
+            <if test="price != null ">price,</if>
+            <if test="ptPrice != null ">pt_price,</if>
+            <if test="ptSize != null ">pt_size,</if>
+            <if test="ptValidhours != null ">pt_validhours,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="endTime != null ">end_time,</if>
+            <if test="ptgoodsNumber != null ">ptgoods_number,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="ptgoodsThumb != null  and ptgoodsThumb != ''">ptgoods_thumb,</if>
+            <if test="ptgoodsImgs != null  and ptgoodsImgs != ''">ptgoods_imgs,</if>
+            <if test="addtime != null ">addtime,</if>
+            <if test="uptime != null ">uptime,</if>
+            <if test="isSale != null ">is_sale,</if>
+            <if test="groupTimes != null ">pt_times,</if>
+            <if test="groupType != null ">group_type,</if>
+            <if test="common != null  and common != ''">common,</if>
+            <if test="nameActivity != null  and nameActivity != ''">name_activity,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="ptgoodsName != null  and ptgoodsName != ''">#{ptgoodsName},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="ptPrice != null ">#{ptPrice},</if>
+            <if test="ptSize != null ">#{ptSize},</if>
+            <if test="ptValidhours != null ">#{ptValidhours},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="endTime != null ">#{endTime},</if>
+            <if test="ptgoodsNumber != null ">#{ptgoodsNumber},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="ptgoodsThumb != null  and ptgoodsThumb != ''">#{ptgoodsThumb},</if>
+            <if test="ptgoodsImgs != null  and ptgoodsImgs != ''">#{ptgoodsImgs},</if>
+            <if test="addtime != null ">#{addtime},</if>
+            <if test="uptime != null ">#{uptime},</if>
+            <if test="isSale != null ">#{isSale},</if>
+            <if test="groupTimes != null ">#{groupTimes},</if>
+            <if test="groupType != null ">#{groupType},</if>
+            <if test="common != null  and common != ''">#{common},</if>
+            <if test="nameActivity != null  and nameActivity != ''">#{nameActivity},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodPtgood" parameterType="com.xinmintx.system.domain.GoodPtgood">
+        update good_ptgood
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="ptgoodsName != null  and ptgoodsName != ''">ptgoods_name = #{ptgoodsName},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="ptPrice != null ">pt_price = #{ptPrice},</if>
+            <if test="ptSize != null ">pt_size = #{ptSize},</if>
+            <if test="ptValidhours != null ">pt_validhours = #{ptValidhours},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="endTime != null ">end_time = #{endTime},</if>
+            <if test="ptgoodsNumber != null ">ptgoods_number = #{ptgoodsNumber},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="ptgoodsThumb != null  and ptgoodsThumb != ''">ptgoods_thumb = #{ptgoodsThumb},</if>
+            <if test="ptgoodsImgs != null  and ptgoodsImgs != ''">ptgoods_imgs = #{ptgoodsImgs},</if>
+            <if test="addtime != null ">addtime = #{addtime},</if>
+            <if test="uptime != null ">uptime = #{uptime},</if>
+            <if test="isSale != null ">is_sale = #{isSale},</if>
+            <if test="groupTimes != null ">pt_times = #{groupTimes},</if>
+            <if test="groupType != null ">group_type = #{groupType},</if>
+            <if test="common != null  and common != ''">common = #{common},</if>
+            <if test="nameActivity != null  and nameActivity != ''">name_activity = #{nameActivity},</if>
+        </trim>
+        where ptgoods_id = #{ptgoodsId}
+    </update>
+
+    <delete id="deleteGoodPtgoodById" parameterType="Long">
+        delete from good_ptgood where ptgoods_id = #{ptgoodsId}
+    </delete>
+
+    <delete id="deleteGoodPtgoodByIds" parameterType="String">
+        delete from good_ptgood where ptgoods_id in 
+        <foreach item="ptgoodsId" collection="array" open="(" separator="," close=")">
+            #{ptgoodsId}
+        </foreach>
+    </delete>
+    
+</mapper>

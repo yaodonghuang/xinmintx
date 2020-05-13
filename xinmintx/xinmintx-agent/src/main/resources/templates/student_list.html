@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/statementDetail.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <p>
+        <img src="/images/back_icon.png" alt="" onclick="window.history.go(-1)">
+        我的学员
+    </p>
+</div>
+<!--<form id="form1" runat="server">-->
+<!--    <div>-->
+        <div class="content">
+            <div class="title">
+                <div id="1" class="common selected">
+                    我的学员(<span th:text="${listsNum}"></span>)
+                    <div class="common_foot common_foots"></div>
+                </div>
+                <div id="2" class="common">
+                    升级学员(<span th:text="${usersNum}"></span>)
+                    <div class="common_foot"></div>
+                </div>
+            </div>
+            <div class="contentBody">
+                <div id="div1" class="contendiv">
+                    <div th:each="list:${lists}" class="student_msgs">
+                        <img th:if="${list.avatar != null}" th:src="${list.avatar}">
+                        <img th:if="${list.avatar == null}" src="/images/xinmintx.jpg">
+                        <div class="student_msg">
+                            <p class="student_msg_p1">姓名:<span th:text="${list.name}"></span></p>
+                            <p class="student_msg_p1">电话:<span th:text="${list.cellphone}"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="div2" class="contendiv divHidden">
+                    <div th:each="list:${users}" class="student_msgs">
+                        <img th:if="${list.avatar != null}" th:src="${list.avatar}">
+                        <img th:if="${list.avatar == null}" src="/images/xinmintx.jpg">
+                        <div  class="student_msg">
+                            <p class="student_msg_p1">姓名:<span th:text="${list.name}"></span></p>
+                            <p class="student_msg_p1">电话:<span th:text="${list.cellphone}"></span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--    </div>-->
+<!--</form>-->
+<script type="text/javascript">
+    $(function() {
+        $(".common").click(function() {
+            var divId = $(this).attr("id");
+            //alert(divId);
+            if (jQuery(this).attr("class").indexOf("selected") > 0) {
+                // $(this).find('.common_foot').removeClass('common_foots')
+            } else {
+                $("div").removeClass("selected");
+                jQuery(this).addClass("selected");
+                $('.common_foot').removeClass('common_foots')
+                $(this).find('.common_foot').addClass('common_foots')
+            }
+            $(".contendiv").addClass("divHidden");
+            $("#div" + divId).removeClass("divHidden");
+        });
+    });
+</script>
+</body>
+</html>

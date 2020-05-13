@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改后台打卡')"/>
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-card-edit" th:object="${sysCard}">
+        <input name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">录音：</label>
+            <div class="col-sm-8">
+                <input id="recordUrl" name="recordUrl" type="hidden" required th:value="*{recordUrl}">
+                <input id="record" type="file" name="file" accept="audio/mpeg"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <audio id="cardRecordUrl" th:src="${sysCard.recordUrl}" controls="controls"></audio>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">图片：</label>
+            <div class="col-sm-8">
+                <input id="pictureUrl" name="pictureUrl" type="hidden" required th:value="*{pictureUrl}">
+                <input id="picture" type="file" name="file2" accept="image/*"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <img id="cardPictureUrl" th:src="${sysCard.pictureUrl}" width="150px" height="80px">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">美文：</label>
+            <div class="col-sm-8">
+                <textarea name="characters" class="form-control">[[*{characters}]]</textarea>
+            </div>
+        </div>
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">时间：</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input type="date" name="createTime" class="form-control" id="createTime" value="*{createTime}">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="createTime" th:value="${#dates.format(sysCard.createTime, 'yyyy-MM-dd')}"
+                           class="form-control" placeholder="yyyy-MM-dd" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">时间段</label>
+            <div class="col-sm-8">
+                <select name="timeFrame" class="form-control" th:field="*{timeFrame}">
+                    <option value="1">早</option>
+                    <option value="2">晚</option>
+                </select>
+                <!--<input name="timeFrame" th:field="*{timeFrame}" class="form-control" type="text">-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-8">
+                <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js" />
+<script type="text/javascript">
+    var prefix = ctx + "system/card";
+    $("#form-card-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-card-edit').serialize());
+        }
+    }
+
+    document.getElementById("record").onchange = function () {
+        recordUpload("record", "recordUrl");
+    };
+    document.getElementById("picture").onchange = function () {
+        imageUpload("picture", "pictureUrl");
+    };
+
+    function recordUpload(file, info) {
+        var formData = new FormData();
+        formData.append('file', $("#" + file)[0].files[0]);
+        $.ajax({
+            url: "/system/api/fileUpload/" + 1,
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                //成功
+                $("#" + info).val(data);
+                $("#cardRecordUrl").attr('src', data);
+            }
+        });
+    }
+
+    function imageUpload(file, info) {
+        var formData = new FormData();
+        formData.append('file', $("#" + file)[0].files[0]);
+        $.ajax({
+            url: "/system/api/fileUpload/" + 2,
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                //成功
+                $("#" + info).val(data);
+                $("#cardPictureUrl").attr('src', data);
+            }
+        });
+    }
+
+    $("input[name='createTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+</script>
+</body>
+</html>

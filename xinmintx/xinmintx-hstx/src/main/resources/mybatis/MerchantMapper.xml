@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.hstx.mapper.MerchantMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.hstx.pojo.po.Merchant">
+    <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+        <result column="recommender" jdbcType="INTEGER" property="recommender" />
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+        <result column="cellphone" jdbcType="VARCHAR" property="cellphone" />
+        <result column="bankCard" jdbcType="VARCHAR" property="bankCard" />
+        <result column="merchant_type" jdbcType="INTEGER" property="merchantType" />
+        <result column="merchant_table" jdbcType="INTEGER" property="merchantTable" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+        <result column="region_code" jdbcType="VARCHAR" property="regionCode" />
+        <result column="merchant_branch_office_id" jdbcType="INTEGER" property="merchantBranchOfficeId" />
+        <result column="turnover" jdbcType="DECIMAL" property="turnover" />
+        <result column="is_review" jdbcType="INTEGER" property="isReview" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="merchant_category" jdbcType="INTEGER" property="merchantCategory" />
+        <result column="per_capita" jdbcType="DECIMAL" property="perCapita" />
+        <result column="token" jdbcType="VARCHAR" property="token" />
+        <result column="freezing_amount" jdbcType="DECIMAL" property="freezingAmount" />
+        <result column="cash_amount" jdbcType="DECIMAL" property="cashAmount" />
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+        <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="announcement" jdbcType="VARCHAR" property="announcement" />
+        <result column="idcard_front" jdbcType="VARCHAR" property="idcardFront" />
+        <result column="idcard_back" jdbcType="VARCHAR" property="idcardBack" />
+        <result column="bank_card_front" jdbcType="VARCHAR" property="bankCardFront" />
+        <result column="bank_card_back" jdbcType="VARCHAR" property="bankCardBack" />
+        <result column="door_head_photo" jdbcType="VARCHAR" property="doorHeadPhoto" />
+        <result column="store_photo_one" jdbcType="VARCHAR" property="storePhotoOne" />
+        <result column="store_photo_two" jdbcType="VARCHAR" property="storePhotoTwo" />
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+        <result column="other_photo" jdbcType="VARCHAR" property="otherPhoto" />
+        <result column="latitude" jdbcType="INTEGER" property="latitude" />
+        <result column="longitude" jdbcType="INTEGER" property="longitude" />
+        <result column="shop_specification" jdbcType="VARCHAR" property="shopSpecification" />
+    </resultMap>
+</mapper>

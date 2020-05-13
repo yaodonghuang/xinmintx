@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>基本商户奖金</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/set.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <p>
+        <span class="back" onclick="window.history.go(-1)"></span>
+        员工设置
+    </p>
+</div>
+<ul class="list">
+    <li th:onclick="|javascript:setBasic(${userId})|">
+       基本商户奖金
+        <span></span>
+    </li>
+    <li th:onclick="|javascript:setGold(${userId})|">
+        黄金商户奖金
+        <span></span>
+    </li>
+</ul>
+<div class="conform_second" >确认</div>
+</body>
+<script>
+    //设置基本商户
+    function setBasic(userId) {
+        location.href="/agent/staff/setBasic/"+userId
+    }
+    //设置黄金商户
+    function setGold(userId) {
+        location.href="/agent/staff/setGold/"+userId
+    }
+</script>
+</html>

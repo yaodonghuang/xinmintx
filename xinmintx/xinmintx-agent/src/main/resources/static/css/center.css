@@ -1,0 +1,120 @@
+.header {
+  width: 100%;
+  height: 0.94rem;
+  background-color: #FFF;
+  font-size: 0.34rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+  line-height: 0.94rem;
+  border-bottom: 0.01rem solid #CCC;
+  position: relative;
+}
+.header span {
+  width: 0.2rem;
+  height: 0.34rem;
+  background-image: url(/images/login.img/left.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  position: absolute;
+  left: 0.3rem;
+  top: 0.26rem;
+}
+.center_list {
+  width: 100%;
+}
+.center_list li {
+  width: 100%;
+  height: 0.82rem;
+  line-height: 0.82rem;
+  background-image: url(/images/login.img/right.png);
+  background-repeat: no-repeat;
+  background-position-x: 7.1rem;
+  background-position-y: 0.28rem;
+  background-size: 2%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.01rem solid #ccc;
+}
+.center_list li span {
+  font-size: 0.26rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 0.82rem;
+  text-indent: 0.3rem;
+}
+.center_list li .span2 {
+  margin-right: 0.5rem;
+  font-size: 0.26rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #666666;
+}
+.footer_btn {
+  width: 6.58rem;
+  height: 0.76rem;
+  background-color: #3583F0;
+  text-align: center;
+  line-height: 0.76rem;
+  font-size: 0.32rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 0.38rem;
+  margin: 2.17rem 0 0 0.46rem;
+}
+.doing_list li {
+  width: 100%;
+  height: 2.2rem;
+  background: #ffffff;
+  display: flex;
+}
+.doing_list li .do_left {
+  width: 1.6rem;
+  height: 1.6rem;
+  background: #eeeeee;
+  margin: 0.3rem 0.2rem 0 0.2rem;
+}
+.doing_list li .do_left .left_l{
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.doing_list li .doing_right {
+  margin-top: 0.32rem;
+  height: 2.2rem;
+  position: relative;
+}
+.doing_list li .doing_right .doing_right_p1 {
+  font-size: 0.2rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.doing_list li .doing_right .doing_right_p2 {
+  width: 5.2rem;
+  margin-top: 0.1rem;
+  font-size: 0.18rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #888888;
+}
+.doing_list li .doing_right .doing_right_p3 {
+  font-size: 0.2rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+  position: absolute;
+  bottom: 0.6rem;
+  text-indent: 3.85rem;
+}
+.doing_list li .doing_right .doing_right_p3 .p3_first {
+  margin-right: 0.1rem;
+}
+.doing_list li .doing_right .doing_right_p3 .p3_second {
+  font-size: 0.18rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+}

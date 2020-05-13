@@ -1,0 +1,95 @@
+body {
+  background-color: #F5F5F5;
+}
+.header {
+  width: 100%;
+  height: 1rem;
+  background-color: #FFF;
+  font-size: 0.3rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+  line-height: 0.8rem;
+  position: relative;
+}
+.header span {
+  width: 0.2rem;
+  height: 0.35rem;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-image: url("/images/upload/back.png");
+  position: absolute;
+  left: 0.28rem;
+  top: 0.32rem;
+}
+.list {
+  width: 7.1rem;
+  margin-left: 0.2rem;
+  margin-top: 0.04rem;
+}
+.list li {
+  width: 7.1rem;
+  height: 2.2rem;
+  background: #ffffff;
+  box-shadow: 0 0.03rem 0.08rem 0 rgba(0, 0, 0, 0.03);
+  border-radius: 0.1rem;
+  margin-top: 0.15rem;
+}
+.list li .list_top {
+  display: flex;
+  padding: 0.31rem 0 0 0.33rem;
+}
+.list li .list_top .list_left {
+  width: 0.76rem;
+  height: 0.76rem;
+  background: #5ebeb5;
+  border-radius: 50%;
+  margin-right: 0.23rem;
+}
+.list li .list_top .list_right .list_right_p1 {
+  font-size: 0.29rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.list li .list_top .list_right .list_right_p1 .list_right_p1_icon {
+  width: 0.27rem;
+  height: 0.26rem;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-image: url("/images/upload/icon1.png");
+}
+.list li .list_top .list_right .list_right_p2 {
+  font-size: 0.2rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #666666;
+  margin-top: 0.04rem;
+}
+.list li .list_bottom{
+  display: flex;
+}
+.list li .list_bottom .list_bottom_p1{
+  font-size: 0.24rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #666666;
+  margin-top: 0.35rem;
+  text-indent: 1.32rem;
+}
+.list li .list_bottom .list_bottom_p2{
+  font-size: 0.24rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #666666;
+  margin-top: 0.35rem;
+  margin-left: 0.5rem;
+}
+.list li:nth-of-type(1) {
+  background-image: url("../images/upload/bg.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}

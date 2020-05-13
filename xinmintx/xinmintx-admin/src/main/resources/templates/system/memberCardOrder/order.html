@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('会员卡订单列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <p>订单表id：</p>
+                            <input type="text" name="orderId"/>
+                        </li>
+                        <!--<li>-->
+                        <!--<p>收获地址id：</p>-->
+                        <!--<input type="text" name="addressId"/>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<p>用户留言：</p>-->
+                        <!--<input type="text" name="message"/>-->
+                        <!--</li>-->
+                        <li>
+                            <p>订单类型：</p>
+                            <select name="orderType" th:with="type=${@dict.getType('')}">
+                                <option value="">所有</option>
+                                <option value="1">购买会员卡</option>
+                                <option value="2">续费</option>
+                                <option value="3">制卡</option>
+                                <option value="4">补卡</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <p>描述：</p>
+                            <input type="text" name="description"/>
+                        </li>
+                        <!--<li>-->
+                        <!--<p>总金额：</p>-->
+                        <!--<input type="text" name="totalPrice"/>-->
+                        <!--</li>-->
+                        <li>
+                            <p>支付状态：</p>
+                            <select name="payStatus">
+                                <option value="">所有</option>
+                                <option value="0">待付款</option>
+                                <option value="1">已付款</option>
+                                <option value="2">退款中</option>
+                                <option value="3">已退款</option>
+                                <option value="4">退款失败</option>
+                            </select>
+                        </li>
+                        <li>
+                            <p>订单状态订单状态：</p>
+                            <select name="orderStatus">
+                                <option value="">所有</option>
+                                <option value="1">待付款</option>
+                                <option value="2">待发货</option>
+                                <option value="3">待收货</option>
+                                <option value="4">已取消</option>
+                                <option value="5">已收货</option>
+                                <option value="6">物流异常</option>
+                                <option value="7">待分享</option>
+                                <option value="8">退款中</option>
+                                <option value="9">已退款</option>
+                                <option value="10">退款失败</option>
+                            </select>
+                        </li>
+                        <li>
+                            <p>快递单号：</p>
+                            <input type="text" name="courierNumber"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:order:add">-->
+            <!--<i class="fa fa-plus"></i> 添加-->
+            <!--</a>-->
+            <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:order:edit">-->
+            <!--<i class="fa fa-edit"></i> 修改-->
+            <!--</a>-->
+            <!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:order:remove">-->
+            <!--<i class="fa fa-remove"></i> 删除-->
+            <!--</a>-->
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:order:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:memberCardOrder:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:memberCardOrder:remove')}]];
+    var detailFlag = [[${@permission.hasPermi('system:memberCardOrder:detail')}]];
+    var addCourierFlag = [[${@permission.hasPermi('system:memberCardOrder:addCourierView')}]];
+    var prefix = ctx + "system/memberCardOrder";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "会员卡订单",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: 'ID',
+                    visible: false
+                },
+                {
+                    field: 'orderId',
+                    title: '订单表id'
+                },
+                {
+                    field: 'addressId',
+                    title: '收获地址id'
+                },
+                {
+                    field: 'message',
+                    title: '用户留言'
+                },
+                {
+                    field: 'orderType',
+                    title: '订单类型',
+                    formatter: function (value, row, index) {
+                        if (value === 1) {
+                            return "购买会员卡"
+                        } else if (value === 2) {
+                            return "续费"
+                        } else if (value === 3) {
+                            return "制卡"
+                        } else if (value === 4) {
+                            return "补卡"
+                        }
+                    }
+                },
+                {
+                    field: 'description',
+                    title: '描述'
+                },
+                {
+                    field: 'totalPrice',
+                    title: '总金额'
+                },
+                {
+                    field: 'payStatus',
+                    title: '支付状态',
+                    formatter: function (value, row, index) {
+                        if (value === 0) {
+                            return "待付款"
+                        } else if (value === 1) {
+                            return "已付款"
+                        } else if (value === 2) {
+                            return "退款中"
+                        } else if (value === 3) {
+                            return "已退款"
+                        } else if (value === 4) {
+                            return "退款失败"
+                        }
+                    }
+                },
+                {
+                    field: 'orderStatus',
+                    title: '订单状态订单状态',
+                    formatter: function (value, row, index) {
+                        if (value === 1) {
+                            return "待付款"
+                        } else if (value === 2) {
+                            return "待发货"
+                        } else if (value === 3) {
+                            return "待收货"
+                        } else if (value === 4) {
+                            return "已取消"
+                        } else if (value === 5) {
+                            return "已收货"
+                        } else if (value === 6) {
+                            return "物流异常"
+                        } else if (value === 7) {
+                            return "待分享"
+                        } else if (value === 8) {
+                            return "退款中"
+                        } else if (value === 9) {
+                            return "已退款"
+                        } else if (value === 10) {
+                            return "退款失败"
+                        }
+                    }
+                },
+                {
+                    field: 'courierNumber',
+                    title: '快递单号'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    sortable: true
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间',
+                    sortable: true
+                },
+                {
+                    field: 'cardNumber',
+                    title: '会员卡号'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + addCourierFlag + '" href="javascript:void(0)" onclick="jumpParameter(\'' + row.id + '\')"><i class="fa fa-edit"></i>添加或修改快递单号</a>');
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>订单详细</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    /* 添加快递单号 */
+    function jumpParameter(id) {
+        var url = prefix + '/addCourierView/' + id;
+        $.modal.open("添加或修改快递单号", url);
+    }
+</script>
+</body>
+</html>

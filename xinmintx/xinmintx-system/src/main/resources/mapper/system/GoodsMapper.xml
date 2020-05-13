@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsMapper">
+
+    <resultMap type="com.xinmintx.system.domain.Goods" id="GoodsResult">
+        <result property="id"    column="id"    />
+        <result property="source"    column="source"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="choiceness"    column="choiceness"    />
+        <result property="hotSale"    column="hot_sale"    />
+        <result property="preorder"    column="preorder"    />
+        <result property="goodsListName"    column="goods_list_name"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="content"    column="content"    />
+        <result property="turnsPhoto"    column="turns_photo"    />
+        <result property="speType"    column="spe_type"    />
+        <result property="price"    column="price"    />
+        <result property="agencyPrice"    column="agency_price"    />
+        <result property="bazaarPrice"    column="bazaar_price"    />
+        <result property="procurementPrice"    column="procurement_price"    />
+        <result property="linePrice"    column="line_price"    />
+        <result property="giftBag"    column="gift_bag"    />
+        <result property="twoPrice"    column="two_price"    />
+        <result property="threePrice"    column="three_price"    />
+        <result property="fourPrice"    column="four_price"    />
+        <result property="fivePrice"    column="five_price"    />
+        <result property="sixPrice"    column="six_price"    />
+        <result property="sevenPrice"    column="seven_price"    />
+        <result property="eightPrice"    column="eight_price"    />
+        <result property="ninePrice"    column="nine_price"    />
+        <result property="tenPrice"    column="ten_price"    />
+        <result property="stockNum"    column="stock_num"    />
+        <result property="salesInitial"    column="sales_initial"    />
+        <result property="activityTitle"    column="activity_title"    />
+        <result property="salesActual"    column="sales_actual"    />
+        <result property="status"    column="status"    />
+        <result property="sort"    column="sort"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parameter"    column="parameter"    />
+    </resultMap>
+
+    <sql id="selectGoodsVo">
+        select id, source, relate_id, type_id, goods_list_name, goods_name, content, turns_photo, spe_type, price,bazaar_price,procurement_price, line_price, stock_num, sales_initial, activity_title, sales_actual, status, sort, is_delete, create_time, update_time parameter from goods
+    </sql>
+
+    <select id="selectGoodsList" parameterType="com.xinmintx.system.domain.Goods" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        <where>
+            <if test="source != null "> and source = #{source}</if>
+            <if test="relateId != null "> and relate_id = #{relateId}</if>
+            <if test="typeId != null "> and type_id = #{typeId}</if>
+            <if test="goodsListName != null  and goodsListName != ''"> and goods_list_name like concat('%', #{goodsListName}, '%')</if>
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''"> and turns_photo = #{turnsPhoto}</if>
+            <if test="speType != null "> and spe_type = #{speType}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="linePrice != null "> and line_price = #{linePrice}</if>
+            <if test="stockNum != null "> and stock_num = #{stockNum}</if>
+            <if test="salesInitial != null "> and sales_initial = #{salesInitial}</if>
+            <if test="activityTitle != null  and activityTitle != ''"> and activity_title = #{activityTitle}</if>
+            <if test="salesActual != null "> and sales_actual = #{salesActual}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+
+    <select id="selectGoodsById" parameterType="Long" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectById" resultType="java.lang.String">
+        select turns_photo from goods where id = #{id}
+    </select>
+    <select id="selectTypeId" resultType="java.lang.Integer">
+        select parent_id from goods_type
+        where id = #{firstCode}
+    </select>
+    <select id="selectParameter" resultType="java.lang.String">
+        select parameter from goods where id = #{id}
+    </select>
+
+    <insert id="insertGoods" parameterType="com.xinmintx.system.domain.Goods" useGeneratedKeys="true" keyProperty="id">
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="source != null ">source,</if>
+            <if test="relateId != null ">relate_id,</if>
+            <if test="typeId != null ">type_id,</if>
+            <if test="choiceness != null ">choiceness,</if>
+            <if test="hotSale != null ">hot_sale,</if>
+            <if test="preorder != null ">preorder,</if>
+            <if test="goodsListName != null  and goodsListName != ''">goods_list_name,</if>
+            <if test="goodsName != null  and goodsName != ''">goods_name,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''">turns_photo,</if>
+            <if test="speType != null ">spe_type,</if>
+            <if test="price != null ">price,</if>
+            <if test="agencyPrice != null ">agency_Price,</if>
+            <if test="bazaarPrice != null ">bazaar_price,</if>
+            <if test="procurementPrice != null ">procurement_price,</if>
+            <if test="linePrice != null ">line_price,</if>
+            <if test="giftBag != null ">gift_bag,</if>
+            <if test="twoPrice != null ">two_price,</if>
+            <if test="threePrice != null ">three_price,</if>
+            <if test="fourPrice != null ">four_price,</if>
+            <if test="fivePrice != null ">five_price,</if>
+            <if test="sixPrice != null ">six_price,</if>
+            <if test="sevenPrice != null ">seven_price,</if>
+            <if test="eightPrice != null ">eight_price,</if>
+            <if test="ninePrice != null ">nine_price,</if>
+            <if test="tenPrice != null ">ten_price,</if>
+            <if test="stockNum != null ">stock_num,</if>
+            <if test="salesInitial != null ">sales_initial,</if>
+            <if test="activityTitle != null  and activityTitle != ''">activity_title,</if>
+            <if test="salesActual != null ">sales_actual,</if>
+            <if test="status != null ">status,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="isDelete != null ">is_delete,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="parameter != null ">parameter,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="source != null ">#{source},</if>
+            <if test="relateId != null ">#{relateId},</if>
+            <if test="typeId != null ">#{typeId},</if>
+            <if test="choiceness != null ">#{choiceness},</if>
+            <if test="hotSale != null ">#{hotSale},</if>
+            <if test="preorder != null ">#{preorder},</if>
+            <if test="goodsListName != null  and goodsListName != ''">#{goodsListName},</if>
+            <if test="goodsName != null  and goodsName != ''">#{goodsName},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''">#{turnsPhoto},</if>
+            <if test="speType != null ">#{speType},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="agencyPrice != null ">#{agencyPrice},</if>
+            <if test="bazaarPrice != null ">#{bazaarPrice},</if>
+            <if test="procurementPrice != null ">#{procurementPrice},</if>
+            <if test="linePrice != null ">#{linePrice},</if>
+            <if test="giftBag != null ">#{giftBag},</if>
+            <if test="twoPrice != null ">#{twoPrice},</if>
+            <if test="threePrice != null ">#{threePrice},</if>
+            <if test="fourPrice != null ">#{fourPrice},</if>
+            <if test="fivePrice != null ">#{fivePrice},</if>
+            <if test="sixPrice != null ">#{sixPrice},</if>
+            <if test="sevenPrice != null ">#{sevenPrice},</if>
+            <if test="eightPrice != null ">#{eightPrice},</if>
+            <if test="ninePrice != null ">#{ninePrice},</if>
+            <if test="tenPrice != null ">#{tenPrice},</if>
+            <if test="stockNum != null ">#{stockNum},</if>
+            <if test="salesInitial != null ">#{salesInitial},</if>
+            <if test="activityTitle != null  and activityTitle != ''">#{activityTitle},</if>
+            <if test="salesActual != null ">#{salesActual},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="isDelete != null ">#{isDelete},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="parameter != null ">#{parameter},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoods" parameterType="com.xinmintx.system.domain.Goods">
+        update goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="source != null ">source = #{source},</if>
+            <if test="relateId != null ">relate_id = #{relateId},</if>
+            <if test="typeId != null ">type_id = #{typeId},</if>
+            <if test="choiceness != null ">choiceness = #{choiceness},</if>
+            <if test="hotSale != null ">hot_sale = #{hotSale},</if>
+            <if test="preorder != null ">preorder = #{preorder},</if>
+            <if test="goodsListName != null  and goodsListName != ''">goods_list_name = #{goodsListName},</if>
+            <if test="goodsName != null  and goodsName != ''">goods_name = #{goodsName},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''">turns_photo = #{turnsPhoto},</if>
+            <if test="speType != null ">spe_type = #{speType},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="agencyPrice != null ">agency_price = #{agencyPrice},</if>
+            <if test="bazaarPrice != null ">bazaar_price = #{bazaarPrice},</if>
+            <if test="procurementPrice != null ">procurement_price = #{procurementPrice},</if>
+            <if test="linePrice != null ">line_price = #{linePrice},</if>
+            <if test="giftBag != null ">gift_bag = #{giftBag},</if>
+            <if test="twoPrice != null ">two_price = #{twoPrice},</if>
+            <if test="threePrice != null ">three_price = #{threePrice},</if>
+            <if test="fourPrice != null ">four_price = #{fourPrice},</if>
+            <if test="fivePrice != null ">five_price = #{fivePrice},</if>
+            <if test="sixPrice != null ">six_price = #{sixPrice},</if>
+            <if test="sevenPrice != null ">seven_price = #{sevenPrice},</if>
+            <if test="eightPrice != null ">eight_price = #{eightPrice},</if>
+            <if test="ninePrice != null ">nine_price = #{ninePrice},</if>
+            <if test="tenPrice != null ">ten_price = #{tenPrice},</if>
+            <if test="stockNum != null ">stock_num = #{stockNum},</if>
+            <if test="salesInitial != null ">sales_initial = #{salesInitial},</if>
+            <if test="activityTitle != null  and activityTitle != ''">activity_title = #{activityTitle},</if>
+            <if test="salesActual != null ">sales_actual = #{salesActual},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="isDelete != null ">is_delete = #{isDelete},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="parameter != null ">parameter = #{parameter},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsById" parameterType="Long">
+        delete from goods where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsByIds" parameterType="String">
+        delete from goods where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

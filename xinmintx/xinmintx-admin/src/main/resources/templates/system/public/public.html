@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('商品详情公共部分配置列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:public:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:public:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:public:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:public:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:public:remove')}]];
+        var prefix = ctx + "system/public";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "商品详情公共部分配置",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'id', 
+                    title : 'ID',
+                    visible: false
+                },
+                {
+                    field : 'photoUrl', 
+                    title : '图片',
+                    formatter: function (value, row, index) {
+                        return "<img src='"+ value +"' style='width: 200px;height: 80px'>";
+                    }
+                },
+                {
+                    field : 'place', 
+                    title : '显示位置',
+                    formatter: function (value, row, index) {
+                        if (value === 1){
+                            return "商品详情上方";
+                        }
+                        if (value === 2){
+                            return "商品详情下方";
+                        }
+                    }
+                },
+                {
+                    field : 'type',
+                    title : '作用位置',
+                    formatter: function (value, row, index) {
+                        if (value === 1){
+                            return "普通商品详情";
+                        }
+                        if (value === 2){
+                            return "拼图商品详情";
+                        }
+                        if (value === 3){
+                            return "抢购商品详情";
+                        }
+                    }
+                },
+                {
+                    field : 'sort', 
+                    title : '排序'
+                },
+                {
+                    field : 'status', 
+                    title : '是否启用',
+                    formatter: function (value, row, index) {
+                        if (value === 1){
+                            return "是";
+                        }
+                        if (value === 0){
+                            return "否";
+                        }
+                    }
+                },
+                {
+                    field : 'startTime', 
+                    title : '开始时间'
+                },
+                {
+                    field : 'endTime', 
+                    title : '结束时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

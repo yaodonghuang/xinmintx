@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.AddTeacherMapper">
+
+    <resultMap type="com.xinmintx.system.domain.AddTeacher" id="UserResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="name"    column="name"    />
+        <result property="cellphone"    column="cellphone"    />
+        <result property="gender"    column="gender"    />
+        <result property="idcard"    column="idcard"    />
+        <result property="recommender"    column="recommender"    />
+        <result property="userRole"    column="user_role"    />
+        <result property="status"    column="status"    />
+        <result property="amount"    column="amount"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="companyAddress"    column="company_address"    />
+        <result property="regionName"    column="region_name"    />
+        <result property="regionCode"    column="region_code"    />
+        <result property="openid"    column="openid"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="refreshToken"    column="refresh_token"    />
+        <result property="isReview"    column="is_review"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="lastLogin"    column="last_login"    />
+        <result property="partnerId"    column="partner_id"    />
+        <result property="shareholderId"    column="shareholder_id"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="commonOne"    column="common_one"    />
+        <result property="commonTwo"    column="common_two"    />
+        <result property="operatorid"    column="operatorid"    />
+        <result property="accountStart"    column="account_start"    />
+        <result property="accountId"    column="account_id"    />
+        <result property="tiedCardId"    column="tied_card_id"    />
+        <result property="token"    column="token"    />
+        <result property="lecturerStatus"    column="lecturer_status"    />
+        <result property="lecturerGrade"    column="lecturer_grade"    />
+        <result property="student"    column="student"    />
+        <result property="teacherId"    column="teacher_id"    />
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select id, order_id, name, cellphone, gender, idcard, recommender, user_role, status, amount, company_name, company_address, region_name, region_code, openid, avatar, refresh_token, is_review, create_user, create_time, update_user, update_time, last_login, partner_id, shareholder_id, end_time, common_one, common_two, operatorid, account_start, account_id, tied_card_id, token, lecturer_status, lecturer_grade, student, teacher_id from user
+    </sql>
+
+    <select id="selectUserList" parameterType="com.xinmintx.system.domain.AddTeacher" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        <where>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="cellphone != null  and cellphone != ''"> and cellphone = #{cellphone}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="idcard != null  and idcard != ''"> and idcard = #{idcard}</if>
+            <if test="recommender != null "> and recommender = #{recommender}</if>
+            <if test="userRole != null "> and user_role = #{userRole}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="companyAddress != null  and companyAddress != ''"> and company_address = #{companyAddress}</if>
+            <if test="regionName != null  and regionName != ''"> and region_name like concat('%', #{regionName}, '%')</if>
+            <if test="regionCode != null  and regionCode != ''"> and region_code = #{regionCode}</if>
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="refreshToken != null  and refreshToken != ''"> and refresh_token = #{refreshToken}</if>
+            <if test="isReview != null "> and is_review = #{isReview}</if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="updateUser != null  and updateUser != ''"> and update_user = #{updateUser}</if>
+            <if test="lastLogin != null "> and last_login = #{lastLogin}</if>
+            <if test="partnerId != null "> and partner_id = #{partnerId}</if>
+            <if test="shareholderId != null "> and shareholder_id = #{shareholderId}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="commonOne != null  and commonOne != ''"> and common_one = #{commonOne}</if>
+            <if test="commonTwo != null  and commonTwo != ''"> and common_two = #{commonTwo}</if>
+            <if test="operatorid != null "> and operatorid = #{operatorid}</if>
+            <if test="accountStart != null "> and account_start = #{accountStart}</if>
+            <if test="accountId != null  and accountId != ''"> and account_id = #{accountId}</if>
+            <if test="tiedCardId != null  and tiedCardId != ''"> and tied_card_id = #{tiedCardId}</if>
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+            <if test="lecturerStatus != null "> and lecturer_status = #{lecturerStatus}</if>
+            <if test="lecturerGrade != null "> and lecturer_grade = #{lecturerGrade}</if>
+            <if test="student != null "> and student = #{student}</if>
+            <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
+        </where>
+    </select>
+
+    <select id="selectUserById" parameterType="Long" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUser" parameterType="com.xinmintx.system.domain.AddTeacher" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null ">order_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone,</if>
+            <if test="gender != null ">gender,</if>
+            <if test="idcard != null  and idcard != ''">idcard,</if>
+            <if test="recommender != null ">recommender,</if>
+            <if test="userRole != null ">user_role,</if>
+            <if test="status != null ">status,</if>
+            <if test="amount != null ">amount,</if>
+            <if test="companyName != null  and companyName != ''">company_name,</if>
+            <if test="companyAddress != null  and companyAddress != ''">company_address,</if>
+            <if test="regionName != null  and regionName != ''">region_name,</if>
+            <if test="regionCode != null  and regionCode != ''">region_code,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="avatar != null  and avatar != ''">avatar,</if>
+            <if test="refreshToken != null  and refreshToken != ''">refresh_token,</if>
+            <if test="isReview != null ">is_review,</if>
+            <if test="createUser != null  and createUser != ''">create_user,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateUser != null  and updateUser != ''">update_user,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="lastLogin != null ">last_login,</if>
+            <if test="partnerId != null ">partner_id,</if>
+            <if test="shareholderId != null ">shareholder_id,</if>
+            <if test="endTime != null ">end_time,</if>
+            <if test="commonOne != null  and commonOne != ''">common_one,</if>
+            <if test="commonTwo != null  and commonTwo != ''">common_two,</if>
+            <if test="operatorid != null ">operatorid,</if>
+            <if test="accountStart != null ">account_start,</if>
+            <if test="accountId != null  and accountId != ''">account_id,</if>
+            <if test="tiedCardId != null  and tiedCardId != ''">tied_card_id,</if>
+            <if test="token != null  and token != ''">token,</if>
+            <if test="lecturerStatus != null ">lecturer_status,</if>
+            <if test="lecturerGrade != null ">lecturer_grade,</if>
+            <if test="student != null ">student,</if>
+            <if test="teacherId != null ">teacher_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null ">#{orderId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="cellphone != null  and cellphone != ''">#{cellphone},</if>
+            <if test="gender != null ">#{gender},</if>
+            <if test="idcard != null  and idcard != ''">#{idcard},</if>
+            <if test="recommender != null ">#{recommender},</if>
+            <if test="userRole != null ">#{userRole},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="amount != null ">#{amount},</if>
+            <if test="companyName != null  and companyName != ''">#{companyName},</if>
+            <if test="companyAddress != null  and companyAddress != ''">#{companyAddress},</if>
+            <if test="regionName != null  and regionName != ''">#{regionName},</if>
+            <if test="regionCode != null  and regionCode != ''">#{regionCode},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="avatar != null  and avatar != ''">#{avatar},</if>
+            <if test="refreshToken != null  and refreshToken != ''">#{refreshToken},</if>
+            <if test="isReview != null ">#{isReview},</if>
+            <if test="createUser != null  and createUser != ''">#{createUser},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateUser != null  and updateUser != ''">#{updateUser},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="lastLogin != null ">#{lastLogin},</if>
+            <if test="partnerId != null ">#{partnerId},</if>
+            <if test="shareholderId != null ">#{shareholderId},</if>
+            <if test="endTime != null ">#{endTime},</if>
+            <if test="commonOne != null  and commonOne != ''">#{commonOne},</if>
+            <if test="commonTwo != null  and commonTwo != ''">#{commonTwo},</if>
+            <if test="operatorid != null ">#{operatorid},</if>
+            <if test="accountStart != null ">#{accountStart},</if>
+            <if test="accountId != null  and accountId != ''">#{accountId},</if>
+            <if test="tiedCardId != null  and tiedCardId != ''">#{tiedCardId},</if>
+            <if test="token != null  and token != ''">#{token},</if>
+            <if test="lecturerStatus != null ">#{lecturerStatus},</if>
+            <if test="lecturerGrade != null ">#{lecturerGrade},</if>
+            <if test="student != null ">#{student},</if>
+            <if test="teacherId != null ">#{teacherId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUser" parameterType="com.xinmintx.system.domain.AddTeacher">
+        update user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null ">order_id = #{orderId},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone = #{cellphone},</if>
+            <if test="gender != null ">gender = #{gender},</if>
+            <if test="idcard != null  and idcard != ''">idcard = #{idcard},</if>
+            <if test="recommender != null ">recommender = #{recommender},</if>
+            <if test="userRole != null ">user_role = #{userRole},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="amount != null ">amount = #{amount},</if>
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="companyAddress != null  and companyAddress != ''">company_address = #{companyAddress},</if>
+            <if test="regionName != null  and regionName != ''">region_name = #{regionName},</if>
+            <if test="regionCode != null  and regionCode != ''">region_code = #{regionCode},</if>
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="avatar != null  and avatar != ''">avatar = #{avatar},</if>
+            <if test="refreshToken != null  and refreshToken != ''">refresh_token = #{refreshToken},</if>
+            <if test="isReview != null ">is_review = #{isReview},</if>
+            <if test="createUser != null  and createUser != ''">create_user = #{createUser},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateUser != null  and updateUser != ''">update_user = #{updateUser},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="lastLogin != null ">last_login = #{lastLogin},</if>
+            <if test="partnerId != null ">partner_id = #{partnerId},</if>
+            <if test="shareholderId != null ">shareholder_id = #{shareholderId},</if>
+            <if test="endTime != null ">end_time = #{endTime},</if>
+            <if test="commonOne != null  and commonOne != ''">common_one = #{commonOne},</if>
+            <if test="commonTwo != null  and commonTwo != ''">common_two = #{commonTwo},</if>
+            <if test="operatorid != null ">operatorid = #{operatorid},</if>
+            <if test="accountStart != null ">account_start = #{accountStart},</if>
+            <if test="accountId != null  and accountId != ''">account_id = #{accountId},</if>
+            <if test="tiedCardId != null  and tiedCardId != ''">tied_card_id = #{tiedCardId},</if>
+            <if test="token != null  and token != ''">token = #{token},</if>
+            <if test="lecturerStatus != null ">lecturer_status = #{lecturerStatus},</if>
+            <if test="lecturerGrade != null ">lecturer_grade = #{lecturerGrade},</if>
+            <if test="student != null ">student = #{student},</if>
+            <if test="teacherId != null ">teacher_id = #{teacherId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="Long">
+        delete from user where id = #{id}
+    </delete>
+
+    <delete id="deleteUserByIds" parameterType="String">
+        delete from user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.agent.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.agent.model.GoodsOrder" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="member_id" property="memberId" jdbcType="INTEGER" />
+        <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+        <result column="order_state" property="orderState" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="if_pay" property="ifPay" jdbcType="INTEGER" />
+        <result column="receive_address" property="receiveAddress" jdbcType="VARCHAR" />
+        <result column="receive_name" property="receiveName" jdbcType="VARCHAR" />
+        <result column="receive_phone" property="receivePhone" jdbcType="VARCHAR" />
+        <result column="receive_message" property="receiveMessage" jdbcType="VARCHAR" />
+        <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+        <result column="u_order_id" property="uOrderId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    id, member_id, order_num, order_state, create_time, update_time, if_pay, receive_address,
+    receive_name, receive_phone, receive_message, total_amount, u_order_id
+    </sql>
+
+    <update id="updateOrderStateAndcNum" parameterType="map">
+        update goods_order_detail
+        set courier_number = #{courierNumber},
+        order_state = #{sendState}
+        where id = #{detailId}
+    </update>
+
+    <select id="getSendStateById" parameterType="map" resultType="java.lang.String">
+        select order_state from goods_order_detail
+        where id = #{detailId}
+    </select>
+
+    <select id="getOrderIdByDetailId" parameterType="map" resultType="java.lang.Integer">
+        select order_id from goods_order_detail where id = #{detailId}
+    </select>
+
+    <select id="ifExistsWaitSendPro" parameterType="map" resultType="java.lang.Integer">
+        SELECT 1 FROM DUAL WHERE EXISTS (SELECT 1 FROM `goods_order_detail` WHERE order_id = #{orderId} AND order_state = '2');
+    </select>
+
+    <update id="updateOrderState" parameterType="map">
+        update goods_order
+        set order_state = '3'
+        where id = #{orderId}
+        and order_state = '2'
+    </update>
+
+    <select id="getOrderById" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from goods_order
+        where id = (select order_id from `goods_order_detail` where id = #{id})
+    </select>
+
+    <update id="updatePayStateById" parameterType="map">
+        update goods_order_detail
+        set if_pay = #{ifPay}
+        where id = #{id}
+    </update>
+
+    <select id="getTransactionId" parameterType="map" resultType="java.lang.String">
+        select transaction_id from
+        u_order
+        where id = #{id}
+    </select>
+
+    <!--<insert id="insertRefundInfo" parameterType="com.xinmint.xfactory.model.goodsOrderRefund" >
+        insert into goods_order_refund (id, transaction_id, nonce_str,
+          sign, return_msg, mch_id,
+          refund_id, cash_fee, out_trade_no,
+          coupon_refund_fee, refund_channel, appid,
+          refund_fee, total_fee, result_code,
+          coupon_refund_count, cash_refund_fee, return_code,
+          create_time)
+        values (#{id,jdbcType=BIGINT}, #{transactionId,jdbcType=VARCHAR}, #{nonceStr,jdbcType=VARCHAR},
+          #{sign,jdbcType=VARCHAR}, #{returnMsg,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR},
+          #{refundId,jdbcType=VARCHAR}, #{cashFee,jdbcType=INTEGER}, #{outTradeNo,jdbcType=VARCHAR},
+          #{couponRefundFee,jdbcType=INTEGER}, #{refundChannel,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR},
+          #{refundFee,jdbcType=INTEGER}, #{totalFee,jdbcType=INTEGER}, #{resultCode,jdbcType=VARCHAR},
+          #{couponRefundCount,jdbcType=INTEGER}, #{cashRefundFee,jdbcType=INTEGER}, #{returnCode,jdbcType=VARCHAR},
+          #{createTime,jdbcType=TIMESTAMP})
+  </insert>-->
+
+    <select id="getTotalAmount" parameterType="map" resultType="java.math.BigDecimal">
+        SELECT total_amount from goods_order_detail where id = #{id}
+    </select>
+
+    <update id="updateSendDate" parameterType="map">
+        update goods_order
+        set send_date = now()
+        where id = #{id}
+        and send_date is null
+    </update>
+
+    <select id="getOrderNoById" parameterType="map" resultType="java.lang.String">
+        select order_no
+        from u_order
+        where id = #{id}
+    </select>
+
+    <update id="updateDetailOrderState" parameterType="map">
+        update goods_order_detail
+        set order_state = #{orderState}
+        where id = #{id}
+    </update>
+
+    <select id="ifAllRefund" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from goods_order_detail where order_id = #{id} and order_state != #{orderState})
+    </select>
+
+    <update id="updateOrderStateById" parameterType="map">
+        update goods_order
+        set order_state = #{orderState}
+        where id = #{id}
+    </update>
+
+    <select id="getDetailOrderState" parameterType="map" resultType="java.lang.Integer">
+        select order_state from goods_order_detail where id = #{id}
+    </select>
+
+    <select id="getOriOrderById" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from goods_order
+        where id = #{id}
+    </select>
+
+</mapper>

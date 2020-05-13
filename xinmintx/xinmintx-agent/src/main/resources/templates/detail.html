@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>余额明细</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/statementDetail.css"/>
+    <script type="text/javascript" src="/js/rem.js"></script>
+</head>
+<body>
+<div class="header">
+    <p>
+        <img src="/images/back_icon.png" alt="" onclick="window.history.go(-1)">
+        余额明细
+    </p>
+</div>
+<ul class="list">
+    <li  th:each="userAR:${userAR}">
+        <div class="list_top">
+            <p class="list_top_p1">
+                收入金额:
+                <span th:text="${userAR.moneyChange}">
+				 </span>
+            </p>
+            <p class="list_top_p2">提现成功</p>
+        </div>
+        <div class="list_bottom">
+            <p class="list_bottom_p1">手续费:
+                <span th:text="${userAR.changPrice}">
+                </span>
+            </p>
+            <p class="list_bottom_p2">
+                <span th:text="${#dates.format(userAR.createTime, 'yyyy-MM-dd HH:mm:ss')}">
+                </span>
+            </p>
+        </div>
+    </li>
+</ul>
+</body>
+</html>

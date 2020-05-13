@@ -1,0 +1,197 @@
+body {
+  background-color: #FFF;
+}
+.title {
+  width: 100%;
+  height: 0.88rem;
+  padding-top: 0.4rem;
+  background-color: #FFF;
+}
+.title .title_p {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  padding-top: 0.25rem;
+  font-size: 0.34rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+  line-height: 0.32rem;
+}
+.title .title_p .back {
+  display: inline-block;
+  width: 0.2rem;
+  height: 0.33rem;
+  background-image: url("/images/upload/back.png");
+  background-size: 100%;
+  position: absolute;
+  left: 0.3rem;
+  top: 0.26rem;
+}
+.title .way {
+  width: 100%;
+  height: 0.86rem;
+  display: flex;
+  background-color: #FFF;
+  padding-top: 0.39rem;
+}
+.title .way li {
+  width: 1.98rem;
+  height: 0.67rem;
+  font-size: 0.32rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+  display: flex;
+  line-height: 0.67rem;
+}
+.title .way li .bg {
+  width: 1.98rem;
+  height: 0.67rem;
+  margin-top: 0;
+}
+.title .way li img {
+  width: 0.48rem;
+  height: 0.48rem;
+  margin-right: 0.12rem;
+  margin-top: 0.08rem;
+}
+.title .way li:nth-of-type(1) {
+  margin-left: 0.33rem;
+}
+.title .way li:nth-of-type(2) {
+  margin-left: 0.59rem;
+}
+.title .way li:nth-of-type(3) {
+  margin-left: 1.11rem;
+}
+.none {
+  width: 100%;
+  height: 0.2rem;
+  background-color: #d2d2d2;
+}
+.balance_content {
+  width: 100%;
+  background-color: #FFF;
+  margin-top: 0.96rem;
+}
+.balance_content .content {
+  display: flex;
+  width: 6.86rem;
+  height: 1.68rem;
+  background: #fafafa;
+  box-shadow: 0px 0.04rem 0.09rem 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0.2rem;
+  position: relative;
+  left: 0.32rem;
+  top: 0.3rem;
+}
+.balance_content .content .left {
+  font-size: 0.28rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+}
+.balance_content .content .left p {
+  display: flex;
+  position: relative;
+  left: 0.56rem;
+  top: 0.40rem;
+}
+.balance_content .content .left p img {
+  width: 0.37rem;
+  height: 0.36rem;
+  margin-left: 0.38rem;
+}
+.balance_content .content .left p span {
+  font-size: 0.32rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #262626;
+  line-height: 0.32rem;
+}
+.balance_content .content .left .time {
+  font-size: 0.28rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #808080;
+  margin-left: 2.17rem;
+  margin-top: 0.14rem;
+}
+.balance_content .content .right {
+  width: 0.11rem;
+  height: 0.22rem;
+  margin-left: 2rem;
+  margin-top: 0.73rem;
+}
+.balance_content .money {
+  margin-top: 1rem;
+  padding-left: 0.86rem;
+  border-bottom: 0.01rem solid #d2d2d2;
+  padding-bottom: 0.2rem;
+}
+.balance_content .money li:nth-of-type(1) {
+  font-size: 0.28rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+}
+.balance_content .money li:nth-of-type(2) {
+  display: flex;
+  font-size: 0.66rem;
+  font-family: PingFang SC;
+  font-weight: 800;
+  color: #333333;
+  margin-top: 0.19rem;
+}
+.balance_content .money li:nth-of-type(2) input{
+  outline: none;
+  width: 3rem;
+}
+.balance_content .footer {
+  margin-left: 0.3rem;
+  margin-top: 0.2rem;
+}
+.balance_content .footer .footer_p1 {
+  font-size: 0.26rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 0.2rem;
+}
+.balance_content .footer .footer_p1 span {
+  font-size: 0.34rem;
+  font-family: PingFang SC;
+  font-weight: 800;
+  color: #f9103c;
+}
+.balance_content .footer .footer_p2 {
+  font-size: 0.24rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #b3b3b3;
+  display: flex;
+}
+.balance_content .footer .footer_p2 img {
+  width: 0.2rem;
+  height: 0.2rem;
+}
+.balance_content .footer .footer_p2 span {
+  font-size: 0.24rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #0591cc;
+}
+.balance_content .footer .btn {
+  width: 6.5rem;
+  height: 0.96rem;
+  background: #3583F0;
+  border-radius: 0.48rem;
+  font-size: 0.36rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 0.96rem;
+  text-align: center;
+  margin: 0.88rem 0 0 0.2rem;
+}

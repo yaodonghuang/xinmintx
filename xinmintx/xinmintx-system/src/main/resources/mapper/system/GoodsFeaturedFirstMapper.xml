@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsFeaturedFirstMapper">
+    
+    <resultMap type="GoodsFeaturedFirst" id="GoodsFeaturedFirstResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="place"    column="place"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGoodsFeaturedFirstVo">
+        select id, goods_id, place, status, create_time, update_time from goods_featured_first
+    </sql>
+
+    <select id="selectGoodsFeaturedFirstList" parameterType="GoodsFeaturedFirst" resultMap="GoodsFeaturedFirstResult">
+        <include refid="selectGoodsFeaturedFirstVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="place != null "> and place = #{place}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsFeaturedFirstById" parameterType="Long" resultMap="GoodsFeaturedFirstResult">
+        <include refid="selectGoodsFeaturedFirstVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsFeaturedFirst" parameterType="GoodsFeaturedFirst" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_featured_first
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="place != null ">place,</if>
+            <if test="status != null ">status,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="place != null ">#{place},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsFeaturedFirst" parameterType="GoodsFeaturedFirst">
+        update goods_featured_first
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="place != null ">place = #{place},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsFeaturedFirstById" parameterType="Long">
+        delete from goods_featured_first where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsFeaturedFirstByIds" parameterType="String">
+        delete from goods_featured_first where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

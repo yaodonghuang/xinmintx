@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('【请填写功能名称】列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>拼团商品名称：</p>
+                                <input type="text" name="ptgoodsName"/>
+                            </li>
+                            <!--<li>-->
+                                <!--<p>商品价格(默认价格)：</p>-->
+                                <!--<input type="text" name="price"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>拼团价格：</p>-->
+                                <!--<input type="text" name="ptPrice"/>-->
+                            <!--</li>-->
+                            <li>
+                                <p>拼团人数(2-10)：</p>
+                                <input type="text" name="ptSize"/>
+                            </li>
+                            <!--<li>-->
+                                <!--<p>拼团有效期：</p>-->
+                                <!--<input type="text" name="ptValidhours"/>-->
+                            <!--</li>-->
+                            <!--<li class="select-time">-->
+                                <!--<p>拼团开始时间：</p>-->
+                                <!--<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginStartTime]"/>-->
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endStartTime]"/>-->
+                            <!--</li>-->
+                            <!--<li class="select-time">-->
+                                <!--<p>拼团结束时间：</p>-->
+                                <!--<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginEndTime]"/>-->
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endEndTime]"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>商品库存数量：</p>-->
+                                <!--<input type="text" name="ptgoodsNumber"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>商品剪短描述：</p>-->
+                                <!--<input type="text" name="description"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>商品详细描述：</p>-->
+                                <!--<input type="text" name="content"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>商品微缩图：</p>-->
+                                <!--<input type="text" name="ptgoodsThumb"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>商品详情轮播图：</p>-->
+                                <!--<input type="text" name="ptgoodsImgs"/>-->
+                            <!--</li>-->
+                            <!--<li class="select-time">-->
+                                <!--<p>商品添加时间：</p>-->
+                                <!--<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginAddtime]"/>-->
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endAddtime]"/>-->
+                            <!--</li>-->
+                            <!--<li class="select-time">-->
+                                <!--<p>修改时间：</p>-->
+                                <!--<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginUptime]"/>-->
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endUptime]"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>销售，1，是；0，否：</p>-->
+                                <!--<input type="text" name="isSale"/>-->
+                            <!--</li>-->
+                            <!--<li class="select-time">-->
+                                <!--<p>拼团次数：</p>-->
+                                <!--<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginPtTimes]"/>-->
+                                <!--<span>-</span>-->
+                                <!--<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endPtTimes]"/>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>拼团次数：</p>-->
+                                <!--<input type="text" name="common"/>-->
+                            <!--</li>-->
+                            <li>
+                                <p>活动名称：</p>
+                                <input type="text" name="nameActivity"/>
+                                <input type="hidden" name="groupType" id="groupType">
+                            </li>
+<!--                            <li>-->
+<!--                                <p>拼团类型：</p>-->
+<!--                                <select name="groupType" id="groupType">-->
+<!--                                    <option value=" ">所有</option>-->
+<!--                                    <option value="1">代理商</option>-->
+<!--                                    <option value="2">惠商</option>-->
+<!--                                </select>-->
+<!--                            </li>-->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="getGroup(1)"><i class="fa fa-search"></i>&nbsp;代理商</a>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="getGroup(2)"><i class="fa fa-search"></i>惠商</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="getGroup(''),$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:ptgood:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:ptgood:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:ptgood:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:ptgood:export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:ptgood:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:ptgood:remove')}]];
+        var prefix = ctx + "system/ptgood";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "拼团",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'ptgoodsId', 
+                    title : '拼团商品自增id',
+                    visible: false
+                },
+                {
+                    field : 'nameActivity',
+                    title : '活动名称'
+                },
+                {
+                    field : 'ptgoodsName', 
+                    title : '拼团商品名称'
+                },
+                {
+                    field : 'ptPrice', 
+                    title : '优惠价格(减去多少)'
+                },
+                {
+                    field : 'ptSize', 
+                    title : '拼团人数(2-10)'
+                },
+                {
+                    field : 'ptValidhours', 
+                    title : '拼团有效期'
+                },
+                {
+                    field : 'startTime', 
+                    title : '拼团开始时间'
+                },
+                {
+                    field : 'endTime', 
+                    title : '拼团结束时间'
+                },
+                {
+                    field : 'ptgoodsNumber', 
+                    title : '商品拼团库存数量'
+                },
+                {
+                    field : 'isSale', 
+                    title : '启用',
+                    formatter : function speType(value, row, index) {
+                        if (value === 0){
+                            return "否";
+                        }
+                        if (value === 1){
+                            return "是";
+                        }
+                    }
+                },
+                {
+                    field : 'groupTimes',
+                    title : '拼团次数'
+                },
+                {
+                    field : 'groupType',
+                    title : '拼团类型',
+                    formatter : function speType(value, row, index) {
+                        if (value === 1){
+                            return "代理商";
+                        }
+                        if (value === 2){
+                            return "惠商";
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.ptgoodsId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.ptgoodsId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function getGroup(type) {
+            $("#groupType").val(type);
+            $.table.search();
+        }
+
+    </script>
+</body>
+</html>

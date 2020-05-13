@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.CommunityOrderMapper">
+    <resultMap id="UOrderMap" type="com.xinmintx.community.model.uOrder" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+        <result column="prepay_id" property="prepayId" jdbcType="VARCHAR" />
+        <result column="goods_desc" property="goodsDesc" jdbcType="VARCHAR" />
+        <result column="total_fee" property="totalFee" jdbcType="BIGINT" />
+        <result column="pay_type" property="payType" jdbcType="CHAR" />
+        <result column="pay_status" property="payStatus" jdbcType="CHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+        <result column="version_id" property="versionId" jdbcType="VARCHAR" />
+        <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="settle_date" property="settleDate" jdbcType="TIMESTAMP" />
+        <result column="complete_date" property="completeDate" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="notify_typ" property="notifyTyp" jdbcType="INTEGER" />
+        <result column="pay_ord_no" property="payOrdNo" jdbcType="VARCHAR" />
+        <result column="order_amt" property="orderAmt" jdbcType="DECIMAL" />
+        <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
+        <result column="sign_type" property="signType" jdbcType="VARCHAR" />
+        <result column="signature" property="signature" jdbcType="VARCHAR" />
+        <result column="attach" property="attach" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="OrderMap" type="com.xinmintx.community.model.GoodsOrder">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="order_state" jdbcType="INTEGER" property="orderState" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="community_id" jdbcType="BIGINT" property="communityId" />
+        <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+        <collection property="detailList" ofType="com.xinmintx.community.model.GoodsOrderDetail"
+                    resultMap="OrderDetailMap"
+                    columnPrefix="god_">
+        </collection>
+    </resultMap>
+
+    <resultMap id="OrderDetailMap" type="com.xinmintx.community.model.GoodsOrderDetail" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="order_id" property="orderId" jdbcType="INTEGER" />
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+        <result column="goods_pic" property="goodsPic" jdbcType="VARCHAR" />
+        <result column="bigdecimal" property="formate" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="goColumnss">
+        ${alias}.`id`	                    ${prefix}id,
+        ${alias}.`create_time`	            ${prefix}create_time,
+        ${alias}.`order_state`	            ${prefix}order_state
+    </sql>
+
+    <sql id="godColumnss">
+        ${alias}.`id`	                    ${prefix}id,
+        ${alias}.`order_id`	                ${prefix}order_id,
+        ${alias}.`goods_name`	            ${prefix}goods_name,
+        ${alias}.`goods_pic`	            ${prefix}goods_pic,
+        ${alias}.`quantity`	                ${prefix}quantity
+    </sql>
+
+    <insert id="insertOrder" parameterType="com.xinmintx.community.model.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_order (member_id, order_num,
+          order_state, if_pay, receive_address, receive_name,
+          receive_phone, receive_message, total_amount,
+          u_order_id, goods_id, sku_id,
+          factory_id, merchant_id, community_id,
+          price, quantity, goods_name,
+          goods_pic, evaluate, courier_number,
+          if_delete, weight, user_delete,
+          if_remind, refund_msg, order_type,
+          send_date, if_delayed, address_id,
+          divided_state, refund_information, return_message,
+          refund_time, deputy_help)
+        values (#{memberId,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR},
+          #{orderState,jdbcType=INTEGER},#{ifPay,jdbcType=INTEGER}, #{receiveAddress,jdbcType=VARCHAR}, #{receiveName,jdbcType=VARCHAR},
+          #{receivePhone,jdbcType=VARCHAR}, #{receiveMessage,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL},
+          #{uOrderId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER},
+          #{factoryId,jdbcType=INTEGER}, #{merchantId,jdbcType=BIGINT}, #{communityId,jdbcType=BIGINT},
+          #{price,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR},
+          #{goodsPic,jdbcType=VARCHAR}, #{evaluate,jdbcType=VARCHAR}, #{courierNumber,jdbcType=VARCHAR},
+          #{ifDelete,jdbcType=TINYINT}, #{weight,jdbcType=DOUBLE}, #{userDelete,jdbcType=INTEGER},
+          #{ifRemind,jdbcType=INTEGER}, #{refundMsg,jdbcType=VARCHAR}, #{orderType,jdbcType=INTEGER},
+          #{sendDate,jdbcType=TIMESTAMP}, #{ifDelayed,jdbcType=INTEGER}, #{addressId,jdbcType=INTEGER},
+          #{dividedState,jdbcType=INTEGER}, #{refundInformation,jdbcType=VARCHAR}, #{returnMessage,jdbcType=VARCHAR},
+          #{refundTime,jdbcType=TIMESTAMP}, #{deputyHelp,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertOrderDetailList" parameterType="map" >
+    insert into goods_order_detail (member_id, order_id,
+      goods_id, sku_id, factory_id,
+      price, quantity, goods_name,
+      goods_pic, evaluate, courier_number, order_state,
+      total_amount, lack, weight,
+      if_remind, refund_msg, returns_single_number,
+      if_pay, refund_information, return_message
+      )
+    values
+        <foreach collection="list" item="item" index="index" separator=",">
+         (#{item.memberId,jdbcType=INTEGER}, #{item.orderId,jdbcType=INTEGER},
+          #{item.goodsId,jdbcType=INTEGER}, #{item.skuId,jdbcType=INTEGER}, #{item.factoryId,jdbcType=INTEGER},
+          #{item.price,jdbcType=DECIMAL}, #{item.quantity,jdbcType=INTEGER}, #{item.goodsName,jdbcType=VARCHAR},
+          #{item.goodsPic,jdbcType=VARCHAR}, #{item.evaluate,jdbcType=VARCHAR}, #{item.courierNumber,jdbcType=VARCHAR}, #{item.orderState,jdbcType=INTEGER},
+          #{item.totalAmount,jdbcType=DECIMAL}, #{item.lack,jdbcType=INTEGER}, #{item.weight,jdbcType=DOUBLE},
+          #{item.ifRemind,jdbcType=INTEGER}, #{item.refundMsg,jdbcType=VARCHAR}, #{item.returnsSingleNumber,jdbcType=VARCHAR},
+          #{item.ifPay,jdbcType=INTEGER}, #{item.refundInformation,jdbcType=VARCHAR}, #{item.returnMessage,jdbcType=VARCHAR}
+          )
+        </foreach>
+    </insert>
+
+    <update id="updateTotalAmount" parameterType="map">
+        update goods_order
+        set total_amount = #{totalPrice}
+        where id = #{id}
+    </update>
+
+    <select id="getGoodsInfoById" parameterType="map" resultMap="com.xinmintx.community.mapper.CommunityMapper.MerchantGoodsMap">
+        select merchant_id, name, community_price
+        from merchant_goods
+        where id = #{id}
+    </select>
+
+    <select id="getAddressById" parameterType="map" resultType="java.lang.String">
+        SELECT
+          CONCAT(
+            region,
+            address,
+            '#',
+            NAME,
+            '#',
+            cellphone
+          )
+        FROM
+          `shipping_address`
+        WHERE id = #{id}
+    </select>
+
+    <select id="getOrderInfo" parameterType="map" resultType="java.util.Map">
+        select order_num orderNum,total_amount totalAmount
+        from goods_order
+        where id = #{id}
+    </select>
+
+    <select id="getProDesc" parameterType="map" resultType="java.lang.String">
+        SELECT goods_name FROM `goods_order_detail` WHERE order_id = #{orderId}
+    </select>
+
+    <select id="getManyAmount" parameterType="map" resultType="java.math.BigDecimal">
+        SELECT SUM(total_amount) FROM `goods_order` WHERE id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertUorderInfo" parameterType="com.xinmintx.community.model.uOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into u_order (user_id, order_no,
+      out_trade_no, prepay_id, goods_desc,
+      total_fee, pay_type, pay_status,
+      transaction_id, create_time, pay_time,
+      version_id, merchant_id, order_id,
+      settle_date, complete_date, status,
+      notify_typ, pay_ord_no, order_amt,
+      notify_url, sign_type, signature,
+      attach)
+    values (#{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR},
+      #{outTradeNo,jdbcType=VARCHAR}, #{prepayId,jdbcType=VARCHAR}, #{goodsDesc,jdbcType=VARCHAR},
+      #{totalFee,jdbcType=BIGINT}, #{payType,jdbcType=CHAR}, #{payStatus,jdbcType=CHAR},
+      #{transactionId,jdbcType=VARCHAR}, now(), #{payTime,jdbcType=TIMESTAMP},
+      #{versionId,jdbcType=VARCHAR}, #{merchantId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
+      #{settleDate,jdbcType=TIMESTAMP}, #{completeDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+      #{notifyTyp,jdbcType=INTEGER}, #{payOrdNo,jdbcType=VARCHAR}, #{orderAmt,jdbcType=DECIMAL},
+      #{notifyUrl,jdbcType=VARCHAR}, #{signType,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR},
+      #{attach,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateUOrderIdInIds" parameterType="map">
+        update goods_order set u_order_id = #{uOrderId}
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getDeputyCost" parameterType="map" resultType="java.math.BigDecimal">
+        SELECT cost FROM `community_deputy`
+        WHERE community_id = #{communityId}
+        AND `type` = #{type}
+    </select>
+
+    <select id="getMerchantIds" parameterType="map" resultType="java.lang.Long">
+        select merchant_id from goods_order
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getMerchantDeliveryFee" parameterType="map" resultType="java.math.BigDecimal">
+        SELECT SUM(fee)
+        FROM `merchant_delivery`
+         WHERE merchant_id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+         AND community_id = #{communityId}
+         AND `type` = #{type}
+    </select>
+
+    <select id="getUorderById" parameterType="map" resultMap="UOrderMap">
+        select id,user_id,order_no,prepay_id,goods_desc,total_fee,pay_type,pay_status
+        from u_order
+        where order_no = #{orderNo}
+    </select>
+
+    <update id="updateUOrder" parameterType="com.xinmintx.community.model.uOrder">
+        update u_order
+        set user_id = #{userId,jdbcType=INTEGER},
+          order_no = #{orderNo,jdbcType=VARCHAR},
+          out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+          prepay_id = #{prepayId,jdbcType=VARCHAR},
+          goods_desc = #{goodsDesc,jdbcType=VARCHAR},
+          total_fee = #{totalFee,jdbcType=BIGINT},
+          pay_type = #{payType,jdbcType=CHAR},
+          pay_status = #{payStatus,jdbcType=CHAR},
+          transaction_id = #{transactionId,jdbcType=VARCHAR},
+          pay_time = #{payTime,jdbcType=TIMESTAMP},
+          version_id = #{versionId,jdbcType=VARCHAR},
+          merchant_id = #{merchantId,jdbcType=VARCHAR},
+          order_id = #{orderId,jdbcType=VARCHAR},
+          settle_date = #{settleDate,jdbcType=TIMESTAMP},
+          complete_date = #{completeDate,jdbcType=TIMESTAMP},
+          status = #{status,jdbcType=INTEGER},
+          notify_typ = #{notifyTyp,jdbcType=INTEGER},
+          pay_ord_no = #{payOrdNo,jdbcType=VARCHAR},
+          order_amt = #{orderAmt,jdbcType=DECIMAL},
+          notify_url = #{notifyUrl,jdbcType=VARCHAR},
+          sign_type = #{signType,jdbcType=VARCHAR},
+          signature = #{signature,jdbcType=VARCHAR},
+          attach = #{attach,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getOrderIdByOrderNum" parameterType="map" resultMap="OrderMap">
+        SELECT id, community_id, merchant_id, total_amount FROM goods_order WHERE u_order_id =(SELECT id FROM u_order WHERE order_no = #{orderNo})
+    </select>
+
+    <update id="updateOrderAndDetailState" parameterType="map">
+        UPDATE `goods_order` go, `goods_order_detail` god
+        SET go.`order_state` = #{orderState},
+        go.`if_pay` = #{ifPay},
+        god.`order_state` = #{orderState},
+        god.`if_pay` = #{ifPay}
+        WHERE go.`id` = god.`order_id`
+        AND god.`order_id` = #{orderId}
+    </update>
+
+    <select id="getMemberSendFee" parameterType="map" resultType="java.util.Map">
+        SELECT m.id,cd.cost
+        FROM community_deputy cd
+        LEFT JOIN member m ON
+        cd.phone = m.cellphone
+        WHERE cd.community_id = #{communityId}
+        AND cd.type = #{type}
+        AND cd.cost IS NOT NULL
+        AND m.id IS NOT NULL
+    </select>
+
+    <update id="updateOrderInfoOfPay" parameterType="map">
+        update goods_order
+        set deputy_info = #{str}
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="ifDeputyHelp" parameterType="map" resultType="java.lang.Integer">
+        select deputy_help from community_member
+        where community_id = #{communityId}
+        and member_id = #{memberId}
+    </select>
+
+    <select id="getDeputyInfo" parameterType="map" resultType="java.lang.String">
+        select deputy_info from goods_order where id = #{orderId}
+    </select>
+
+    <update id="updateMemberMoney" parameterType="map">
+        update member set freezing_amount = #{money} where id = #{memberId}
+    </update>
+
+    <select id="getFreezingAmount" parameterType="map" resultType="java.math.BigDecimal">
+        select freezing_amount from member where id = #{memberId}
+    </select>
+
+    <insert id="insertLogs" parameterType="com.xinmintx.community.model.MemberAmountLog">
+        insert into member_amount_log (member_id, type, price, balance,
+          remark)
+        values (#{memberId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL},
+          #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getOrderList" parameterType="map" resultMap="OrderMap">
+        select
+        <include refid="goColumnss">
+            <property name="alias" value="go"/>
+            <property name="prefix" value=""/>
+        </include>,
+        <include refid="godColumnss">
+            <property name="alias" value="god"/>
+            <property name="prefix" value="god_"/>
+        </include>,
+        mg.bigdecimal god_bigdecimal
+        from goods_order go
+        left join goods_order_detail god
+        on go.id = god.order_id
+        left join merchant_goods mg
+        on god.goods_id = mg.id
+        where go.member_id = #{memberId}
+        and go.community_id = #{communityId}
+        and go.order_type = '3'
+    </select>
+
+    <select id="ifExistsOrderNum" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists (select 1 from u_order where order_no = #{orderNum})
+    </select>
+
+    <update id="updateOrderNumById" parameterType="map">
+        update goods_order set order_num = #{orderNum} where id = #{orderId}
+    </update>
+
+    <update id="updateMerchantMoney" parameterType="map">
+        UPDATE `merchant` SET freezing_amount = freezing_amount + #{freezingAmount}  where id = #{merchantId}
+    </update>
+
+    <insert id="insertMerchantLogs" parameterType="com.xinmintx.community.model.MerchantAmountLog">
+        insert into merchant_amount_log (merchant_id, type, price, balance,
+          remark)
+        values (#{merchantId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL},
+          #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getBalance" parameterType="map" resultType="java.math.BigDecimal">
+        select freezing_amount from merchant where id = #{merchantId}
+    </select>
+
+    <select id="getPhoneOfDeputy" parameterType="map" resultType="java.lang.String">
+        select phone from community_deputy where community_id = #{communityId} and `type` = #{type}
+    </select>
+
+    <select id="getUserInfo" resultType="java.lang.String">
+        select consignee_info from goods_order where id = #{orderId}
+    </select>
+
+    <update id="updateOrderInfoOfConsignee" parameterType="map">
+        update goods_order
+        set consignee_info = #{str}
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getUserAccount" resultType="com.xinmintx.community.model.UserAccount">
+        select id,user_id,money,freeze_money
+        from user_account
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertUserAccount" parameterType="com.xinmintx.community.model.UserAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into user_account (user_id, freeze_money)
+        values (#{userId,jdbcType=INTEGER},#{freezeMoney})
+    </insert>
+
+    <insert id="insertUserAccountRecord" parameterType="com.xinmintx.community.model.UserAccountRecord">
+        insert into user_account_record (user_id, order_id,
+      user_account_id, money_change, description,
+      chang_price)
+    values (#{userId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER},
+      #{userAccountId,jdbcType=INTEGER}, #{moneyChange,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR},
+      #{changPrice,jdbcType=DECIMAL})
+    </insert>
+
+    <update id="updateUserAccount" parameterType="com.xinmintx.community.model.UserAccount">
+        update user_account
+        set user_id = #{userId,jdbcType=INTEGER},
+          money = #{money,jdbcType=DOUBLE},
+          freeze_money = #{freezeMoney,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="ifAutoPrint" parameterType="map" resultType="java.lang.Integer">
+        SELECT if_auto FROM goods_order go
+        LEFT JOIN `merchant_printer` mp
+        ON go.`merchant_id` = mp.`merchant_id`
+        WHERE go.`id` = #{orderId}
+        LIMIT 1
+    </select>
+</mapper>

@@ -1,0 +1,84 @@
+.header {
+	width: 100%;
+	height: 1rem;
+	border-bottom: 0.02rem solid #d2d2d2;
+	background-color: #FFFFFF;
+}
+
+.header p {
+	font-size: 0.34rem;
+	font-family: PingFang SC;
+	font-weight: bold;
+	color: #000000;
+	text-align: center;
+	position: relative;
+	top: 0.3rem;
+}
+
+.header p span {
+	background-image: url(../images/upload/back.png);
+	width: 0.2rem;
+	height: 0.34rem;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	position: absolute;
+	left: 0.3rem;
+	top: 0.06rem;
+}
+.color{
+	background-color: #F5F5F5;
+}
+.tiao1{
+	width: 100%;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
+	margin-top: 0.3rem;
+	margin-bottom: 0.3rem;
+	background-color: #FFFFFF;
+}
+.p1{
+	font-size: 0.26rem;
+}
+.tiao1_s1{
+	font-size: 0.26rem;
+	margin-left: 0.3rem;
+}
+.tiao1_s2{
+	font-size: 0.26rem;
+	margin-left: 0.72rem;
+}
+.tiao1_p1{
+	font-size: 0.2rem;
+	margin-left: 0.3rem;
+	color: #979797;
+	height: 0.3rem;
+}
+.img{
+	float: right;
+	width: 0.18rem;
+	height: 0.32rem;
+	margin-top: 0.2rem;
+	margin-right: 0.3rem;
+}
+.add_add{
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+	position: fixed;
+	bottom: 1rem;
+}
+.dianzi{
+	height: 2rem;
+}
+.add{
+	background-color: #FD593C;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
+	font-size: 0.32rem;
+	color: #FFFFFF;
+	border-radius: 1rem;
+	margin: 0 auto;
+}

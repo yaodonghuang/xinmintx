@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.TbSellerMapper">
+    
+    <resultMap type="TbSeller" id="TbSellerResult">
+        <result property="sellerId"    column="seller_id"    />
+        <result property="name"    column="name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="password"    column="password"    />
+        <result property="email"    column="email"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="status"    column="status"    />
+        <result property="addressDetail"    column="address_detail"    />
+        <result property="linkmanName"    column="linkman_name"    />
+        <result property="linkmanQq"    column="linkman_qq"    />
+        <result property="linkmanMobile"    column="linkman_mobile"    />
+        <result property="linkmanEmail"    column="linkman_email"    />
+        <result property="licenseNumber"    column="license_number"    />
+        <result property="taxNumber"    column="tax_number"    />
+        <result property="orgNumber"    column="org_number"    />
+        <result property="address"    column="address"    />
+        <result property="logoPic"    column="logo_pic"    />
+        <result property="brief"    column="brief"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="legalPerson"    column="legal_person"    />
+        <result property="legalPersonCardId"    column="legal_person_card_id"    />
+        <result property="bankUser"    column="bank_user"    />
+        <result property="bankName"    column="bank_name"    />
+    </resultMap>
+
+    <sql id="selectTbSellerVo">
+        select seller_id, name, nick_name, password, email, mobile, telephone, status, address_detail, linkman_name, linkman_qq, linkman_mobile, linkman_email, license_number, tax_number, org_number, address, logo_pic, brief, create_time, legal_person, legal_person_card_id, bank_user, bank_name from tb_seller
+    </sql>
+
+    <select id="selectTbSellerList" parameterType="TbSeller" resultMap="TbSellerResult">
+        <include refid="selectTbSellerVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="addressDetail != null  and addressDetail != ''"> and address_detail = #{addressDetail}</if>
+            <if test="linkmanName != null  and linkmanName != ''"> and linkman_name like concat('%', #{linkmanName}, '%')</if>
+            <if test="linkmanQq != null  and linkmanQq != ''"> and linkman_qq = #{linkmanQq}</if>
+            <if test="linkmanMobile != null  and linkmanMobile != ''"> and linkman_mobile = #{linkmanMobile}</if>
+            <if test="linkmanEmail != null  and linkmanEmail != ''"> and linkman_email = #{linkmanEmail}</if>
+            <if test="licenseNumber != null  and licenseNumber != ''"> and license_number = #{licenseNumber}</if>
+            <if test="taxNumber != null  and taxNumber != ''"> and tax_number = #{taxNumber}</if>
+            <if test="orgNumber != null  and orgNumber != ''"> and org_number = #{orgNumber}</if>
+            <if test="address != null "> and address = #{address}</if>
+            <if test="logoPic != null  and logoPic != ''"> and logo_pic = #{logoPic}</if>
+            <if test="brief != null  and brief != ''"> and brief = #{brief}</if>
+            <if test="legalPerson != null  and legalPerson != ''"> and legal_person = #{legalPerson}</if>
+            <if test="legalPersonCardId != null  and legalPersonCardId != ''"> and legal_person_card_id = #{legalPersonCardId}</if>
+            <if test="bankUser != null  and bankUser != ''"> and bank_user = #{bankUser}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTbSellerById" parameterType="String" resultMap="TbSellerResult">
+        <include refid="selectTbSellerVo"/>
+        where seller_id = #{sellerId}
+    </select>
+        
+    <insert id="insertTbSeller" parameterType="TbSeller">
+        insert into tb_seller
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sellerId != null  and sellerId != ''">seller_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="nickName != null  and nickName != ''">nick_name,</if>
+            <if test="password != null  and password != ''">password,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="mobile != null  and mobile != ''">mobile,</if>
+            <if test="telephone != null  and telephone != ''">telephone,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="addressDetail != null  and addressDetail != ''">address_detail,</if>
+            <if test="linkmanName != null  and linkmanName != ''">linkman_name,</if>
+            <if test="linkmanQq != null  and linkmanQq != ''">linkman_qq,</if>
+            <if test="linkmanMobile != null  and linkmanMobile != ''">linkman_mobile,</if>
+            <if test="linkmanEmail != null  and linkmanEmail != ''">linkman_email,</if>
+            <if test="licenseNumber != null  and licenseNumber != ''">license_number,</if>
+            <if test="taxNumber != null  and taxNumber != ''">tax_number,</if>
+            <if test="orgNumber != null  and orgNumber != ''">org_number,</if>
+            <if test="address != null ">address,</if>
+            <if test="logoPic != null  and logoPic != ''">logo_pic,</if>
+            <if test="brief != null  and brief != ''">brief,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="legalPerson != null  and legalPerson != ''">legal_person,</if>
+            <if test="legalPersonCardId != null  and legalPersonCardId != ''">legal_person_card_id,</if>
+            <if test="bankUser != null  and bankUser != ''">bank_user,</if>
+            <if test="bankName != null  and bankName != ''">bank_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sellerId != null  and sellerId != ''">#{sellerId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="nickName != null  and nickName != ''">#{nickName},</if>
+            <if test="password != null  and password != ''">#{password},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="mobile != null  and mobile != ''">#{mobile},</if>
+            <if test="telephone != null  and telephone != ''">#{telephone},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="addressDetail != null  and addressDetail != ''">#{addressDetail},</if>
+            <if test="linkmanName != null  and linkmanName != ''">#{linkmanName},</if>
+            <if test="linkmanQq != null  and linkmanQq != ''">#{linkmanQq},</if>
+            <if test="linkmanMobile != null  and linkmanMobile != ''">#{linkmanMobile},</if>
+            <if test="linkmanEmail != null  and linkmanEmail != ''">#{linkmanEmail},</if>
+            <if test="licenseNumber != null  and licenseNumber != ''">#{licenseNumber},</if>
+            <if test="taxNumber != null  and taxNumber != ''">#{taxNumber},</if>
+            <if test="orgNumber != null  and orgNumber != ''">#{orgNumber},</if>
+            <if test="address != null ">#{address},</if>
+            <if test="logoPic != null  and logoPic != ''">#{logoPic},</if>
+            <if test="brief != null  and brief != ''">#{brief},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="legalPerson != null  and legalPerson != ''">#{legalPerson},</if>
+            <if test="legalPersonCardId != null  and legalPersonCardId != ''">#{legalPersonCardId},</if>
+            <if test="bankUser != null  and bankUser != ''">#{bankUser},</if>
+            <if test="bankName != null  and bankName != ''">#{bankName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbSeller" parameterType="TbSeller">
+        update tb_seller
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="nickName != null  and nickName != ''">nick_name = #{nickName},</if>
+            <if test="password != null  and password != ''">password = #{password},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="mobile != null  and mobile != ''">mobile = #{mobile},</if>
+            <if test="telephone != null  and telephone != ''">telephone = #{telephone},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="addressDetail != null  and addressDetail != ''">address_detail = #{addressDetail},</if>
+            <if test="linkmanName != null  and linkmanName != ''">linkman_name = #{linkmanName},</if>
+            <if test="linkmanQq != null  and linkmanQq != ''">linkman_qq = #{linkmanQq},</if>
+            <if test="linkmanMobile != null  and linkmanMobile != ''">linkman_mobile = #{linkmanMobile},</if>
+            <if test="linkmanEmail != null  and linkmanEmail != ''">linkman_email = #{linkmanEmail},</if>
+            <if test="licenseNumber != null  and licenseNumber != ''">license_number = #{licenseNumber},</if>
+            <if test="taxNumber != null  and taxNumber != ''">tax_number = #{taxNumber},</if>
+            <if test="orgNumber != null  and orgNumber != ''">org_number = #{orgNumber},</if>
+            <if test="address != null ">address = #{address},</if>
+            <if test="logoPic != null  and logoPic != ''">logo_pic = #{logoPic},</if>
+            <if test="brief != null  and brief != ''">brief = #{brief},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="legalPerson != null  and legalPerson != ''">legal_person = #{legalPerson},</if>
+            <if test="legalPersonCardId != null  and legalPersonCardId != ''">legal_person_card_id = #{legalPersonCardId},</if>
+            <if test="bankUser != null  and bankUser != ''">bank_user = #{bankUser},</if>
+            <if test="bankName != null  and bankName != ''">bank_name = #{bankName},</if>
+        </trim>
+        where seller_id = #{sellerId}
+    </update>
+
+    <delete id="deleteTbSellerById" parameterType="String">
+        delete from tb_seller where seller_id = #{sellerId}
+    </delete>
+
+    <delete id="deleteTbSellerByIds" parameterType="String">
+        delete from tb_seller where seller_id in 
+        <foreach item="sellerId" collection="array" open="(" separator="," close=")">
+            #{sellerId}
+        </foreach>
+    </delete>
+    
+</mapper>

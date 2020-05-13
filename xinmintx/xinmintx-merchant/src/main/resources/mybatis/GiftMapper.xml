@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.GiftMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.merchant.model.Gift" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+        <result column="gift_type" property="giftType" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="if_delete" property="ifDelete" jdbcType="TINYINT" />
+        <result column="gift_state" property="giftState" jdbcType="VARCHAR" />
+        <result column="source_id" property="sourceId" jdbcType="BIGINT" />
+        <result column="favorable_rate" property="favorableRate" jdbcType="DECIMAL" />
+        <result column="full_reduce_price" property="fullReducePrice" jdbcType="VARCHAR" />
+        <result column="cash_coupon" property="cashCoupon" jdbcType="DECIMAL" />
+        <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="per_capita" property="perCapita" jdbcType="DECIMAL" />
+        <result column="gift_pic" property="giftPic" jdbcType="VARCHAR" />
+        <result column="total_qty" property="totalQty" jdbcType="INTEGER" />
+        <result column="gift_group" property="giftGroup" jdbcType="VARCHAR" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="com.xinmintx.merchant.model.MemberGift" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="gift_id" property="giftId" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="MemberMap" type="com.xinmintx.merchant.model.Member" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="order_id" property="orderId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="INTEGER" />
+        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+        <result column="recommender" property="recommender" jdbcType="INTEGER" />
+        <result column="member_type" property="memberType" jdbcType="INTEGER" />
+        <result column="is_review" property="isReview" jdbcType="INTEGER" />
+        <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="token" property="token" jdbcType="VARCHAR" />
+        <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+        <result column="platform_count" property="platformCount" jdbcType="INTEGER" />
+        <result column="merchant_count" property="merchantCount" jdbcType="INTEGER" />
+        <result column="birth_gift_count" property="birthGiftCount" jdbcType="INTEGER" />
+        <result column="integral" property="integral" jdbcType="INTEGER" />
+        <result column="new_currency" property="newCurrency" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <resultMap id="LogsResultMap" type="com.xinmintx.merchant.model.GiftPurchaseLogs" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+        <result column="gift_id" property="giftId" jdbcType="BIGINT" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="balance" property="balance" jdbcType="DECIMAL" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="MemberGiftResultMap" type="com.xinmintx.merchant.model.MemberGiftResult" >
+        <id column="id" property="memberId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="full_reduce_price" property="fullReducePrice" jdbcType="VARCHAR" />
+        <result column="cash_coupon" property="cashCoupon" jdbcType="DECIMAL" />
+        <result column="gift_pic" property="giftPic" jdbcType="VARCHAR" />
+        <result column="appoint_time" property="appointTime" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    id, gift_name, gift_type, create_time, update_time, end_date, if_delete, gift_state,
+    source_id, favorable_rate, full_reduce_price, cash_coupon, goods_id, sku_id, remark,
+    quantity, per_capita, gift_pic,total_qty,gift_group
+    </sql>
+
+    <sql id="Base_Column_List2" >
+    id, member_id, gift_id, create_time, update_time
+  </sql>
+
+    <select id="getPlatformList" parameterType="map" resultMap="BaseResultMap">
+        select
+        gt.id, gt.gift_name, gt.gift_type, gt.create_time, gt.update_time, gt.end_date, gt.if_delete, gt.gift_state,
+        gt.source_id, gt.favorable_rate, gt.full_reduce_price, gt.cash_coupon, gt.goods_id, gt.sku_id, gt.remark,
+        gt.quantity, gt.per_capita, gt.gift_pic,gt.total_qty,gs.line_price,gt.gift_group,gt.price
+        from gift gt
+        LEFT JOIN goods gs
+        on gs.id = goods_id
+        where gift_state = "0"
+        <if test="giftType != null and giftType != ''">
+            and gift_type = #{giftType,jdbcType=VARCHAR}
+        </if>
+        <if test="sourceId != null and sourceId != ''">
+            and source_id = #{sourceId}
+        </if>
+        <if test="giftGroup != null and giftGroup != ''">
+            and gift_group = #{giftGroup}
+        </if>
+        and quantity > '0'
+    </select>
+
+    <select id="getMemberIdByToken" parameterType="map" resultType="java.lang.Integer">
+        select id from member
+        where token = #{token}
+    </select>
+
+    <select id="ifExistsGiftThisMember" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from member_gift where member_id = #{memberId} and gift_id = #{giftId})
+    </select>
+
+    <insert id="getGift" parameterType="map">
+        insert into member_gift (member_id, gift_id,price,uuid)
+        values (#{memberId,jdbcType=BIGINT}, #{giftId,jdbcType=BIGINT},#{price,jdbcType=DECIMAL},#{uuid,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="changeGiftQty" parameterType="map">
+        update gift
+        set quantity = quantity -1
+        where id = #{giftId}
+        and quantity > 0
+    </update>
+
+    <select id="getMyGiftList" parameterType="map" resultMap="BaseResultMap">
+        select g.gift_name,g.favorable_rate,g.end_date,g.remark,g.cash_coupon,g.source_id,g.gift_type,g.goods_id
+        ,g.gift_pic,g.id,g.price,g.gift_group,mg.uuid
+        from member_gift mg
+        left join gift g
+        on mg.gift_id = g.id
+        and g.gift_state = "0"
+        where mg.member_id = #{memberId,jdbcType=BIGINT}
+        and mg.if_delete = "0"
+    </select>
+
+    <select id="getTypeName" parameterType="map" resultType="java.lang.String">
+        select `name` from
+        merchant
+        where id = #{merchantId}
+    </select>
+
+    <select id="getAllGiftByMemberId" parameterType="map" resultMap="BaseResultMap2">
+        select
+        <include refid="Base_Column_List2" />
+        from member_gift
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getMemberByToken" parameterType="map" resultMap="MemberMap">
+        select id, member_type,platform_count,merchant_count,integral,new_currency,birth_gift_count
+        from member
+        where token = #{token}
+    </select>
+
+    <select id="selectMemberAllGift" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM gift WHERE id IN (SELECT gift_id FROM `member_gift` WHERE member_id = #{memberId} AND if_delete = '0')
+    </select>
+
+    <select id="getGiftById" parameterType="map" resultMap="BaseResultMap">
+        select id,gift_type,gift_group,price,source_id
+        from gift
+        where id = #{id}
+    </select>
+
+    <update id="updateNewCurrency" parameterType="map">
+        update member
+        set new_currency = #{member.newCurrency}
+        where id = #{member.id}
+    </update>
+
+    <update id="deleteGiftOfMember" parameterType="map">
+        update member_gift
+        set if_delete = "1"
+        where member_id = #{memberId}
+        and gift_id = #{giftId}
+    </update>
+
+    <update id="updatePlatformCount" parameterType="map">
+        update member
+        set platform_count = platform_count - 1
+        where platform_count > 0
+        and id = #{memberId}
+    </update>
+
+    <delete id="deleteGift" parameterType="map">
+        delete from member_gift
+        where member_id = #{memberId}
+        and gift_id = #{giftId}
+    </delete>
+
+    <update id="changeGiftQtyAdd" parameterType="map">
+        update gift
+        set quantity = quantity + 1
+        where id = #{giftId}
+    </update>
+
+    <update id="updateNewCurrencyForMember" parameterType="map">
+        update member
+        set new_currency = new_currency + #{price}
+        where id = #{memberId}
+    </update>
+
+    <insert id="insertGiftLog" parameterType="com.xinmintx.merchant.model.GiftPurchaseLogs">
+        insert into gift_purchase_logs (member_id, gift_id,
+          price, balance,
+          type, merchant_id)
+        values (#{memberId,jdbcType=BIGINT}, #{giftId,jdbcType=BIGINT},
+          #{price,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL},
+          #{type,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT})
+    </insert>
+
+    <select id="getGiftLogs" parameterType="map" resultMap="LogsResultMap">
+        SELECT g.`gift_name`,gpl.`price`,gpl.`balance`,gpl.`type`,
+        gpl.`create_time`,gpl.id,gpl.member_id,gpl.gift_id
+        FROM `gift_purchase_logs` gpl
+        LEFT JOIN gift g
+        ON gpl.`gift_id` = g.`id`
+        WHERE gpl.member_id = #{memberId}
+        <if test="type != null and type != ''">
+            AND gpl.`type` = #{type}
+        </if>
+    </select>
+
+    <select id="ifGetPlatFormGift" parameterType="map" resultType="java.lang.Integer">
+        select 1
+        from dual
+        where exists
+        (select 1 FROM `member_gift` mg
+        LEFT JOIN gift g
+        ON mg.`gift_id` = g.`id`
+        WHERE mg.member_id = #{memberId}
+        AND g.`gift_type` = #{type})
+    </select>
+
+    <select id="getMemberById" parameterType="map" resultMap="MemberMap">
+        select id, member_type,platform_count,merchant_count,integral,new_currency,birth_gift_count
+        from member where
+        id = #{memberId}
+    </select>
+
+    <delete id="deleteGiftByUuid" parameterType="map">
+        delete from member_gift
+        where member_id = #{memberId}
+        and uuid = #{uuid}
+    </delete>
+
+    <select id="selectGiftByUuid" parameterType="map" resultMap="BaseResultMap">
+        select gift_id id,price from member_gift where uuid = #{uuid} and if_delete = '0'
+    </select>
+
+    <select id="ifExistsMerchant" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from merchant where id = #{merchantId})
+    </select>
+
+    <select id="getMerchantIdByToken" parameterType="map" resultType="java.lang.Integer">
+        select id from merchant where token = #{token}
+    </select>
+
+    <select id="getWaitWriteOffList" parameterType="map" resultMap="BaseResultMap">
+        SELECT g.`id`,g.`gift_name`,g.`gift_group`,g.`price`,g.`end_date`,g.`total_qty`,
+        g.`quantity`,g.create_time,g.full_reduce_price,g.cash_coupon,g.gift_pic
+        FROM `member_gift` mg
+        LEFT JOIN gift g
+        ON mg.`gift_id` = g.`id`
+        WHERE g.`gift_type` = 'merchant'
+        AND g.`source_id` = #{merchantId}
+        AND mg.`if_delete` = '0'
+        GROUP BY mg.`gift_id`
+    </select>
+
+    <select id="getWaitWriteOffDetailList" parameterType="map" resultMap="MemberGiftResultMap">
+        SELECT m.`id`,m.`name`,m.`cellphone`,g.`gift_group`,g.`create_time`,g.`end_date`,
+        g.full_reduce_price,g.cash_coupon,g.gift_pic,mg.appoint_time,mg.time
+        FROM `member_gift` mg
+        LEFT JOIN member m
+        ON mg.`member_id` = m.`id`
+        LEFT JOIN gift g
+        ON mg.`gift_id` = g.`id`
+        WHERE mg.gift_id = #{giftId}
+        AND mg.if_delete = '0'
+        AND g.`gift_type` = 'merchant'
+        AND m.`id` IS NOT NULL
+    </select>
+
+    <select id="getAlreadyWriteOff" parameterType="map" resultMap="BaseResultMap">
+        SELECT g.`gift_name`,g.`gift_group`,g.full_reduce_price,g.cash_coupon,g.gift_pic,
+        g.`price`,g.`create_time`,g.`end_date`,g.id
+        FROM `gift_purchase_logs` gpl
+        LEFT JOIN gift g
+        ON gpl.`gift_id` = g.`id`
+        WHERE gpl.merchant_id = #{merchantId}
+        AND gpl.`type` = 'writeOff'
+        GROUP BY gpl.`gift_id`
+    </select>
+
+    <select id="getFinishWriteOffNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `gift_purchase_logs`
+        WHERE merchant_id = #{merchantId}
+        AND gift_id = #{giftId}
+        AND `type` = 'writeOff'
+    </select>
+
+    <select id="getWaitWriteOffQty" parameterType="map" resultType="java.lang.Integer">
+        select count(*)
+        from `member_gift` mg
+        LEFT JOIN member m
+        ON mg.`member_id` = m.`id`
+        where mg.gift_id = #{giftId}
+        and mg.if_delete = '0'
+        AND m.`id` IS NOT NULL
+    </select>
+
+    <update id="updateBirthdayCount" parameterType="map">
+        update member
+        set birth_gift_count = birth_gift_count - 1
+        where birth_gift_count > 0
+        and id = #{memberId}
+    </update>
+
+</mapper>

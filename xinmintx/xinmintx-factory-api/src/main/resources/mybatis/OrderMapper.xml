@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.factory.api.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.factory.api.pojo.GoodsOrder" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="member_id" property="memberId" jdbcType="INTEGER" />
+        <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+        <result column="order_state" property="orderState" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="if_pay" property="ifPay" jdbcType="INTEGER" />
+        <result column="receive_address" property="receiveAddress" jdbcType="VARCHAR" />
+        <result column="receive_name" property="receiveName" jdbcType="VARCHAR" />
+        <result column="receive_phone" property="receivePhone" jdbcType="VARCHAR" />
+        <result column="receive_message" property="receiveMessage" jdbcType="VARCHAR" />
+        <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+        <result column="u_order_id" property="uOrderId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="FactoryResultMap" type="com.xinmintx.factory.api.pojo.Factory" >
+        <id column="factory_id" property="factoryId" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="factory_code" property="factoryCode" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="salt" property="salt" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+        <result column="token" property="token" jdbcType="VARCHAR" />
+        <result column="personname" property="personname" jdbcType="VARCHAR" />
+        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+        <result column="region_code" property="regionCode" jdbcType="VARCHAR" />
+        <result column="referrerId" property="referrerid" jdbcType="INTEGER" />
+        <result column="reserved_photo" property="reservedPhoto" jdbcType="VARCHAR" />
+        <result column="phone_id" property="phoneId" jdbcType="VARCHAR" />
+        <result column="freezing_amount" property="freezingAmount" jdbcType="DECIMAL" />
+        <result column="cash_amount" property="cashAmount" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <resultMap id="LogResultMap" type="com.xinmintx.factory.api.pojo.PoboNotify" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="request_sn" property="requestSN" jdbcType="VARCHAR" />
+        <result column="ret_code" property="retCode" jdbcType="VARCHAR" />
+        <result column="ret_msg" property="retMsg" jdbcType="VARCHAR" />
+        <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+        <result column="order_date" property="orderDate" jdbcType="VARCHAR" />
+        <result column="order_status" property="orderStatus" jdbcType="VARCHAR" />
+        <result column="order_time" property="orderTime" jdbcType="VARCHAR" />
+        <result column="txn_amt" property="txnAmt" jdbcType="VARCHAR" />
+        <result column="fee" property="fee" jdbcType="VARCHAR" />
+        <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
+        <result column="sign_type" property="signType" jdbcType="VARCHAR" />
+        <result column="signature" property="signature" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    id, member_id, order_num, order_state, create_time, update_time, if_pay, receive_address,
+    receive_name, receive_phone, receive_message, total_amount, u_order_id
+    </sql>
+
+    <sql id="Factory_Column_List" >
+    factory_id, type, factory_code, name, avatar, address, phone, password, salt, create_time,
+    del_flag, token, personname, idcard, bank_card, region_name, region_code, referrerId,
+    reserved_photo, phone_id, freezing_amount, cash_amount
+    </sql>
+
+    <update id="updateOrderStateAndcNum" parameterType="map">
+        update goods_order_detail
+        set courier_number = #{courierNumber},
+        order_state = #{sendState}
+        where id = #{detailId}
+    </update>
+
+    <select id="getSendStateById" parameterType="map" resultType="java.lang.String">
+        select order_state from goods_order_detail
+        where id = #{detailId}
+    </select>
+
+    <select id="getOrderIdByDetailId" parameterType="map" resultType="java.lang.Integer">
+        select order_id from goods_order_detail where id = #{detailId}
+    </select>
+
+    <select id="ifExistsWaitSendPro" parameterType="map" resultType="java.lang.Integer">
+        SELECT 1 FROM DUAL WHERE EXISTS (SELECT 1 FROM `goods_order_detail` WHERE order_id = #{orderId} AND order_state = '2');
+    </select>
+
+    <update id="updateOrderState" parameterType="map">
+        update goods_order
+        set order_state = '3'
+        where id = #{orderId}
+        and order_state = '2'
+    </update>
+
+    <select id="getOrderById" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from goods_order
+        where id = (select order_id from `goods_order_detail` where id = #{id})
+    </select>
+
+    <update id="updatePayStateById" parameterType="map">
+        update goods_order_detail
+        set if_pay = #{ifPay}
+        where id = #{id}
+    </update>
+
+    <select id="getTransactionId" parameterType="map" resultType="java.lang.String">
+        select transaction_id from
+        u_order
+        where id = #{id}
+    </select>
+
+    <insert id="insertRefundInfo" parameterType="com.xinmintx.factory.api.pojo.goodsOrderRefund" >
+        insert into goods_order_refund (id, transaction_id, nonce_str,
+          sign, return_msg, mch_id,
+          refund_id, cash_fee, out_trade_no,
+          coupon_refund_fee, refund_channel, appid,
+          refund_fee, total_fee, result_code,
+          coupon_refund_count, cash_refund_fee, return_code,
+          create_time)
+        values (#{id,jdbcType=BIGINT}, #{transactionId,jdbcType=VARCHAR}, #{nonceStr,jdbcType=VARCHAR},
+          #{sign,jdbcType=VARCHAR}, #{returnMsg,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR},
+          #{refundId,jdbcType=VARCHAR}, #{cashFee,jdbcType=INTEGER}, #{outTradeNo,jdbcType=VARCHAR},
+          #{couponRefundFee,jdbcType=INTEGER}, #{refundChannel,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR},
+          #{refundFee,jdbcType=INTEGER}, #{totalFee,jdbcType=INTEGER}, #{resultCode,jdbcType=VARCHAR},
+          #{couponRefundCount,jdbcType=INTEGER}, #{cashRefundFee,jdbcType=INTEGER}, #{returnCode,jdbcType=VARCHAR},
+          #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+    <select id="getTotalAmount" parameterType="map" resultType="java.math.BigDecimal">
+        SELECT total_amount from goods_order_detail where id = #{id}
+    </select>
+
+    <update id="updateSendDate" parameterType="map">
+        update goods_order
+        set send_date = now()
+        where id = #{id}
+        and send_date is null
+    </update>
+
+    <select id="getOrderNoById" parameterType="map" resultType="java.lang.String">
+        select order_no
+        from u_order
+        where id = #{id}
+    </select>
+
+    <update id="updateDetailOrderState" parameterType="map">
+        update goods_order_detail
+        set order_state = #{orderState}
+        where id = #{id}
+    </update>
+
+    <select id="ifAllRefund" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from goods_order_detail where order_id = #{id} and order_state != #{orderState})
+    </select>
+
+    <update id="updateOrderStateById" parameterType="map">
+        update goods_order
+        set order_state = #{orderState}
+        where id = #{id}
+    </update>
+
+    <select id="getDetailOrderState" parameterType="map" resultType="java.lang.Integer">
+        select order_state from goods_order_detail where id = #{id}
+    </select>
+
+    <select id="getOriOrderById" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from goods_order
+        where id = #{id}
+    </select>
+
+    <select id="getCashMoney" parameterType="map" resultMap="FactoryResultMap">
+        select
+        <include refid="Factory_Column_List" />
+        from factory
+        where factory_id = #{id}
+    </select>
+
+    <select id="getFactoryCashByToken" parameterType="map" resultMap="FactoryResultMap">
+        select
+        <include refid="Factory_Column_List" />
+        from factory
+        where token = #{token}
+    </select>
+
+    <insert id="insertFactoryCashInfo" parameterType="map">
+        insert into factory_cash_info (factory_id, request_sn)
+        values (#{id,jdbcType=BIGINT}, #{requestSn,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getCashLog" parameterType="map" resultMap="LogResultMap">
+        select
+        pn.id, pn.request_sn, pn.ret_code, pn.ret_msg, pn.merchant_id, pn.order_date, pn.order_status, pn.order_time,
+        pn.txn_amt, pn.fee, pn.notify_url, pn.sign_type, pn.signature
+        from `factory_cash_info` fci
+        left join pobo_notify pn
+        on fci.request_sn = pn.request_sn
+        where fci.factory_id = #{id}
+    </select>
+    <select id="selectOrder" resultType="com.xinmintx.factory.api.pojo.GoodsOrderDetail">
+        select * from goods_order_detail
+        where order_id = #{orderId}
+    </select>
+
+    <update id="updateFactoryMoney" parameterType="map">
+        UPDATE `factory`
+        SET cash_amount = cash_amount - #{money}
+        WHERE factory_id =
+        (SELECT factory_id FROM `factory_cash_info` WHERE request_sn = #{requestSn})
+        AND #{money} <![CDATA[ <= ]]> cash_amount
+    </update>
+    <update id="upReturnInformation">
+        update goods_order_detail
+        set refund_information = #{refundInformation}
+        <if test="returnMessage != null and returnMessage != ''">
+            ,return_message = #{returnMessage}
+        </if>
+        where id = #{orderId}
+    </update>
+    <update id="upReturnsSingleNumber">
+        update goods_order_detail
+        set returns_single_number = #{courierNumber}
+        where id = #{orderId}
+    </update>
+    
+    <update id="updateOrderCourierNumber" parameterType="map">
+        update goods_order
+        set courier_number = #{courierNumber}
+        where id = #{orderId}
+    </update>
+
+    <update id="updateOrderDetailStateById" parameterType="map">
+        update goods_order_detail
+        set order_state = #{orderState}
+        where order_id = #{id}
+    </update>
+
+</mapper>

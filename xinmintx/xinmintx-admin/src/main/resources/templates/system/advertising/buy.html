@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('限时抢购列表')"/>
+</head>
+<style>
+    .changeColor{
+        background-color: #31b0d5  !important;
+        color: white;
+    }
+</style>
+<body class="gray-bg">
+<input id="goodPanicBuyId" name="goodPanicBuyId" type="hidden"/>
+<input id="goodsName" name="goodsName" type="hidden"/>
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <p>商品名称：</p>
+                            <input type="text" name="goodsName"/>
+                        </li>
+                        <li>
+                            <p>活动标题：</p>
+                            <input type="text" name="activityTitle"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:buy:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:buy:remove')}]];
+    var prefix = ctx + "system/buy";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "限时抢购",
+            columns: [
+                {
+                    field: 'id',
+                    title: 'ID',
+                    visible: true
+                },
+                {
+                    field: 'goodsId',
+                    title: '商品id'
+                },
+                {
+                    field: 'goodsName',
+                    title: '商品名称'
+                },
+                {
+                    field: 'price',
+                    title: '售价'
+                },
+                {
+                    field: 'linePrice',
+                    title: '划线价格'
+                },
+                {
+                    field: 'generalPrice',
+                    title: '普通会员优惠金额'
+                },
+                {
+                    field: 'eprice',
+                    title: 'E卡会员优惠金额'
+                },
+                {
+                    field: 'goldPrice',
+                    title: '新民金卡优惠金额'
+                },
+                {
+                    field: 'startTime',
+                    title: '抢购开始时间'
+                },
+                {
+                    field: 'endTime',
+                    title: '抢购结束时间'
+                },
+                {
+                    field: 'stockNum',
+                    title: '商品抢购库存数量'
+                },
+                {
+                    field: 'activityImg',
+                    title: '展示图片',
+                    formatter: function (value, row, index) {
+                        return "<img src='" + value + "' style='width: 150px;height: 80px'>";
+                    }
+                },
+                {
+                    field: 'activityTitle',
+                    title: '活动标题'
+                },
+                {
+                    field: 'isSale',
+                    title: '启用',
+                    formatter: function (value, row, index) {
+                        if (value === 1) {
+                            return "启用"
+                        } else {
+                            return "未启用"
+                        }
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        if (value === 0) {
+                            return "下架"
+                        } else {
+                            return "上架"
+                        }
+                    }
+                },
+                {
+                    field: 'salesInitial',
+                    title: '初始销量(虚拟销量)'
+                },
+                {
+                    field: 'salesActual',
+                    title: '实际销量'
+                },
+                {
+                    field: 'virtualMember',
+                    title: '虚拟抢购用户id'
+                },
+                {
+                    field: 'restriction',
+                    title: '每人限购数(-1为不限)'
+                }],
+            onClickRow: function (row, $element) {
+                $('.changeColor').removeClass('changeColor');
+                $($element).addClass('changeColor');
+                $("#goodPanicBuyId").val(row.id);
+                $("#goodsName").val(row.goodsName);
+            }
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.CronMapper">
+    
+    <resultMap type="Cron" id="CronResult">
+        <result property="id"    column="id"    />
+        <result property="cron"    column="cron"    />
+        <result property="time"    column="time"    />
+        <result property="type"    column="type"    />
+        <result property="nowState"    column="now_state"    />
+        <result property="className"    column="class_name"    />
+    </resultMap>
+
+    <sql id="selectCronVo">
+        select id, cron, time, type,now_state,class_name from cron
+    </sql>
+
+    <select id="selectCronList" parameterType="Cron" resultMap="CronResult">
+        <include refid="selectCronVo"/>
+        <where>  
+            <if test="cron != null  and cron != ''"> and cron = #{cron}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectCronById" parameterType="Long" resultMap="CronResult">
+        <include refid="selectCronVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCron" parameterType="Cron" useGeneratedKeys="true" keyProperty="id">
+        insert into cron
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cron != null  and cron != ''">cron,</if>
+            <if test="time != null ">time,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="className != null  and className != ''">class_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cron != null  and cron != ''">#{cron},</if>
+            <if test="time != null ">#{time},</if>
+            <if test="type != null ">#{type},</if>
+            <if test="className != null  and className != ''">#{className},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCron" parameterType="Cron">
+        update cron
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cron != null  and cron != ''">cron = #{cron},</if>
+            <if test="time != null ">time = #{time},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="nowState != null  and nowState != ''">now_state = #{nowState},</if>
+            <if test="className != null  and className != ''">class_name = #{className},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCronById" parameterType="Long">
+        delete from cron where id = #{id}
+    </delete>
+
+    <delete id="deleteCronByIds" parameterType="String">
+        delete from cron where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

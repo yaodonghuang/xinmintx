@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/statementDetail.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.qrcode.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <p>
+        <img src="/images/back_icon.png" alt="" onclick="window.history.go(-1)">
+        我的业绩
+        <span id="performance_menu" onclick="balanceStatement()">余额明细</span>
+    </p>
+</div>
+<div class="teacher_card" id="teacher_cards">
+    <p class="teacher_card_text" id="performance_text">我的业绩</p>
+    <p class="teacher_card_type">高级讲师</p>
+    <p class="teacher_card_num">0</p>
+    <input type="hidden" id="id" th:value="${user.id}">
+</div>
+
+<div class="my_student" id="my_students">
+    <div class="my_student_top" id="my_student_tops">
+        <p class="my_student_p1"><span></span>二维码</p>
+    </div>
+</div>
+<div class="code">
+    <div id="qr_code"></div>
+</div>
+</body>
+<script>
+
+    $(function () {
+        var id = $("#id").val();
+        $("#qr_code").qrcode({
+            text: "https://agent2.xinmintx.cn/api/student/addStudent/"+id
+        });
+    })
+
+</script>
+</html>

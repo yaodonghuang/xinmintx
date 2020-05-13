@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberCardCostMapper">
+    
+    <resultMap type="MemberCardCost" id="MemberCardCostResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="description"    column="description"    />
+        <result property="cost"    column="cost"    />
+    </resultMap>
+
+    <sql id="selectMemberCardCostVo">
+        select id, type, description, cost from member_card_cost
+    </sql>
+
+    <select id="selectMemberCardCostList" parameterType="MemberCardCost" resultMap="MemberCardCostResult">
+        <include refid="selectMemberCardCostVo"/>
+        <where>  
+            <if test="type != null "> and type = #{type}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="cost != null "> and cost = #{cost}</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberCardCostById" parameterType="Long" resultMap="MemberCardCostResult">
+        <include refid="selectMemberCardCostVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMemberCardCost" parameterType="MemberCardCost" useGeneratedKeys="true" keyProperty="id">
+        insert into member_card_cost
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null ">type,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="cost != null ">cost,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null ">#{type},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="cost != null ">#{cost},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberCardCost" parameterType="MemberCardCost">
+        update member_card_cost
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null ">type = #{type},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="cost != null ">cost = #{cost},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberCardCostById" parameterType="Long">
+        delete from member_card_cost where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberCardCostByIds" parameterType="String">
+        delete from member_card_cost where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

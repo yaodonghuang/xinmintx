@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+	<head>
+		<meta charset="utf-8">
+		<title>采购中心</title>
+		<link rel="stylesheet" href="/css/reset.css">
+		<link rel="stylesheet" href="/css/center.css">
+		<script src="/js/rem.js"></script>
+		<script src="/js/agent-index.js"></script>
+		<script src="/js/jquery.min.js"></script>
+	</head>
+	<body>
+		<div class="header">
+			<span onclick="window.history.go(-1)"></span>
+			采购中心
+		</div>
+		<ul class="center_list" th:each="list:${procurementCommodities}">
+			<li th:onclick="|javascript:selectByIdProcurementCommodities(${list.id})|">
+				<span th:text="${list.sampleName}"></span>
+				<span class="span2" th:text="${list.procurementPrice}"></span>
+			</li>
+		</ul>
+		<div class="footer_btn" onclick="commodities()">新增商品</div>
+	</body>
+<script>
+	function selectByIdProcurementCommodities(id) {
+		location.href="/agent/shopping/selectByIdProcurementCommodities/"+id;
+    }
+</script>
+</html>

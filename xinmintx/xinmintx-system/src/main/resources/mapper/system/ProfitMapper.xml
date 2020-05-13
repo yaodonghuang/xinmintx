@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.ProfitMapper">
+    
+    <resultMap type="Profit" id="ProfitResult">
+        <result property="id"    column="id"    />
+        <result property="selfProfit"    column="self_profit"    />
+        <result property="superProfit"    column="super_profit"    />
+        <result property="cost"    column="cost"    />
+        <result property="role"    column="role"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
+    <sql id="selectProfitVo">
+        select id, self_profit, super_profit, cost, role, description from profit
+    </sql>
+
+    <select id="selectProfitList" parameterType="Profit" resultMap="ProfitResult">
+        <include refid="selectProfitVo"/>
+        <where>  
+            <if test="selfProfit != null "> and self_profit = #{selfProfit}</if>
+            <if test="superProfit != null "> and super_profit = #{superProfit}</if>
+            <if test="cost != null "> and cost = #{cost}</if>
+            <if test="role != null  and role != ''"> and role = #{role}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectProfitById" parameterType="Long" resultMap="ProfitResult">
+        <include refid="selectProfitVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProfit" parameterType="Profit" useGeneratedKeys="true" keyProperty="id">
+        insert into profit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="selfProfit != null ">self_profit,</if>
+            <if test="superProfit != null ">super_profit,</if>
+            <if test="cost != null ">cost,</if>
+            <if test="role != null  and role != ''">role,</if>
+            <if test="description != null  and description != ''">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="selfProfit != null ">#{selfProfit},</if>
+            <if test="superProfit != null ">#{superProfit},</if>
+            <if test="cost != null ">#{cost},</if>
+            <if test="role != null  and role != ''">#{role},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProfit" parameterType="Profit">
+        update profit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="selfProfit != null ">self_profit = #{selfProfit},</if>
+            <if test="superProfit != null ">super_profit = #{superProfit},</if>
+            <if test="cost != null ">cost = #{cost},</if>
+            <if test="role != null  and role != ''">role = #{role},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProfitById" parameterType="Long">
+        delete from profit where id = #{id}
+    </delete>
+
+    <delete id="deleteProfitByIds" parameterType="String">
+        delete from profit where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

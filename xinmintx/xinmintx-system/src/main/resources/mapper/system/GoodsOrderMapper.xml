@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsOrderMapper">
+    
+    <resultMap type="com.xinmintx.system.domain.GoodsOrder" id="GoodsOrderResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="orderState"    column="order_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="ifPay"    column="if_pay"    />
+        <result property="receiveAddress"    column="receive_address"    />
+        <result property="receiveName"    column="receive_name"    />
+        <result property="receivePhone"    column="receive_phone"    />
+        <result property="receiveMessage"    column="receive_message"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="uOrderId"    column="u_order_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="skuId"    column="sku_id"    />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="price"    column="price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="goodsPic"    column="goods_pic"    />
+        <result property="evaluate"    column="evaluate"    />
+        <result property="courierNumber"    column="courier_number"    />
+        <result property="ifDelete"    column="if_delete"    />
+        <result property="weight"    column="weight"    />
+        <result property="userDelete"    column="user_delete"    />
+        <result property="ifRemind"    column="if_remind"    />
+        <result property="refundMsg"    column="refund_msg"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="sendDate"    column="send_date"    />
+        <result property="ifDelayed"    column="if_delayed"    />
+    </resultMap>
+
+    <sql id="selectGoodsOrderVo">
+        select id, member_id, order_num, order_state, create_time, update_time, if_pay, receive_address, receive_name, receive_phone, receive_message, total_amount, u_order_id, goods_id, sku_id, factory_id, price, quantity, goods_name, goods_pic, evaluate, courier_number, if_delete, weight, user_delete, if_remind, refund_msg, order_type, send_date, if_delayed from goods_order
+    </sql>
+
+    <select id="selectGoodsOrderList" parameterType="com.xinmintx.system.domain.GoodsOrder" resultMap="GoodsOrderResult">
+        <include refid="selectGoodsOrderVo"/>
+        <where>  
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="orderState != null "> and order_state = #{orderState}</if>
+            <if test="ifPay != null "> and if_pay = #{ifPay}</if>
+            <if test="receiveAddress != null  and receiveAddress != ''"> and receive_address = #{receiveAddress}</if>
+            <if test="receiveName != null  and receiveName != ''"> and receive_name like concat('%', #{receiveName}, '%')</if>
+            <if test="receivePhone != null  and receivePhone != ''"> and receive_phone = #{receivePhone}</if>
+            <if test="receiveMessage != null  and receiveMessage != ''"> and receive_message = #{receiveMessage}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="uOrderId != null "> and u_order_id = #{uOrderId}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="skuId != null "> and sku_id = #{skuId}</if>
+            <if test="factoryId != null "> and factory_id = #{factoryId}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="goodsPic != null  and goodsPic != ''"> and goods_pic = #{goodsPic}</if>
+            <if test="evaluate != null  and evaluate != ''"> and evaluate = #{evaluate}</if>
+            <if test="courierNumber != null  and courierNumber != ''"> and courier_number = #{courierNumber}</if>
+            <if test="ifDelete != null "> and if_delete = #{ifDelete}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="userDelete != null "> and user_delete = #{userDelete}</if>
+            <if test="ifRemind != null "> and if_remind = #{ifRemind}</if>
+            <if test="refundMsg != null  and refundMsg != ''"> and refund_msg = #{refundMsg}</if>
+            <if test="orderType != null "> and order_type = #{orderType}</if>
+            <if test="sendDate != null "> and send_date = #{sendDate}</if>
+            <if test="ifDelayed != null "> and if_delayed = #{ifDelayed}</if>
+        </where>
+        order by if_delete,create_time desc
+    </select>
+    
+    <select id="selectGoodsOrderById" parameterType="Long" resultMap="GoodsOrderResult">
+        <include refid="selectGoodsOrderVo"/>
+        where id = #{id}
+        order by if_delete,create_time desc
+    </select>
+        
+    <insert id="insertGoodsOrder" parameterType="com.xinmintx.system.domain.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null ">member_id,</if>
+            <if test="orderNum != null  and orderNum != ''">order_num,</if>
+            <if test="orderState != null ">order_state,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="ifPay != null ">if_pay,</if>
+            <if test="receiveAddress != null  and receiveAddress != ''">receive_address,</if>
+            <if test="receiveName != null  and receiveName != ''">receive_name,</if>
+            <if test="receivePhone != null  and receivePhone != ''">receive_phone,</if>
+            <if test="receiveMessage != null  and receiveMessage != ''">receive_message,</if>
+            <if test="totalAmount != null ">total_amount,</if>
+            <if test="uOrderId != null ">u_order_id,</if>
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="skuId != null ">sku_id,</if>
+            <if test="factoryId != null ">factory_id,</if>
+            <if test="price != null ">price,</if>
+            <if test="quantity != null ">quantity,</if>
+            <if test="goodsName != null  and goodsName != ''">goods_name,</if>
+            <if test="goodsPic != null  and goodsPic != ''">goods_pic,</if>
+            <if test="evaluate != null  and evaluate != ''">evaluate,</if>
+            <if test="courierNumber != null  and courierNumber != ''">courier_number,</if>
+            <if test="ifDelete != null ">if_delete,</if>
+            <if test="weight != null ">weight,</if>
+            <if test="userDelete != null ">user_delete,</if>
+            <if test="ifRemind != null ">if_remind,</if>
+            <if test="refundMsg != null  and refundMsg != ''">refund_msg,</if>
+            <if test="orderType != null ">order_type,</if>
+            <if test="sendDate != null ">send_date,</if>
+            <if test="ifDelayed != null ">if_delayed,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null ">#{memberId},</if>
+            <if test="orderNum != null  and orderNum != ''">#{orderNum},</if>
+            <if test="orderState != null ">#{orderState},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="ifPay != null ">#{ifPay},</if>
+            <if test="receiveAddress != null  and receiveAddress != ''">#{receiveAddress},</if>
+            <if test="receiveName != null  and receiveName != ''">#{receiveName},</if>
+            <if test="receivePhone != null  and receivePhone != ''">#{receivePhone},</if>
+            <if test="receiveMessage != null  and receiveMessage != ''">#{receiveMessage},</if>
+            <if test="totalAmount != null ">#{totalAmount},</if>
+            <if test="uOrderId != null ">#{uOrderId},</if>
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="skuId != null ">#{skuId},</if>
+            <if test="factoryId != null ">#{factoryId},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="quantity != null ">#{quantity},</if>
+            <if test="goodsName != null  and goodsName != ''">#{goodsName},</if>
+            <if test="goodsPic != null  and goodsPic != ''">#{goodsPic},</if>
+            <if test="evaluate != null  and evaluate != ''">#{evaluate},</if>
+            <if test="courierNumber != null  and courierNumber != ''">#{courierNumber},</if>
+            <if test="ifDelete != null ">#{ifDelete},</if>
+            <if test="weight != null ">#{weight},</if>
+            <if test="userDelete != null ">#{userDelete},</if>
+            <if test="ifRemind != null ">#{ifRemind},</if>
+            <if test="refundMsg != null  and refundMsg != ''">#{refundMsg},</if>
+            <if test="orderType != null ">#{orderType},</if>
+            <if test="sendDate != null ">#{sendDate},</if>
+            <if test="ifDelayed != null ">#{ifDelayed},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsOrder" parameterType="com.xinmintx.system.domain.GoodsOrder">
+        update goods_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null ">member_id = #{memberId},</if>
+            <if test="orderNum != null  and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="orderState != null ">order_state = #{orderState},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="ifPay != null ">if_pay = #{ifPay},</if>
+            <if test="receiveAddress != null  and receiveAddress != ''">receive_address = #{receiveAddress},</if>
+            <if test="receiveName != null  and receiveName != ''">receive_name = #{receiveName},</if>
+            <if test="receivePhone != null  and receivePhone != ''">receive_phone = #{receivePhone},</if>
+            <if test="receiveMessage != null  and receiveMessage != ''">receive_message = #{receiveMessage},</if>
+            <if test="totalAmount != null ">total_amount = #{totalAmount},</if>
+            <if test="uOrderId != null ">u_order_id = #{uOrderId},</if>
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="skuId != null ">sku_id = #{skuId},</if>
+            <if test="factoryId != null ">factory_id = #{factoryId},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="quantity != null ">quantity = #{quantity},</if>
+            <if test="goodsName != null  and goodsName != ''">goods_name = #{goodsName},</if>
+            <if test="goodsPic != null  and goodsPic != ''">goods_pic = #{goodsPic},</if>
+            <if test="evaluate != null  and evaluate != ''">evaluate = #{evaluate},</if>
+            <if test="courierNumber != null  and courierNumber != ''">courier_number = #{courierNumber},</if>
+            <if test="ifDelete != null ">if_delete = #{ifDelete},</if>
+            <if test="weight != null ">weight = #{weight},</if>
+            <if test="userDelete != null ">user_delete = #{userDelete},</if>
+            <if test="ifRemind != null ">if_remind = #{ifRemind},</if>
+            <if test="refundMsg != null  and refundMsg != ''">refund_msg = #{refundMsg},</if>
+            <if test="orderType != null ">order_type = #{orderType},</if>
+            <if test="sendDate != null ">send_date = #{sendDate},</if>
+            <if test="ifDelayed != null ">if_delayed = #{ifDelayed},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsOrderById" parameterType="Long">
+        delete from goods_order where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsOrderByIds" parameterType="String">
+        delete from goods_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

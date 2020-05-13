@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.IndexModuleMapper">
+    
+    <resultMap type="IndexModule" id="IndexModuleResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="url"    column="url"    />
+        <result property="pageSize"    column="page_size"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="moduleType"    column="module_type"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectIndexModuleVo">
+        select id, title, url, page_size, order_num, module_type, status from index_module
+    </sql>
+
+    <select id="selectIndexModuleList" parameterType="IndexModule" resultMap="IndexModuleResult">
+        <include refid="selectIndexModuleVo"/>
+        order by order_num
+    </select>
+    
+    <select id="selectIndexModuleById" parameterType="Long" resultMap="IndexModuleResult">
+        <include refid="selectIndexModuleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertIndexModule" parameterType="IndexModule" useGeneratedKeys="true" keyProperty="id">
+        insert into index_module
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null  and title != ''">title,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="pageSize != null ">page_size,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="moduleType != null ">module_type,</if>
+            <if test="status != null ">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="pageSize != null ">#{pageSize},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="moduleType != null ">#{moduleType},</if>
+            <if test="status != null ">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIndexModule" parameterType="IndexModule">
+        update index_module
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="pageSize != null ">page_size = #{pageSize},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="moduleType != null ">module_type = #{moduleType},</if>
+            <if test="status != null ">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIndexModuleById" parameterType="Long">
+        delete from index_module where id = #{id}
+    </delete>
+
+    <delete id="deleteIndexModuleByIds" parameterType="String">
+        delete from index_module where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

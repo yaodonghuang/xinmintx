@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinmintx.hstx.mapper.MemberLineMapper" >
+    <delete id="deleteMemberLineById" parameterType="map">
+        delete from member_line
+        where member_id = #{id}
+    </delete>
+
+    <insert id="insertLine" parameterType="map">
+        insert into member_line (member_id, upper_line_id)
+        values (#{id,jdbcType=BIGINT}, #{upperLine,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getUpperLineById" parameterType="map" resultType="java.lang.String">
+        select upper_line_id
+        from member_line
+        where member_id = #{id}
+        order by create_time desc
+        limit #{num}
+    </select>
+
+</mapper>

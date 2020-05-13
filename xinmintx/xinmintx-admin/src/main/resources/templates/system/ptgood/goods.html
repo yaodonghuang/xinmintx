@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('商品列表')" />
+</head>
+<style>
+    .changeColor{
+        background-color: #31b0d5  !important;
+        color: white;
+    }
+</style>
+<body class="gray-bg">
+<input id="goodsId" name="goodsId" type="hidden"/>
+<input id="goodsListName" name="goodsListName" type="hidden"/>
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>商品列表显示名称：</p>
+                                <input type="text" name="goodsListName"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:goods:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:goods:remove')}]];
+        var prefix = ctx + "system/goods";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                updateUrl: prefix + "/edit/{id}",
+                modalName: "商品",
+                columns: [
+                {
+                    field : 'id',
+                    title : 'ID',
+                    visible: false
+                },
+                {
+                    field : 'source',
+                    title : '1厂家,2商家',
+                    visible: false
+                },
+                {
+                    field : 'relateId',
+                    title : '关联id(厂家/商家的id)',
+                    visible: false
+                },
+                {
+                    field : 'typeName',
+                    title : '商品分类'
+                },
+                {
+                    field : 'goodsListName',
+                    title : '商品列表显示名称'
+                },
+                {
+                    field : 'goodsName',
+                    title : '商品详细名称'
+                },
+                {
+                    field : 'price',
+                    title : '售价'
+                },
+                {
+                    field : 'linePrice',
+                    title : '划线价格'
+                },
+                {
+                    field : 'stockNum',
+                    title : '库存'
+                },
+                {
+                    field : 'salesInitial',
+                    title : '初始销量'
+                },
+                {
+                    field : 'activityTitle',
+                    title : '活动标题'
+                },
+                {
+                    field : 'salesActual',
+                    title : '实际销量'
+                }],
+                onClickRow: function (row,$element) {
+                    $('.changeColor').removeClass('changeColor');
+                    $($element).addClass('changeColor');
+                    $("#goodsId").val(row.id);
+                    $("#goodsListName").val(row.goodsListName);
+                }
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

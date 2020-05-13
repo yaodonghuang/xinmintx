@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberBonusMapper">
+    
+    <resultMap type="MemberBonus" id="MemberBonusResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="beginDate"    column="begin_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="totalAmount"    column="total_amount"    />
+    </resultMap>
+
+    <sql id="selectMemberBonusVo">
+        select id, create_time, update_time, status, begin_date, end_date, total_amount from member_bonus
+    </sql>
+
+    <select id="selectMemberBonusList" parameterType="MemberBonus" resultMap="MemberBonusResult">
+        <include refid="selectMemberBonusVo"/>
+        <where>  
+            <if test="status != null "> and status = #{status}</if>
+            <if test="beginDate != null "> and begin_date = #{beginDate}</if>
+            <if test="endDate != null "> and end_date = #{endDate}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberBonusById" parameterType="Long" resultMap="MemberBonusResult">
+        <include refid="selectMemberBonusVo"/>
+        where id = #{id}
+    </select>
+    <select id="queryMemberBonus" resultType="java.lang.Integer">
+        select id from member_bonus where status = 1
+    </select>
+    <select id="queryMemberBonusInfo" resultType="com.xinmintx.system.domain.MemberBonus">
+        select * from member_bonus where status = 1
+    </select>
+
+    <insert id="insertMemberBonus" parameterType="MemberBonus" useGeneratedKeys="true" keyProperty="id">
+        insert into member_bonus
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="status != null ">status,</if>
+            <if test="beginDate != null ">begin_date,</if>
+            <if test="endDate != null ">end_date,</if>
+            <if test="totalAmount != null ">total_amount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="beginDate != null ">#{beginDate},</if>
+            <if test="endDate != null ">#{endDate},</if>
+            <if test="totalAmount != null ">#{totalAmount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberBonus" parameterType="MemberBonus">
+        update member_bonus
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="beginDate != null ">begin_date = #{beginDate},</if>
+            <if test="endDate != null ">end_date = #{endDate},</if>
+            <if test="totalAmount != null ">total_amount = #{totalAmount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberBonusById" parameterType="Long">
+        delete from member_bonus where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberBonusByIds" parameterType="String">
+        delete from member_bonus where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

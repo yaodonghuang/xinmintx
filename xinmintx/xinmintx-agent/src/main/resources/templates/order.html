@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>确认订单</title>
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/order_l.css">
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="/js/rem.js"></script>
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/wechatpay.js"></script>
+</head>
+<body>
+<div class="header">
+	<p>
+		<span class="back" onclick="window.history.go(-1)"></span>
+		确认订单
+	</p>
+</div>
+<div class="tiao1" onclick="address()" >
+	<img class="tiao1_img1" src="/images/dinwei.png"/>
+	<img class="tiao1_img2" src="/images/upload/gogogo.png" />
+	<span id="address" >添加收货地址</span>
+</div>
+<div class="tiao">
+	<div class="div1"><img class="img1" th:src="${pictyre}" /></div>
+	<div>
+		<div class="zi1" th:text="${commodityExt.commodityName}"></div>
+		<input type="hidden" th:value="${commodityExt.id}" id="itermId">
+        <input type="hidden" th:value="${type.id}" id="tId">
+		<div class="divs"><span class="s1" th:text="${type.type}"></span><span class="s3">x1</span><span class="s2" th:text="${commodityExt.price}"></span></div>
+	</div>
+</div>
+<div class="tiao2">
+	<span class="tiao2_s1">支付方式</span>
+	<img class="tiao2_img1" src="/images/upload/gogogo.png"/>
+	<span class="tiao2_s2">在线支付</span>
+</div>
+<div class="tiao2">
+	<span class="tiao2_s1">配送方式</span>
+	<img class="tiao2_img1" src="/images/upload/gogogo.png"/>
+	<span class="tiao2_s2">普通快递：运费（10.00）</span>
+</div>
+<div class="jiesuan">
+	<div class="zhifu"><span class="zhifu_s1" >支付金额：</span >
+		<span th:text="${commodityExt.price+10}"></span>
+	</div>
+	<div class="tijiao" onclick="account()">结算</div>
+</div>
+</body>
+<script>
+    var addressId;
+    $(function () {
+         addressId = null;
+        $.ajax({
+            url: "/agent/SelfBuying/selectAddress",
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if(data!=null){
+                    addressId = data.id;
+                    $("#address").text(data.address);
+                }
+            }
+        });
+    })
+    function account() {
+        var typeId = $("#tId").val()
+        var address=$("#address").text();
+        if("添加收货地址"===address){
+            alert("请添加收货地址！");
+        }
+        var id=$("#itermId").val();
+        $.ajax({
+            url: "/agent/SelfBuying/confirmPayment?id="+id+"&addressId="+addressId+"&typeId="+typeId,
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            success: function (res) {
+                    if (res.data !== null) {
+                        shoppingReady(res.data);
+                }
+            }
+        });
+    };
+    function address() {
+        location.href="/agent/address/selectAddres";
+    }
+</script>
+</html>
+

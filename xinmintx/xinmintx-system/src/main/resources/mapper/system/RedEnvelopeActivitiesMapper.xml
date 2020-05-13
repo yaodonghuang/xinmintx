@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.RedEnvelopeActivitiesMapper">
+
+    <resultMap type="RedEnvelopeActivities" id="RedEnvelopeActivitiesResult">
+        <result property="id"    column="id"    />
+        <result property="redStartTime"    column="red_start_time"    />
+        <result property="redEndTime"    column="red_end_time"    />
+        <result property="start"    column="start"    />
+    </resultMap>
+
+    <sql id="selectRedEnvelopeActivitiesVo">
+        select id, red_start_time, red_end_time, start from red_envelope_activities
+    </sql>
+
+    <select id="selectRedEnvelopeActivitiesList" parameterType="RedEnvelopeActivities" resultMap="RedEnvelopeActivitiesResult">
+        <include refid="selectRedEnvelopeActivitiesVo"/>
+        <where>
+            <if test="startTime != null "> and (UNIX_TIMESTAMP(red_start_time) <![CDATA[ >= ]]> #{startTime})</if>
+            <if test="endTime != null "> and (UNIX_TIMESTAMP(red_end_time) <![CDATA[ <= ]]> #{endTime})</if>
+            <if test="start != null "> and start = #{start}</if>
+        </where>
+    </select>
+
+    <select id="selectRedEnvelopeActivitiesById" parameterType="Long" resultMap="RedEnvelopeActivitiesResult">
+        <include refid="selectRedEnvelopeActivitiesVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectByStart" resultType="com.xinmintx.system.domain.RedEnvelopeActivities">
+        <include refid="selectRedEnvelopeActivitiesVo"/>
+        where start = #{start}
+    </select>
+
+    <insert id="insertRedEnvelopeActivities" parameterType="RedEnvelopeActivities" useGeneratedKeys="true" keyProperty="id">
+        insert into red_envelope_activities
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="redStartTime != null ">red_start_time,</if>
+            <if test="redEndTime != null ">red_end_time,</if>
+            <if test="start != null ">start,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="redStartTime != null ">#{redStartTime},</if>
+            <if test="redEndTime != null ">#{redEndTime},</if>
+            <if test="start != null ">#{start},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRedEnvelopeActivities" parameterType="RedEnvelopeActivities">
+        update red_envelope_activities
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="redStartTime != null ">red_start_time = #{redStartTime},</if>
+            <if test="redEndTime != null ">red_end_time = #{redEndTime},</if>
+            <if test="start != null ">start = #{start},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="updateActivities">
+        update red_envelope_activities
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="redStartTime != null ">red_start_time = #{redStartTime},</if>
+            <if test="redEndTime != null ">red_end_time = #{redEndTime},</if>
+            <if test="start != null ">start = #{start},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRedEnvelopeActivitiesById" parameterType="Long">
+        delete from red_envelope_activities where id = #{id}
+    </delete>
+
+    <delete id="deleteRedEnvelopeActivitiesByIds" parameterType="String">
+        delete from red_envelope_activities where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

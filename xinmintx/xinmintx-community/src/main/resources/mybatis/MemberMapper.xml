@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.MemberMapper">
+    <sql id="Base_Column_List">
+    id, order_id, name, cellphone, gender, idcard, recommender, member_type, is_review,
+    create_user, create_time, update_user, update_time, openid, token, avatar_url, platform_count,
+    merchant_count, branch_office_count, birth_gift_count, integral, new_currency, new_beans,
+    user_id, freeze_beans, freeze_currency, gift_start, tree_code, region_code, birthday,
+    card_id, card_status, card_indate
+  </sql>
+    <select id="selectByPhone" resultType="com.xinmintx.community.model.Member">
+        select <include refid="Base_Column_List"/> from member
+        where cellphone = #{phone}
+    </select>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsPriceTypeMapper">
+    
+    <resultMap type="GoodsPriceType" id="GoodsPriceTypeResult">
+        <result property="id"    column="id"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="percent"    column="percent"    />
+    </resultMap>
+
+    <sql id="selectGoodsPriceTypeVo">
+        select id, price_type, percent*100 percent from goods_price_type
+    </sql>
+
+    <select id="selectGoodsPriceTypeList" parameterType="GoodsPriceType" resultMap="GoodsPriceTypeResult">
+        <include refid="selectGoodsPriceTypeVo"/>
+        <where>  
+            <if test="priceType != null "> and price_type = #{priceType}</if>
+            <if test="percent != null "> and percent = #{percent}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsPriceTypeById" parameterType="Long" resultMap="GoodsPriceTypeResult">
+        <include refid="selectGoodsPriceTypeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsPriceType" parameterType="GoodsPriceType" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_price_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="priceType != null ">price_type,</if>
+            <if test="percent != null ">percent,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="priceType != null ">#{priceType},</if>
+            <if test="percent != null ">#{percent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsPriceType" parameterType="GoodsPriceType">
+        update goods_price_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="priceType != null ">price_type = #{priceType},</if>
+            <if test="percent != null ">percent = #{percent}/100,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsPriceTypeById" parameterType="Long">
+        delete from goods_price_type where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsPriceTypeByIds" parameterType="String">
+        delete from goods_price_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

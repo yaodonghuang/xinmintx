@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.agent.mapper.PoboNotifyMapper">
+    <insert id="insert" parameterType="map" >
+    insert into pobo_notify (request_sn, ret_code,
+      ret_msg, merchant_id, order_date,
+      order_status, order_time, txn_amt,
+      fee, notify_url, sign_type,
+      signature)
+    values (#{pn.requestSN,jdbcType=VARCHAR}, #{pn.retCode,jdbcType=VARCHAR},
+      #{pn.retMsg,jdbcType=VARCHAR}, #{pn.merchantId,jdbcType=VARCHAR}, #{pn.orderDate,jdbcType=VARCHAR},
+      #{pn.orderStatus,jdbcType=VARCHAR}, #{pn.orderTime,jdbcType=VARCHAR}, #{pn.txnAmt,jdbcType=VARCHAR},
+      #{pn.fee,jdbcType=VARCHAR}, #{pn.notifyUrl,jdbcType=VARCHAR}, #{pn.signType,jdbcType=VARCHAR},
+      #{pn.signature,jdbcType=VARCHAR})
+  </insert>
+</mapper>

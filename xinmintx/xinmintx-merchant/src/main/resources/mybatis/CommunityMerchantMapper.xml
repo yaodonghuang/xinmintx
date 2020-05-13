@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.CommunityMerchantMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.merchant.dto.MerchantDeliveryVo">
+        <id column="id" jdbcType="INTEGER" property="communityId" />
+        <result column="communityName" jdbcType="VARCHAR" property="communityName" />
+        <result column="presidentId" jdbcType="INTEGER" property="presidentId" />
+        <result column="presidentName" jdbcType="VARCHAR" property="presidentName" />
+        <result column="presidentCellphone" jdbcType="VARCHAR" property="presidentCellphone" />
+        <collection property="deliveryVos" ofType="com.xinmintx.merchant.dto.DeliveryVo">
+            <id column="deliveryId" jdbcType="INTEGER" property="deliveryId" />
+            <result column="fee" jdbcType="DECIMAL" property="fee" />
+            <result column="distance" jdbcType="VARCHAR" property="distance" />
+            <result column="deliveryTime" jdbcType="VARCHAR" property="deliveryTime" />
+        </collection>
+    </resultMap>
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into community_merchant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="communityMerchant.communityId != null">
+                community_id,
+            </if>
+            <if test="communityMerchant.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="communityMerchant.type != null">
+                type,
+            </if>
+            <if test="communityMerchant.createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="communityMerchant.communityId != null">
+                #{communityMerchant.communityId},
+            </if>
+            <if test="communityMerchant.merchantId != null">
+                #{communityMerchant.merchantId},
+            </if>
+            <if test="communityMerchant.type != null">
+                #{communityMerchant.type},
+            </if>
+            <if test="communityMerchant.createTime != null">
+                #{communityMerchant.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByCommunityIdAndMerchantId" >
+        delete from community_merchant where merchant_id =#{merchantId} and community_id =#{communityId}
+    </delete>
+    <select id="getCommunitysByMerchantId" resultType="map">
+        select
+            c.id communityId,
+            c.name communityName,
+            m.id presidentId,
+            m.name presidentName,
+            m.cellphone presidentCellphone
+--             c.lon,
+--             c.lat,
+--             t.lon,
+--             t.lat,
+--             c.address,
+
+        from community_merchant cm
+        left join merchant t on t.id = cm.merchant_id
+        left join community c on c.id = cm.community_id
+        left join member m on m.id = c.create_id
+        where cm.merchant_id = #{merchantId}
+        GROUP BY communityId
+    </select>
+    <select id="queryCommunityNameByCommunityId" resultType="java.lang.String">
+        select name
+        from community
+        <where>
+            <if test="communityId != null">
+                id = #{communityId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

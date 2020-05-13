@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberUpgradeMapper">
+    
+    <resultMap type="MemberUpgrade" id="MemberUpgradeResult">
+        <result property="id"    column="id"    />
+        <result property="money"    column="money"    />
+        <result property="integral"    column="integral"    />
+        <result property="role"    column="role"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
+    <sql id="selectMemberUpgradeVo">
+        select id, money, integral, role, description from member_upgrade
+    </sql>
+
+    <select id="selectMemberUpgradeList" parameterType="MemberUpgrade" resultMap="MemberUpgradeResult">
+        <include refid="selectMemberUpgradeVo"/>
+        <where>  
+            <if test="money != null "> and money = #{money}</if>
+            <if test="integral != null "> and integral = #{integral}</if>
+            <if test="role != null  and role != ''"> and role = #{role}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberUpgradeById" parameterType="Integer" resultMap="MemberUpgradeResult">
+        <include refid="selectMemberUpgradeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMemberUpgrade" parameterType="MemberUpgrade" useGeneratedKeys="true" keyProperty="id">
+        insert into member_upgrade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="money != null ">money,</if>
+            <if test="integral != null ">integral,</if>
+            <if test="role != null  and role != ''">role,</if>
+            <if test="description != null  and description != ''">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="money != null ">#{money},</if>
+            <if test="integral != null ">#{integral},</if>
+            <if test="role != null  and role != ''">#{role},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberUpgrade" parameterType="MemberUpgrade">
+        update member_upgrade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="money != null ">money = #{money},</if>
+            <if test="integral != null ">integral = #{integral},</if>
+            <if test="role != null  and role != ''">role = #{role},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberUpgradeById" parameterType="Integer">
+        delete from member_upgrade where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberUpgradeByIds" parameterType="String">
+        delete from member_upgrade where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

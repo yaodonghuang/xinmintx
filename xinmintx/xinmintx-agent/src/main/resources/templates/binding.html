@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定银行卡</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body style="background-color: #FAFAFA">
+<div class="headers">
+    <p>
+        <span class="back" onclick="window.history.go(-1)"></span>
+        绑定银行卡
+    </p>
+</div>
+<ul class="bind_list">
+    <li>
+        <img src="/images/login.img/logo_bg1.png" alt="" >
+        <div class="bind_content">
+            <div class="bank_cont">
+                <div class="cont_lo">
+                    <img src="/images/login.img/logo_icon1.png" class="cont_logo">
+                </div>
+                <div class="cont_text">
+                    <p class="bank_title">招商银行</p>
+                    <p class="bank_type">储蓄卡</p>
+                </div>
+            </div>
+            <p id="bank_num">4165456456416545645</p>
+        </div>
+    </li>
+<!--    <li>-->
+<!--        <img src="/images/login.img/logo_bg2.png" alt="">-->
+<!--        <div class="bind_content">-->
+<!--            <div class="bank_cont">-->
+<!--                <div class="cont_lo">-->
+<!--                    <img src="/images/login.img/logo_icon2.png" class="cont_logo">-->
+<!--                </div>-->
+<!--                <div class="cont_text">-->
+<!--                    <p class="bank_title">建设银行</p>-->
+<!--                    <p class="bank_type">储蓄卡</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <p class="bank_num">4165456456416545645</p>-->
+<!--        </div>-->
+<!--    </li>-->
+<!--    <li>-->
+<!--        <img src="/images/login.img/logo_bg3.png" alt="">-->
+<!--        <div class="bind_content">-->
+<!--            <div class="bank_cont">-->
+<!--                <div class="cont_lo">-->
+<!--                    <img src="/images/login.img/logo_icon3.png" class="cont_logo">-->
+<!--                </div>-->
+<!--                <div class="cont_text">-->
+<!--                    <p class="bank_title">建设银行</p>-->
+<!--                    <p class="bank_type">储蓄卡</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <p class="bank_num">4165456456416545645</p>-->
+<!--        </div>-->
+<!--    </li>-->
+</ul>
+<div class="add_btn">
+    <img src="/images/login.img/add.png" alt="" class="add_img">
+    <span>绑定银行卡</span>
+    <img src="/images/login.img/right.png" alt="" class="add_r">
+</div>
+<script>
+    var num = '4165456456416545645'
+    var nums = num.substr(0,4)+'   ****   '+num.substr(15);
+    $('#bank_num').text(nums)
+</script>
+</body>
+</html>

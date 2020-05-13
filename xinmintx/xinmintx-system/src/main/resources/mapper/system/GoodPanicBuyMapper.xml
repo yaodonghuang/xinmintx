@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodPanicBuyMapper">
+
+    <resultMap type="GoodPanicBuy" id="GoodPanicBuyResult">
+        <result property="id" column="id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="price" column="price"/>
+        <result property="linePrice" column="line_price"/>
+        <result property="generalPrice" column="general_price"/>
+        <result property="ePrice" column="e_price"/>
+        <result property="goldPrice" column="gold_price"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="stockNum" column="stock_num"/>
+        <result property="activityImg" column="activity_img"/>
+        <result property="activityTitle" column="activity_title"/>
+        <result property="isSale" column="is_sale"/>
+        <result property="status" column="status"/>
+        <result property="salesInitial" column="sales_initial"/>
+        <result property="salesActual" column="sales_actual"/>
+        <result property="virtualMember" column="virtual_member"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="restriction" column="restriction"/>
+    </resultMap>
+
+    <sql id="selectGoodPanicBuyVo">
+        select id, goods_id, goods_name, price, line_price, general_price, e_price, gold_price, start_time, end_time, stock_num, activity_img, activity_title, is_sale, status, sales_initial, sales_actual, virtual_member, create_time, update_time, restriction from good_panic_buy
+    </sql>
+
+    <select id="selectGoodPanicBuyList" parameterType="GoodPanicBuy" resultMap="GoodPanicBuyResult">
+        <include refid="selectGoodPanicBuyVo"/>
+        <where>
+            <if test="goodsId != null ">and goods_id = #{goodsId}</if>
+            <if test="goodsName != null  and goodsName != ''">and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="price != null ">and price = #{price}</if>
+            <if test="linePrice != null ">and line_price = #{linePrice}</if>
+            <if test="generalPrice != null ">and general_price = #{generalPrice}</if>
+            <if test="ePrice != null ">and e_price = #{ePrice}</if>
+            <if test="goldPrice != null ">and gold_price = #{goldPrice}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            <if test="stockNum != null ">and stock_num = #{stockNum}</if>
+            <if test="activityImg != null  and activityImg != ''">and activity_img = #{activityImg}</if>
+            <if test="activityTitle != null  and activityTitle != ''">and activity_title = #{activityTitle}</if>
+            <if test="isSale != null ">and is_sale = #{isSale}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="salesInitial != null ">and sales_initial = #{salesInitial}</if>
+            <if test="salesActual != null ">and sales_actual = #{salesActual}</if>
+            <if test="virtualMember != null  and virtualMember != ''">and virtual_member = #{virtualMember}</if>
+            <if test="restriction != null ">and restriction = #{restriction}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectGoodPanicBuyById" parameterType="Long" resultMap="GoodPanicBuyResult">
+        <include refid="selectGoodPanicBuyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGoodPanicBuy" parameterType="GoodPanicBuy" useGeneratedKeys="true" keyProperty="id">
+        insert into good_panic_buy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="goodsName != null  and goodsName != ''">goods_name,</if>
+            <if test="price != null ">price,</if>
+            <if test="linePrice != null ">line_price,</if>
+            <if test="generalPrice != null ">general_price,</if>
+            <if test="ePrice != null ">e_price,</if>
+            <if test="goldPrice != null ">gold_price,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="endTime != null ">end_time,</if>
+            <if test="stockNum != null ">stock_num,</if>
+            <if test="activityImg != null  and activityImg != ''">activity_img,</if>
+            <if test="activityTitle != null  and activityTitle != ''">activity_title,</if>
+            <if test="isSale != null ">is_sale,</if>
+            <if test="status != null ">status,</if>
+            <if test="salesInitial != null ">sales_initial,</if>
+            <if test="salesActual != null ">sales_actual,</if>
+            <if test="virtualMember != null  and virtualMember != ''">virtual_member,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="restriction != null ">restriction,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="goodsName != null  and goodsName != ''">#{goodsName},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="linePrice != null ">#{linePrice},</if>
+            <if test="generalPrice != null ">#{generalPrice},</if>
+            <if test="ePrice != null ">#{ePrice},</if>
+            <if test="goldPrice != null ">#{goldPrice},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="endTime != null ">#{endTime},</if>
+            <if test="stockNum != null ">#{stockNum},</if>
+            <if test="activityImg != null  and activityImg != ''">#{activityImg},</if>
+            <if test="activityTitle != null  and activityTitle != ''">#{activityTitle},</if>
+            <if test="isSale != null ">#{isSale},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="salesInitial != null ">#{salesInitial},</if>
+            <if test="salesActual != null ">#{salesActual},</if>
+            <if test="virtualMember != null  and virtualMember != ''">#{virtualMember},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="restriction != null ">#{restriction},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGoodPanicBuy" parameterType="GoodPanicBuy">
+        update good_panic_buy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="goodsName != null  and goodsName != ''">goods_name = #{goodsName},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="linePrice != null ">line_price = #{linePrice},</if>
+            <if test="generalPrice != null ">general_price = #{generalPrice},</if>
+            <if test="ePrice != null ">e_price = #{ePrice},</if>
+            <if test="goldPrice != null ">gold_price = #{goldPrice},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="endTime != null ">end_time = #{endTime},</if>
+            <if test="stockNum != null ">stock_num = #{stockNum},</if>
+            <if test="activityImg != null  and activityImg != ''">activity_img = #{activityImg},</if>
+            <if test="activityTitle != null  and activityTitle != ''">activity_title = #{activityTitle},</if>
+            <if test="isSale != null ">is_sale = #{isSale},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="salesInitial != null ">sales_initial = #{salesInitial},</if>
+            <if test="salesActual != null ">sales_actual = #{salesActual},</if>
+            <if test="virtualMember != null  and virtualMember != ''">virtual_member = #{virtualMember},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="restriction != null ">restriction = #{restriction},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodPanicBuyById" parameterType="Long">
+        delete from good_panic_buy where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodPanicBuyByIds" parameterType="String">
+        delete from good_panic_buy where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="checkGoods" resultMap="GoodPanicBuyResult">
+        SELECT * FROM good_panic_buy WHERE goods_id = #{goodsId} AND end_time >= NOW()
+    </select>
+
+</mapper>

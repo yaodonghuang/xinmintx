@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>推荐代理</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/Rpartner.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <span class="back" onclick="window.history.go(-1)"></span>
+    推荐代理
+</div>
+<ul class="list">
+    <li th:each="list : ${agentlist}">
+        <div class="left">
+            <img class="left_l" th:if="${list.avatar != null}" th:src="${list.avatar}">
+            <div class="left_l" th:if="${list.avatar == null}"></div>
+            <div class="left_r">
+                <div class="txt">
+                    <p class="right_p1" th:text="${list.name}"></p>
+                    <p th:if="${list.gender == 1}" class="txt_sex">男</p>
+                    <p th:if="${list.gender == 2}" class="txt_sex">女</p>
+                </div>
+                <p class="tel" th:text="${list.cellphone}"></p>
+            </div>
+        </div>
+        <div class="right">代理</div>
+    </li>
+</ul>
+</body>
+</html>

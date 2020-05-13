@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>基本商户奖金</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/set.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <p>
+        <span class="back" onclick="window.history.go(-1)"></span>
+        基本商户奖金
+    </p>
+</div>
+<ul class="list">
+    <li>
+        员工分润设置
+        <div class="list_right">
+            <input type="number" class="content_txt" id="money" onkeyup="limitInput(this);"  th:value="${staffProfit.profit}">元
+        </div>
+    </li>
+</ul>
+<div class="conform_second" th:onclick="|javascript:setBasic(${userId})|">确认</div>
+<div class="warning">
+    <div class="warning_content">
+        <p class="warning_title">提示</p>
+        <p class="warning_text"></p>
+        <p class="warning_btn"  onclick="fn()">确定</p>
+    </div>
+</div>
+<div class="success">
+    <div class="success_content">
+        <p class="success_text">修改成功</p>
+        <div class="success_btn" onclick="success()">我知道了</div>
+    </div>
+</div>
+</body>
+<script>
+    function fn() {
+        $('.warning').hide();
+        return;
+    }
+    function success() {
+        $('.success').hide();
+        location.href = "/agent/user/index";
+        return;
+    }
+    function limitInput(o){
+        var value=o.value;
+        var min=0;
+        var max=390;
+        if(parseInt(value)<min||parseInt(value)>max){
+            // alert('设置超额');
+            $('.warning').show()
+            $('.warning_text').text('您好！设置超额!');
+            o.value='';
+        }
+    }
+    function setBasic(userId) {
+        var money = $("#money").val();
+        $.ajax({
+            url: "/agent/staff/setBasic/"+userId+"/"+money,
+            method: "get",
+            success: function (res) {
+                if(res.code===200){
+                    // alert("修改成功");
+                    $('.success').show()
+                    // $('.warning_text').text('您好！修改成功!');
+                    // location.href = "/agent/user/index";
+                }else {
+                    // alert("修改失败")
+                    $('.warning').show()
+                    $('.warning_text').text('您好！修改失败!');
+                }
+            }
+        })
+    }
+</script>
+</html>

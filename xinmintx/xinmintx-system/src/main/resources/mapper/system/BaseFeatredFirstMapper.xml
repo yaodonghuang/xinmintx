@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.BaseFeatredFirstMapper">
+    <resultMap type="com.xinmintx.system.domain.BaseFeatredFirst" id="Result">
+        <id property="id" column="id"/>
+        <result property="source"    column="source" />
+        <result property="relateId"    column="relate_id" />
+        <result property="typeId"    column="type_id" />
+        <result property="choiceness"    column="choiceness" />
+        <result property="hotSale"    column="hot_sale" />
+        <result property="preorder"    column="preorder" />
+        <result property="typeName"    column="type_name" />
+        <result property="goodsId"    column="goods_id" />
+        <result property="goodsListName"    column="goods_list_name" />
+        <result property="goodsName"    column="goods_name" />
+        <result property="content"    column="content" />
+        <result property="turnsPhoto"    column="turns_photo" />
+        <result property="speType"    column="spe_type" />
+        <result property="price"    column="price" />
+        <result property="linePrice"    column="line_price" />
+        <result property="stockNum"    column="stock_num" />
+        <result property="salesInitial"    column="sales_initial" />
+        <result property="activityTitle"    column="activity_title" />
+        <result property="salesActual"    column="sales_actual" />
+        <result property="status"    column="status" />
+        <result property="sort"    column="sort" />
+        <result property="isDelete"    column="is_delete" />
+        <result property="featuredStatus"    column="featured_status" />
+        <result property="place"    column="place" />
+    </resultMap>
+
+    <select id="selectFeatredFirsts" resultMap="Result">
+        SELECT
+        a.id,
+        a.goods_id,
+        a.place,
+        b.goods_list_name,
+        a.status,
+        b.price,
+        b.line_price,
+        b.stock_num,
+        b.sales_initial,
+        b.sales_actual,
+        b.activity_title,
+        c.type_name
+        FROM
+        goods_featured_first a,
+        goods b,
+        goods_type c
+        WHERE
+        a.goods_id = b.id
+        AND b.type_id = c.id
+        <if test="goodsListName!=null">
+            and b.goods_list_name like CONCAT('%',#{goodsListName},'%')
+        </if>
+        ORDER BY
+        a.place,a.id desc
+    </select>
+
+    <select id="selectFeatredFirstById" parameterType="Long" resultMap="Result">
+        SELECT
+        a.id,
+        a.goods_id,
+        a.status,
+        a.place,
+        b.goods_list_name,
+        b.price,
+        b.line_price,
+        b.stock_num,
+        b.sales_initial,
+        b.sales_actual,
+        b.activity_title,
+        c.type_name
+        FROM
+        goods_featured_first a,
+        goods b,
+        goods_type c
+        WHERE
+        a.goods_id = b.id
+        AND b.type_id = c.id
+        and a.id=#{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('商家信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>姓名：</p>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <p>身份证号：</p>
+                                <input type="text" name="idcard"/>
+                            </li>
+                            <li>
+                                <p>商户名称：</p>
+                                <input type="text" name="merchantName"/>
+                            </li>
+                            <li>
+                                <p>商户类型</p>
+                                <select name="isReview">
+                                    <option value="">所有</option>
+                                    <option value="0">普通商户</option>
+                                    <option value="1">黄金商户</option>
+                                </select>
+                            </li>
+                            <li>
+                                <p>地区名称：</p>
+                                <input type="text" name="regionName"/>
+                            </li>
+                            <li>
+                                <p>是否审核：</p>
+                                <select name="isReview">
+                                    <option value="">所有</option>
+                                    <option value="0">未审核</option>
+                                    <option value="1">已审核</option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:merchant::add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:merchant::edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:merchant::remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:merchant::export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:merchant:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:merchant:remove')}]];
+        var prefix = ctx + "system/merchant";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "商家信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'id',
+                    title : '修改人姓名',
+                    visible: false
+                },
+                {
+                    field : 'name',
+                    title : '姓名'
+                },
+                {
+                    field : 'merchantName',
+                    title : '商户名称'
+                },
+                    {
+                    field : 'announcement',
+                    title : '公告通知'
+                },
+                {
+                    field : 'idcard',
+                    title : '身份证号'
+                },
+                {
+                    field : 'merchantType',
+                    title : '入驻类型 ',
+                    formatter:function (value,row) {
+                        if(value == 1){
+                            return "基本商户";
+                        }
+                        if(value == 2){
+                            return "黄金商户";
+                        }
+                        if(value == 3){
+                            return "社区商户";
+                        }
+                    }
+                },
+                {
+                    field : 'merchantTable',
+                    title : '桌数'
+                },
+                {
+                    field : 'cellphone',
+                    title : '预留手机号'
+                },
+                {
+                    field : 'bankCard',
+                    title : '银行卡号'
+                },
+                {
+                    field : 'address',
+                    title : '商户地址'
+                },
+                {
+                    field : 'regionName',
+                    title : '地区名称'
+                },
+                {
+                    field : 'turnover',
+                    title : '商户营业额'
+                },
+                {
+                    field : 'amountRaised',
+                    title : '起提金额'
+                },
+                {
+                    field : 'serviceCharge',
+                    title : '商户手续费'
+                },
+                {
+                    field : 'isReview',
+                    title : '是否审核',
+                    formatter : function isReview(value, row, index) {
+                        if(value === 0){
+                            return "未审核";
+                        }
+                        if(value === 1){
+                            return "已审核";
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

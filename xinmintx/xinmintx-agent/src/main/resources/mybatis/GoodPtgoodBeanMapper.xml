@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.agent.mapper.GoodPtgoodBeanMapper">
+  <resultMap id="BaseResultMap" type="com.xinmintx.agent.model.GoodPtgood">
+    <id column="ptgoods_id" jdbcType="INTEGER" property="ptgoodsId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="ptgoods_name" jdbcType="VARCHAR" property="ptgoodsName" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="pt_price" jdbcType="DECIMAL" property="ptPrice" />
+    <result column="pt_size" jdbcType="INTEGER" property="ptSize" />
+    <result column="pt_validhours" jdbcType="DOUBLE" property="ptValidhours" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="ptgoods_number" jdbcType="INTEGER" property="ptgoodsNumber" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="ptgoods_thumb" jdbcType="VARCHAR" property="ptgoodsThumb" />
+    <result column="ptgoods_imgs" jdbcType="VARCHAR" property="ptgoodsImgs" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="uptime" jdbcType="TIMESTAMP" property="uptime" />
+    <result column="is_sale" jdbcType="INTEGER" property="isSale" />
+    <result column="pt_times" jdbcType="INTEGER" property="ptTimes" />
+    <result column="group_type" jdbcType="INTEGER" property="groupType" />
+    <result column="common" jdbcType="VARCHAR" property="common" />
+    <result column="name_activity" jdbcType="VARCHAR" property="nameActivity" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ptgoods_id, goods_id, ptgoods_name, price, pt_price, pt_size, pt_validhours, start_time, 
+    end_time, ptgoods_number, description, content, ptgoods_thumb, ptgoods_imgs, addtime, 
+    uptime, is_sale, pt_times, group_type, common, name_activity
+  </sql>
+  <select id="selectGoodPt" resultMap="BaseResultMap">
+     select <include refid="Base_Column_List"/> from good_ptgood
+     where goods_id = #{shopingId} and pt_size = #{people}
+  </select>
+
+</mapper>

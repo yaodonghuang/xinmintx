@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增商品')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-goods-add" th:each="list:${goodsSkuBean}">
+        <input type="hidden" th:value="${id}" id="goodsId" name="goodsId">
+        <div>
+            <div class="col-md-12" th:each="value:${list.values}">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">规格：</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" th:value="${value.specName}" name="specName" id="specName" onclick="showMerchant()">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">属性：</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" th:value="${value.specValue}" name="specValue" id="specValue"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">商品编码：</label>
+                    <div class="col-sm-8">
+                        <input id="skuId" name="skuId" class="form-control" type="text" th:value="${list.skuId}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">售价：</label>
+                    <div class="col-sm-8">
+                        <input id="price" name="price" class="form-control" th:value="${list.price}" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">代理价：</label>
+                    <div class="col-sm-8">
+                        <input id="agentPrice" name="agentPrice" th:value="${list.agentPrice}" class="form-control" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">划线价：</label>
+                    <div class="col-sm-8">
+                        <input id="linePrice" name="linePrice" th:value="${list.linePrice}" class="form-control" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">库存：</label>
+                    <div class="col-sm-8">
+                        <input id="stockNum" name="stockNum" th:value="${list.stockNum}" class="form-control" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">图片：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="file" th:value="${list.photo}" accept="image/*">
+                        <input name="photoId" class="form-control" type="hidden" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">销量：</label>
+                    <div class="col-sm-8">
+                        <input id="goodsSales" name="goodsSales" th:value="${list.goodsSales}" class="form-control" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">重量：</label>
+                    <div class="col-sm-8">
+                        <input id="goodsWeight" name="goodsWeight" th:value="${list.goodsWeight}" class="form-control" type="text" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script type="text/javascript">
+    $(function () {
+        querySkyu();
+    });
+
+    function querySkyu(){
+        var goodsId = $("#goodsId").val();
+        $.ajax({
+            url: "/system/goods/querySku",
+            data: {
+                "goodsId":goodsId
+            },
+            type: "POST",
+            success: function (data) {
+                //成功
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

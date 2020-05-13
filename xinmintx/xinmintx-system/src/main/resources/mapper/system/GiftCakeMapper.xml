@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GiftCakeMapper">
+    
+    <resultMap type="GiftCake" id="GiftCakeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="size"    column="size"    />
+        <result property="price"    column="price"    />
+        <result property="turnsPhoto"    column="pic"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectGiftCakeVo">
+        select id, name, size, price, pic, type, create_time from gift_cake
+    </sql>
+
+    <select id="selectGiftCakeList" parameterType="GiftCake" resultMap="GiftCakeResult">
+        <include refid="selectGiftCakeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="size != null "> and size = #{size}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="pic != null  and pic != ''"> and pic = #{pic}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectGiftCakeById" parameterType="Long" resultMap="GiftCakeResult">
+        <include refid="selectGiftCakeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGiftCake" parameterType="GiftCake" useGeneratedKeys="true" keyProperty="id">
+        insert into gift_cake
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="size != null ">size,</if>
+            <if test="price != null ">price,</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''">pic,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="size != null ">#{size},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''">#{turnsPhoto},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGiftCake" parameterType="GiftCake">
+        update gift_cake
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="size != null ">size = #{size},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="turnsPhoto != null  and turnsPhoto != ''">pic = #{turnsPhoto},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGiftCakeById" parameterType="Long">
+        delete from gift_cake where id = #{id}
+    </delete>
+
+    <delete id="deleteGiftCakeByIds" parameterType="String">
+        delete from gift_cake where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

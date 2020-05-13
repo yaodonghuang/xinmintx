@@ -1,0 +1,171 @@
+body {
+  background-color: #F5F4F4 ;
+  overflow-x: hidden;
+}
+.header {
+  width: 7.5rem;
+  height: 3.55rem;
+  background-image: url("/images/detail.img/bg.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.header .header_p1 {
+  font-size: 0.38rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #ffffff;
+  padding: 0.53rem 0 0 2.8rem;
+}
+.header .header_p1 .fa-angle-left {
+  color: #FFF;
+  font-size: 0.48rem;
+  font-weight: 100;
+  position: relative;
+  left: -2.65rem;
+}
+.header .header_p2 {
+  font-size: 0.32rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #ffffff;
+  line-height: 0.4rem;
+  padding-top: 0.35rem;
+  text-align: center;
+}
+.header .area_total {
+  width: 2.61rem;
+  height: 2.61rem;
+  border-radius: 50%;
+  position: relative;
+  left: 2.45rem;
+  top: 0.24rem;
+  background-image: url("/images/detail.img/total.png");
+  background-repeat: no-repeat;
+  background-size: 2.61rem 2.61rem;
+  z-index: 6;
+}
+.header .area_total span {
+  font-size: 0.48rem;
+  font-family: Adobe Heiti Std;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1.22rem;
+  position: relative;
+  left: 0rem;
+  top: 0.43rem;
+}
+.area_list {
+  width: 100%;
+  display: flex;
+}
+.area_list .area_list_left {
+  width: 50%;
+}
+.area_list .area_list_left .left_p1 {
+  font-size: 0.26rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #333333;
+  margin: 0.57rem 0 0 0.96rem;
+}
+.area_list .area_list_left .left_p2 {
+  font-size: 0.36rem;
+  font-family: Adobe Heiti Std;
+  font-weight: bold;
+  color: #333333;
+  margin: 0.08rem 0 0 1.09rem;
+}
+.area_list .area_list_right {
+  width: 50%;
+}
+.area_list .area_list_right .left_p1 {
+  font-size: 0.26rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #333333;
+  margin: 0.57rem 0 0 1.7rem;
+}
+.area_list .area_list_right .left_p2 {
+  font-size: 0.36rem;
+  font-family: Adobe Heiti Std;
+  font-weight: bold;
+  color: #333333;
+  margin: 0.08rem 0 0 1.49rem;
+}
+.list {
+  width: 100%;
+}
+.list .list_title {
+  font-size: 0.26rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #333333;
+  line-height: 0.4rem;
+  margin-left: 0.36rem;
+  margin-top: 0.59rem;
+  line-height: 0.46rem;
+  margin-bottom: 0.05rem;
+}
+.list .list_content {
+  width: 100%;
+  background-color: #FFF;
+}
+.list .list_content li {
+  display: flex;
+  border-bottom: 0.01rem solid #d5d5d5;
+  width: 100%;
+  height: 1.29rem;
+}
+.list .list_content li .content_left {
+  display: flex;
+}
+.list .list_content li .content_left .content_i {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: #f8f8f8;
+  border: 0.01rem solid #d0d0d0;
+  border-radius: 50%;
+  margin: 0.42rem 0 0 0.44rem;
+}
+.list .list_content li .content_left .content_i img {
+  width: 0.28rem;
+  height: 0.24rem;
+  margin: 0.11rem 0 0 0.09rem;
+}
+.list .list_content li .content_left .content_text {
+  margin-left: 0.14rem;
+}
+.list .list_content li .content_left .content_text .content_text_p1 {
+  padding-top: 0.34rem;
+  padding-bottom: 0.1rem;
+  font-size: 0.26rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #666666;
+}
+.list .list_content li .content_left .content_text .content_text_p2 {
+  font-size: 0.16rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #999999;
+}
+.list .list_content li .content_right {
+  margin-left: 2.05rem;
+}
+.list .list_content li .content_right .content_right_p1 {
+  margin-top: 0.14rem;
+  margin-left: 0.36rem;
+  margin-bottom: 0.08rem;
+  font-size: 0.16rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #868383;
+  line-height: 0.28rem;
+}
+.list .list_content li .content_right .content_right_p2 {
+  font-size: 0.36rem;
+  font-family: Adobe Heiti Std;
+  font-weight: normal;
+  color: #333333;
+  line-height: 0.48rem;
+}

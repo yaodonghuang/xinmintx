@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增商品')"/>
+    <th:block th:include="include :: summernote-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-goods-add">
+        <input type="hidden" id = "id" name = "id" th:value="${id}">
+        <div class="form-group" id="specification">
+            <div class="col-sm-8">
+                快递单号：<input name="courierNumber" class="form-control" type="text" required>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: summernote-js"/>
+<script type="text/javascript">
+
+
+   var prefix = ctx + "system/memberCardOrder";
+   $("#form-goods-add").validate({
+       focusCleanup: true
+   });
+
+   function submitHandler() {
+       if ($.validate.form()) {
+           $.operate.save(prefix + "/addCourier", $('#form-goods-add').serialize());
+       }
+   }
+
+
+</script>
+</body>
+</html>

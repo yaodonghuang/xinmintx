@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.ComplaintMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into complaint
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="complaint.memberId != null">
+                member_id,
+            </if>
+            <if test="complaint.communityId != null">
+                community_id,
+            </if>
+            <if test="complaint.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="complaint.type != null">
+                type,
+            </if>
+            <if test="complaint.content != null">
+                content,
+            </if>
+            <if test="complaint.createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="complaint.memberId != null">
+                #{complaint.memberId},
+            </if>
+            <if test="complaint.communityId != null">
+                #{complaint.communityId},
+            </if>
+            <if test="complaint.merchantId != null">
+                #{complaint.merchantId},
+            </if>
+            <if test="complaint.type != null">
+                #{complaint.type},
+            </if>
+            <if test="complaint.content != null">
+                #{complaint.content},
+            </if>
+            <if test="complaint.createTime != null">
+                #{complaint.createTime},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

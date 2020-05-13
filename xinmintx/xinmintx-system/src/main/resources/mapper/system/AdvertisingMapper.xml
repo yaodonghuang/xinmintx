@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.AdvertisingMapper">
+    
+    <resultMap type="Advertising" id="AdvertisingResult">
+        <result property="id"    column="id"    />
+        <result property="adType"    column="ad_type"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="linkType"    column="link_type"    />
+        <result property="linkUrl"    column="link_url"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="adPlace"    column="ad_place"    />
+        <result property="status"    column="status"    />
+        <result property="goodsPhotoUrl"    column="goods_photo_url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAdvertisingVo">
+        select id, ad_type, order_num, link_type, link_url, relate_id, ad_place, status, goods_photo_url, create_time, update_time from advertising
+    </sql>
+
+    <select id="selectAdvertisingList" parameterType="Advertising" resultMap="AdvertisingResult">
+        <include refid="selectAdvertisingVo"/>
+        <where>  
+            <if test="adType != null "> and ad_type = #{adType}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="linkType != null "> and link_type = #{linkType}</if>
+            <if test="linkUrl != null  and linkUrl != ''"> and link_url = #{linkUrl}</if>
+            <if test="relateId != null "> and relate_id = #{relateId}</if>
+            <if test="adPlace != null "> and ad_place = #{adPlace}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="goodsPhotoUrl != null  and goodsPhotoUrl != ''"> and goods_photo_url = #{goodsPhotoUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectAdvertisingById" parameterType="Long" resultMap="AdvertisingResult">
+        <include refid="selectAdvertisingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAdvertising" parameterType="Advertising" useGeneratedKeys="true" keyProperty="id">
+        insert into advertising
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adType != null ">ad_type,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="linkType != null ">link_type,</if>
+            <if test="linkUrl != null  and linkUrl != ''">link_url,</if>
+            <if test="relateId != null ">relate_id,</if>
+            <if test="adPlace != null ">ad_place,</if>
+            <if test="status != null ">status,</if>
+            <if test="goodsPhotoUrl != null  and goodsPhotoUrl != ''">goods_photo_url,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adType != null ">#{adType},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="linkType != null ">#{linkType},</if>
+            <if test="linkUrl != null  and linkUrl != ''">#{linkUrl},</if>
+            <if test="relateId != null ">#{relateId},</if>
+            <if test="adPlace != null ">#{adPlace},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="goodsPhotoUrl != null  and goodsPhotoUrl != ''">#{goodsPhotoUrl},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAdvertising" parameterType="Advertising">
+        update advertising
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="adType != null ">ad_type = #{adType},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="linkType != null ">link_type = #{linkType},</if>
+            <if test="linkUrl != null  and linkUrl != ''">link_url = #{linkUrl},</if>
+            <if test="relateId != null ">relate_id = #{relateId},</if>
+            <if test="adPlace != null ">ad_place = #{adPlace},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="goodsPhotoUrl != null  and goodsPhotoUrl != ''">goods_photo_url = #{goodsPhotoUrl},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAdvertisingById" parameterType="Long">
+        delete from advertising where id = #{id}
+    </delete>
+
+    <delete id="deleteAdvertisingByIds" parameterType="String">
+        delete from advertising where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

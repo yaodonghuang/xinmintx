@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:include="include :: header('新增拼团')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-ptgood-add">
+        <input id="goodsId" name="goodsId" type="hidden"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">活动名称：</label>
+            <div class="col-sm-8">
+                <input name="nameActivity" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">选择商品：</label>
+            <div class="col-sm-8">
+                <input name="ptgoodsName" id="goodsListName" class="form-control" onclick="selectGoods()" type="text" placeholder="请选择商品" required readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8" style="border: 1px " id="addPT">
+                拼团人数(1为零售)：<input name="ptSize" class="form-control" type="text">
+                优惠价格(减去多少)：<input name="ptPrice" class="form-control" type="text">
+            </div>
+            <a class="btn btn-success" onclick="addPT()">
+                <i class="fa fa-plus"></i> 添加拼团规格
+            </a>
+            <!--<input type="button" value="添加拼团规格" onclick="addPT()">-->
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">拼团时间(小时)：</label>
+            <div class="col-sm-8">
+                <input name="ptValidhours" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">拼团有效期：</label>
+            <div class="col-sm-4">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="startTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="endTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商品拼团库存数量：</label>
+            <div class="col-sm-8">
+                <input name="ptgoodsNumber" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否启用：</label>
+            <div class="col-sm-8">
+                <select class="form-control" name="isSale" id="isSale">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">拼团次数：</label>
+            <div class="col-sm-8">
+                <input name="groupTimes" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">拼团类型：</label>
+            <div class="col-sm-8">
+                <select class="form-control" name="groupType" id="groupType">
+                    <option value="1">代理商</option>
+                    <option value="2">惠商</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script type="text/javascript">
+    var prefix = ctx + "system/ptgood"
+    $("#form-ptgood-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-ptgood-add').serialize());
+        }
+    }
+
+    $("input[name='startTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $("input[name='endTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $("input[name='addtime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $("input[name='uptime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $("input[name='ptTimes']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    function addPT() {
+        $("#addPT").append(
+            "<div>" +
+                "拼团人数(1为零售)：<input name=\"ptSize\" class=\"form-control\" type=\"text\">"+
+                "优惠价格(减去多少)：<input name=\"ptPrice\" class=\"form-control\" type=\"text\">"+
+            "</div>"
+        )
+    }
+
+    /*商品分类管理-新增-选择菜单树*/
+    function selectGoods() {
+        var url = prefix + "/selectGoods";
+        var options = {
+            title: '商品选择',
+            //width: "380",
+            url: url,
+            callBack: selectGood
+        };
+        $.modal.openOptions(options);
+    }
+    function selectGood(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#goodsId").val(body.find('#goodsId').val());
+        $("#goodsListName").val(body.find('#goodsListName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

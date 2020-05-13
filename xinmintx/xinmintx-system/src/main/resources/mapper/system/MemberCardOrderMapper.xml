@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberCardOrderMapper">
+
+    <resultMap type="MemberCardOrder" id="MemberCardOrderResult">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="addressId" column="address_id"/>
+        <result property="message" column="message"/>
+        <result property="orderType" column="order_type"/>
+        <result property="description" column="description"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="courierNumber" column="courier_number"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="cardNumber" column="card_number"/>
+    </resultMap>
+
+    <sql id="selectMemberCardOrderVo">
+        select id, order_id, address_id, message, order_type, description, total_price, pay_status, order_status, courier_number, create_time, update_time from member_card_order
+    </sql>
+
+    <select id="selectMemberCardOrderList" parameterType="MemberCardOrder" resultMap="MemberCardOrderResult">
+       SELECT a.id,
+        a.order_id,
+        a.address_id,
+        a.message,
+        a.order_type,
+        a.description,
+        a.total_price,
+        a.pay_status,
+        a.order_status,
+        a.courier_number,
+        a.create_time,
+        a.update_time,
+        IF((select b.card_id from member_card_order_detail b where b.card_order_id=a.id order by b.card_id desc limit 1)=null,'-',
+        (select c.card_number from member_card_info c where c.id=(select b.card_id from member_card_order_detail b where b.card_order_id=a.id order by b.card_id desc limit 1))) card_number
+        FROM
+        member_card_order a
+        WHERE a.order_status in(2,3,4,5,6,7,8,9,10)
+        ORDER BY a.order_status ASC,a.create_time DESC
+    </select>
+
+    <!--<select id="selectMemberCardOrderList" parameterType="MemberCardOrder" resultMap="MemberCardOrderResult">-->
+    <!--<include refid="selectMemberCardOrderVo"/>-->
+    <!--<where>-->
+    <!--<if test="orderId != null "> and order_id = #{orderId}</if>-->
+    <!--<if test="addressId != null "> and address_id = #{addressId}</if>-->
+    <!--<if test="message != null  and message != ''"> and message = #{message}</if>-->
+    <!--<if test="orderType != null "> and order_type = #{orderType}</if>-->
+    <!--<if test="description != null  and description != ''"> and description = #{description}</if>-->
+    <!--<if test="totalPrice != null "> and total_price = #{totalPrice}</if>-->
+    <!--<if test="payStatus != null "> and pay_status = #{payStatus}</if>-->
+    <!--<if test="orderStatus != null "> and order_status = #{orderStatus}</if>-->
+    <!--<if test="courierNumber != null  and courierNumber != ''"> and courier_number = #{courierNumber}</if>-->
+    <!--</where>-->
+    <!--</select>-->
+
+    <select id="selectMemberCardOrderById" parameterType="Long" resultMap="MemberCardOrderResult">
+        <include refid="selectMemberCardOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMemberCardOrder" parameterType="MemberCardOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into member_card_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null ">order_id,</if>
+            <if test="addressId != null ">address_id,</if>
+            <if test="message != null  and message != ''">message,</if>
+            <if test="orderType != null ">order_type,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="totalPrice != null ">total_price,</if>
+            <if test="payStatus != null ">pay_status,</if>
+            <if test="orderStatus != null ">order_status,</if>
+            <if test="courierNumber != null  and courierNumber != ''">courier_number,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null ">#{orderId},</if>
+            <if test="addressId != null ">#{addressId},</if>
+            <if test="message != null  and message != ''">#{message},</if>
+            <if test="orderType != null ">#{orderType},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="totalPrice != null ">#{totalPrice},</if>
+            <if test="payStatus != null ">#{payStatus},</if>
+            <if test="orderStatus != null ">#{orderStatus},</if>
+            <if test="courierNumber != null  and courierNumber != ''">#{courierNumber},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMemberCardOrder" parameterType="MemberCardOrder">
+        update member_card_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null ">order_id = #{orderId},</if>
+            <if test="addressId != null ">address_id = #{addressId},</if>
+            <if test="message != null  and message != ''">message = #{message},</if>
+            <if test="orderType != null ">order_type = #{orderType},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="totalPrice != null ">total_price = #{totalPrice},</if>
+            <if test="payStatus != null ">pay_status = #{payStatus},</if>
+            <if test="orderStatus != null ">order_status = #{orderStatus},</if>
+            <if test="courierNumber != null  and courierNumber != ''">courier_number = #{courierNumber},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberCardOrderById" parameterType="Long">
+        delete from member_card_order where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberCardOrderByIds" parameterType="String">
+        delete from member_card_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.factory.mapper.MerchantMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.factory.model.Merchant">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="order_id" jdbcType="INTEGER" property="orderId"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
+    <result column="recommender" jdbcType="INTEGER" property="recommender"/>
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+    <result column="cellphone" jdbcType="VARCHAR" property="cellphone"/>
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard"/>
+    <result column="merchant_type" jdbcType="INTEGER" property="merchantType"/>
+    <result column="merchant_table" jdbcType="INTEGER" property="merchantTable"/>
+    <result column="address" jdbcType="VARCHAR" property="address"/>
+    <result column="region_name" jdbcType="VARCHAR" property="regionName"/>
+    <result column="region_code" jdbcType="VARCHAR" property="regionCode"/>
+    <result column="merchant_branch_office_id" jdbcType="VARCHAR" property="merchantBranchOfficeId"/>
+    <result column="turnover" jdbcType="DECIMAL" property="turnover"/>
+    <result column="is_review" jdbcType="INTEGER" property="isReview"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    <result column="merchant_category" jdbcType="VARCHAR" property="merchantCategory"/>
+    <result column="per_capita" jdbcType="DECIMAL" property="perCapita"/>
+    <result column="token" jdbcType="VARCHAR" property="token"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,order_id,name,idcard,recommender,merchant_name,cellphone,bank_card,
+        merchant_type,merchant_table,address,region_name,region_code,merchant_branch_office_id,
+        turnover,is_review,create_time,create_user,update_time,update_user,
+        merchant_category,per_capita,token
+    </sql>
+    <insert id="addBytel">
+        insert into merchant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="idcard != null">
+                idcard,
+            </if>
+            <if test="recommender != null">
+                recommender,
+            </if>
+            <if test="merchantName != null">
+                merchant_name,
+            </if>
+            <if test="cellphone != null">
+                cellphone,
+            </if>
+            <if test="bankCard != null">
+                bank_card,
+            </if>
+            <if test="merchantType != null">
+                merchant_type,
+            </if>
+            <if test="merchantTable != null">
+                merchant_table,
+            </if>
+            <if test="merchantBranchOfficeId != null">
+                merchant_branch_office_id,
+            </if>
+            <if test="regionName != null">
+                region_name,
+            </if>
+            <if test="regionCode != null">
+                region_code,
+            </if>
+            <if test="turnover != null">
+                turnover,
+            </if>
+            <if test="isReview != null">
+                is_review,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="merchantCategory != null">
+                merchant_category,
+            </if><if test="perCapita != null">
+                per_capita,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{order_id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="idcard != null">
+                #{idcard},
+            </if>
+            <if test="recommender != null">
+                #{recommender},
+            </if>
+            <if test="merchantName != null">
+                #{merchant_name},
+            </if>
+            <if test="cellphone != null">
+                #{cellphone},
+            </if>
+            <if test="bankCard != null">
+                #{bank_card},
+            </if>
+            <if test="merchantType != null">
+                #{merchant_type},
+            </if>
+            <if test="merchantTable != null">
+                #{merchant_table},
+            </if>
+            <if test="merchantBranchOfficeId != null">
+                #{merchant_branch_office_id},
+            </if>
+            <if test="regionName != null">
+                #{region_name},
+            </if>
+            <if test="regionCode != null">
+                #{region_code},
+            </if>
+            <if test="turnover != null">
+                #{turnover},
+            </if>
+            <if test="isReview != null">
+                #{is_review},
+            </if>
+            <if test="createTime != null">
+                #{create_time},
+            </if>
+            <if test="createUser != null">
+                #{create_user},
+            </if>
+            <if test="updateTime != null">
+                #{update_time},
+            </if>
+            <if test="updateUser != null">
+                #{update_user},
+            </if>
+            <if test="merchantCategory != null">
+                #{merchant_category},
+            </if><if test="perCapita != null">
+                 #{per_capita},
+            </if>
+            <if test="token != null">
+                #{token},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBytel">
+         update merchant
+        set token = #{merchant.token}
+        where id = #{merchant.id}
+    </update>
+    <select id="selectByTel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from merchant
+        where
+        cellphone = #{phone}
+    </select>
+    <select id="selectIphone" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from merchant  where cellphone = #{phone})
+    </select>
+    <select id="queryByToken" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from merchant
+        where token =#{token}
+    </select>
+</mapper>

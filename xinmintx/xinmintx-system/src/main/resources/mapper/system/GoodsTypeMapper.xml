@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsTypeMapper">
+
+    <resultMap type="com.xinmintx.system.domain.GoodsType" id="GoodsTypeResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="typeName"    column="type_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="level"    column="level"    />
+        <result property="typephoto"    column="typePhoto"    />
+        <result property="parentName"     column="parent_name"    />
+    </resultMap>
+
+    <sql id="selectGoodsTypeVo">
+        select id, parent_id, type_name, order_num, level, typePhoto from goods_type
+    </sql>
+
+    <select id="selectGoodsTypeList" parameterType="com.xinmintx.system.domain.GoodsType" resultMap="GoodsTypeResult">
+        <include refid="selectGoodsTypeVo"/>
+        <where>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="typeName != null  and typeName != ''"> and type_name like concat('%', #{typeName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="typephoto != null  and typephoto != ''"> and typePhoto = #{typephoto}</if>
+        </where>
+        order by order_num
+    </select>
+
+    <select id="selectGoodsTypeById" parameterType="Long" resultMap="GoodsTypeResult">
+        SELECT t.id,t.`level`,t.parent_id,t.typePhoto,t.type_name,t.order_num,
+			(SELECT type_name FROM goods_type WHERE id = t.parent_id) parent_name
+		FROM goods_type t
+        where id = #{id}
+    </select>
+
+    <insert id="insertGoodsType" parameterType="com.xinmintx.system.domain.GoodsType" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null ">parent_id,</if>
+            <if test="typeName != null  and typeName != ''">type_name,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="level != null ">level,</if>
+            <if test="typephoto != null  and typephoto != ''">typePhoto,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null ">#{parentId},</if>
+            <if test="typeName != null  and typeName != ''">#{typeName},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="level != null ">#{level},</if>
+            <if test="typephoto != null  and typephoto != ''">#{typephoto},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGoodsType" parameterType="com.xinmintx.system.domain.GoodsType">
+        update goods_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null ">parent_id = #{parentId},</if>
+            <if test="typeName != null  and typeName != ''">type_name = #{typeName},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="level != null ">level = #{level},</if>
+            <if test="typephoto != null  and typephoto != ''">typePhoto = #{typephoto},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsTypeById" parameterType="Long">
+        delete from goods_type where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsTypeByIds" parameterType="String">
+        delete from goods_type where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="select" resultMap="GoodsTypeResult">
+        select id,type_name from goods_type
+        where parent_id = 0;
+    </select>
+    <select id="selectByParentId" resultMap="GoodsTypeResult">
+        select id,type_name from goods_type
+        where parent_id = #{parentCode}
+    </select>
+    <select id="selectTreeData" parameterType="com.xinmintx.system.domain.GoodsType" resultMap="GoodsTypeResult">
+    <include refid="selectGoodsTypeVo"/>
+    where level in (1,2)
+    </select>
+    <select id="checkMenuNameUnique" parameterType="com.xinmintx.system.domain.GoodsType" resultMap="GoodsTypeResult">
+        <include refid="selectGoodsTypeVo"/>
+        where type_name=#{typeName} and parent_id = #{parentId}
+    </select>
+    <select id="selectCountMenuByParentId" resultType="Integer">
+        select count(1) from goods_type where parent_id=#{parentId}
+    </select>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MerchantPrinterMapper">
+    
+    <resultMap type="MerchantPrinter" id="MerchantPrinterResult">
+        <result property="id"    column="id"    />
+        <result property="merchantId"    column="merchant_id"    />
+        <result property="merchantName"    column="merchant_name"    />
+        <result property="sn"    column="sn"    />
+        <result property="printkey"    column="printkey"    />
+    </resultMap>
+
+    <sql id="selectMerchantPrinterVo">
+        select id, merchant_id, sn, printkey from merchant_printer
+    </sql>
+
+    <select id="selectMerchantPrinterList" parameterType="MerchantPrinter" resultMap="MerchantPrinterResult">
+        SELECT a.id, a.merchant_id, b.merchant_name,a.sn, a.printkey FROM merchant_printer a, merchant b WHERE a.merchant_id = b.id
+        <!--        <include refid="selectMerchantPrinterVo"/>-->
+<!--        <where>  -->
+<!--            <if test="merchantId != null "> and merchant_id = #{merchantId}</if>-->
+<!--            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>-->
+<!--            <if test="printkey != null  and printkey != ''"> and printkey = #{printkey}</if>-->
+<!--        </where>-->
+    </select>
+    
+    <select id="selectMerchantPrinterById" parameterType="Long" resultMap="MerchantPrinterResult">
+        SELECT a.id, a.merchant_id, b.merchant_name,a.sn, a.printkey FROM merchant_printer a, merchant b WHERE a.merchant_id = b.id and a.id = #{id}
+<!--        <include refid="selectMerchantPrinterVo"/>-->
+<!--        where id = #{id}-->
+    </select>
+        
+    <insert id="insertMerchantPrinter" parameterType="MerchantPrinter" useGeneratedKeys="true" keyProperty="id">
+        insert into merchant_printer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merchantId != null ">merchant_id,</if>
+            <if test="sn != null  and sn != ''">sn,</if>
+            <if test="printkey != null  and printkey != ''">printkey,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merchantId != null ">#{merchantId},</if>
+            <if test="sn != null  and sn != ''">#{sn},</if>
+            <if test="printkey != null  and printkey != ''">#{printkey},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMerchantPrinter" parameterType="MerchantPrinter">
+        update merchant_printer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="merchantId != null ">merchant_id = #{merchantId},</if>
+            <if test="sn != null  and sn != ''">sn = #{sn},</if>
+            <if test="printkey != null  and printkey != ''">printkey = #{printkey},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMerchantPrinterById" parameterType="Long">
+        delete from merchant_printer where id = #{id}
+    </delete>
+
+    <delete id="deleteMerchantPrinterByIds" parameterType="String">
+        delete from merchant_printer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

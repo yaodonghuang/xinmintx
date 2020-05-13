@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增商品')"/>
+    <th:block th:include="include :: summernote-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-goods-add">
+        <input type="hidden" id = "id" name = "id" th:value="${id}">
+        <div class="form-group" id="specification">
+            <div class="col-sm-8">
+                属性名称：<input name="attributeName" class="form-control" type="text" required>
+                属性内容：<input name="attributeValue" class="form-control" type="text" required>
+            </div>
+        </div>
+        <input type="button" onclick="addDiv()" value="添加属性">
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: summernote-js"/>
+<script type="text/javascript">
+
+
+    var prefix = ctx + "system/goods";
+    $("#form-goods-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/addParameter", $('#form-goods-add').serialize());
+        }
+    }
+
+    // function carousel() {
+    //     var files = document.getElementById("files").files;
+    //     var formData = new FormData();
+    //     for (var i = 0; i < files.length; i++) {
+    //         formData.append("file", files[i]);
+    //     }
+    //     $.ajax({
+    //         url: "/system/goods/imageListUpload",
+    //         data: formData,
+    //         type: "POST",
+    //         async: false,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         success: function (data) {
+    //             //成功
+    //             $("#turnsPhoto").val(data);
+    //         }
+    //     });
+    // };
+
+    // function uploadPhoto(e) {
+    //     var file = e.target.files[0];
+    //     var formData = new FormData();
+    //     formData.append("file", file);
+    //     $.ajax({
+    //         url: '/system/goods/imageUpload',
+    //         data: formData,
+    //         type: 'post',
+    //         async: false,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         success: function (data) {
+    //             //成功
+    //             var _input = e.target.parentNode.children[6];
+    //             _input.value = data;
+    //         }
+    //     });
+    // }
+
+    function addDiv() {
+        $("#specification").append(
+            "<div class='col-sm-8'>" +
+            "属性名称：<input name='attributeName' class='form-control' type='text' required>" +
+            "属性内容：<input name='attributeValue' class='form-control' type='text' required>" +
+            "</div>"
+        )
+    }
+
+</script>
+</body>
+</html>

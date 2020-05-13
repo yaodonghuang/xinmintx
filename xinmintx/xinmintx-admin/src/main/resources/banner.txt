@@ -1,0 +1,2 @@
+Application Version: ${xinmintx.version}
+Spring Boot Version: ${spring-boot.version}

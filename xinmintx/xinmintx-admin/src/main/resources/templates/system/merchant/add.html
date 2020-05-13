@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增商家信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-merchant-add">
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">姓名：</label>
+                <div class="col-sm-8">
+                    <input name="name" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">商户名称：</label>
+                <div class="col-sm-8">
+                    <input name="merchantName" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">公告通知：</label>
+                <div class="col-sm-8">
+                    <input name="announcement" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">身份证号：</label>
+                <div class="col-sm-8">
+                    <input name="idcard" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">手机号：</label>
+                <div class="col-sm-8">
+                    <input name="cellphone" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">银行卡号：</label>
+                <div class="col-sm-8">
+                    <input name="bankCard" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">入驻类型：</label>
+                <div class="col-sm-8">
+                    <select id="merchantType" name="merchantType" class="form-control m-b" onchange="selectMerchantType()">
+                        <option value="1">普通商户</option>
+                        <option value="2">黄金商户</option>
+                        <option value="3">社区商户</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" id="category" style="display: none;">
+                <label class="col-sm-3 control-label">商户分类：</label>
+                <div class="col-sm-8">
+                    <select id="threeLevel" name="merchantCategory" class="form-control m-b" onchange="threeLevelType()">
+                        <option value="1">美食</option>
+                        <option value="2">水果</option>
+                        <option value="3">夜宵</option>
+                        <option value="4">果蔬商超</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12" id="threeType">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">所有分类：</label>
+                    <div class="col-sm-9">
+                        <label class="check-box">
+                                <input type="checkbox" name="threeType" value="1" id="inlineCheckbox1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                            水果</label>
+                        <label class="check-box">
+                                <input type="checkbox" name="threeType" value="2" id="inlineCheckbox2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                            水产</label>
+                        <label class="check-box">
+                                <input type="checkbox" name="threeType" value="3" id="inlineCheckbox3" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                            蔬菜</label>
+                        <label class="check-box">
+                                <input type="checkbox" name="threeType" value="4" id="inlineCheckbox4" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                            肉类</label>
+                        <label class="check-box">
+                                <input type="checkbox" name="threeType" value="5" id="inlineCheckbox5" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                            粮油调味</label>
+                    </div>
+                </div>
+            </div>
+
+
+<!--            <div class="form-group" id="threeType" style="display: none;">-->
+<!--                <label class="col-sm-3 control-label">商户分类：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select name="merchantCategory" class="form-control m-b">-->
+<!--                        <option value="1">美食</option>-->
+<!--                        <option value="2">水果</option>-->
+<!--                        <option value="3">夜宵</option>-->
+<!--                        <option value="4">果蔬商超</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">桌数：</label>
+                <div class="col-sm-8">
+                    <input name="merchantTable" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">商户地址：</label>
+                <div class="col-sm-8">
+                    <input name="address" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">地区：</label>
+                <div class="col-sm-8">
+                    <select class="col-sm-4" id="province" onchange="getCity()"></select>
+                    <select class="col-sm-4" id="city" onchange="getDistrict()"></select>
+                    <select class="col-sm-4" id="regionCode" name="regionCode"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">起提金额：</label>
+                <div class="col-sm-8">
+                    <input name="amountRaised" class="form-control" type="number" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">商户手续费：</label>
+                <div class="col-sm-8">
+                    <input name="serviceCharge" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否审核：</label>
+                <div class="col-sm-8">
+                    <select name="isReview" class="form-control">
+                        <option value="0">未审核</option>
+                        <option value="1">已审核</option>
+                    </select>
+                </div>
+            </div>
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">商户头像：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="avatar" type="hidden" required>-->
+<!--                    <img src="/img/id1.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上传身份证正面：</label>
+                <div class="col-sm-6">
+                    <input name="idcardFront" type="hidden" required>
+                    <img src="/img/id1.png" style="width: 300px;height: 200px;">
+                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上传身份证反面：</label>
+                <div class="col-sm-6">
+                    <input name="idcardBack" type="hidden" required>
+                    <img src="/img/id2.png" style="width: 300px;height: 200px;">
+                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>
+                </div>
+            </div>
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">上传银行卡正面：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="bankCardFront" type="hidden" required>-->
+<!--                    <img src="/img/icon.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">上传银行卡反面：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="bankCardBack" type="hidden" required>-->
+<!--                    <img src="/img/icon.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">上传门头照片：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="doorHeadPhoto" type="hidden" required>-->
+<!--                    <img src="/img/icon.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">上传店内照片：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="storePhotoOne" type="hidden" required>-->
+<!--                    <img src="/img/icon.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">上传店内照片：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="storePhotoTwo" type="hidden" required>-->
+<!--                    <img src="/img/icon.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上传营业执照：</label>
+                <div class="col-sm-6">
+                    <input name="businessLicense" type="hidden" required>
+                    <img src="/img/icon.png" style="width: 300px;height: 200px;">
+                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>
+                </div>
+            </div>
+<!--            <div class="form-group" id="other" style="display: none;">-->
+<!--                <label class="col-sm-3 control-label">上传其他照片：</label>-->
+<!--                <div class="col-sm-6">-->
+<!--                    <input name="otherPhoto" type="hidden" required>-->
+<!--                    <img src="/img/icon.png" style="width: 300px;height: 200px;">-->
+<!--                    <input type="file" class="form-control" accept="image/*" onchange="photoUpload(event)" required>-->
+<!--                </div>-->
+<!--            </div>-->
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/merchant";
+        $("#form-merchant-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-merchant-add').serialize());
+            }
+        }
+
+        function photoUpload(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+                $.ajax({
+                    url: "/system/api/photoUpload",
+                    data: formData,
+                    type: "POST",
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        //成功
+                        event.target.parentNode.children[1].src = data;
+                        event.target.parentNode.children[0].value = data;
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            getProvince();
+        });
+
+        function getProvince() {
+            $.ajax({
+                url: "/region/getProvince",
+                method: "POST",
+                success: function (res) {
+                    var data = res.data;
+                    var _html = "";
+                    for(var i = 0; i < data.length; i++){
+                        _html += "<option value='"+ data[i].id +"'>"+ data[i].name +"</option>";
+                    }
+                    $("#province").html(_html);
+                    getCity();
+                    getDistrict();
+                }
+            });
+        }
+
+        function getCity() {
+            var province = $("#province").val();
+            if (province){
+                $.ajax({
+                    url: "/region/getCity/" + province,
+                    method: "POST",
+                    success: function (res) {
+                        var data = res.data;
+                        var _html = "";
+                        for(var i = 0; i < data.length; i++){
+                            _html += "<option value='"+ data[i].id +"'>"+ data[i].name +"</option>";
+                        }
+                        $("#city").html(_html);
+                        getDistrict();
+                    }
+                });
+            }
+        }
+
+        function getDistrict() {
+            var city = $("#city").val();
+            if (city){
+                $.ajax({
+                    url: "/region/getDistrict/" + city,
+                    method: "POST",
+                    success: function (res) {
+                        var data = res.data;
+                        var _html = "";
+                        for(var i = 0; i < data.length; i++){
+                            _html += "<option value='"+ data[i].id +"'>"+ data[i].name +"</option>";
+                        }
+                        $("#regionCode").html(_html);
+                    }
+                });
+            }
+        }
+
+        function selectMerchantType(){
+            var merchantType = $("#merchantType").val();
+            if (merchantType == 3){
+                $("#category").show();
+                $("#other").show();
+            }else{
+                $("#category").hide();
+                $("#other").hide();
+            }
+        }
+
+        function threeLevelType() {
+            var threeLevelType = $("#threeLevel").val();
+            if (threeLevelType == 4){
+                $("#threeType").show();
+            }else {
+                $("#threeType").hide();
+            }
+        }
+
+        $(function () {
+            $("#threeType").hide();
+        })
+    </script>
+</body>
+</html>

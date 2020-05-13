@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>合伙人</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/agent.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <h2 class="header_h">代理商服务</h2>
+    <div class="header_content">
+        <div class="header_top">
+            <div class="header_top_left">
+                <div class="use">
+                    <img th:src="${numberMedol.avatar}">
+                </div>
+                <ul class="user_cont">
+                    <li>
+                        <span class="name" th:text="${numberMedol.username}"></span>
+                        <span class="user_cont_span1">合伙人</span>
+                    </li>
+                    <li>
+                        <span class="money" onclick="balanceStatement()">余额:</span>
+                        <span class="money_n" th:text="${numberMedol.balance}" onclick="balanceStatement()"></span>
+                        <span class="user_cont_span2" onclick="deposit()">提现</span>
+                    </li>
+                </ul>
+            </div>
+            <ul class="header_top_right">
+                <li onclick="partnerTeamList()">
+                    <p class="header_top_right_p" th:text="${numberMedol.agentTeamNumber}"></p>
+                    <span class="span3">团队</span>
+                </li>
+                <li onclick="listPartner()">
+                    <p class="header_top_right_p" th:text="${numberMedol.partnerNumber}"></p>
+                    <span class="span3">合伙人</span>
+                </li>
+            </ul>
+        </div>
+        <ul class="header_bottom">
+            <li onclick="listSilver()">
+                <p class="header_top_right_p" th:text="${numberMedol.silverNumber}"></p>
+                <span class="span3">新民金卡</span>
+            </li>
+            <li onclick="listAgent()">
+                <p class="header_top_right_p" th:text="${numberMedol.agentNumber}"></p>
+                <span class="span3">代理</span>
+            </li>
+            <li  onclick="listMerchant()">
+                <p class="header_top_right_p" th:text="${numberMedol.merchantNumber}"></p>
+                <span class="span3">商户</span>
+            </li>
+            <li onclick="listStaff()">
+                <p class="header_top_right_p" th:text="${numberMedol.staffNumber}"></p>
+                <span class="span3">员工</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--代理商主页头部结束-->
+<div class="essential">
+    <img src="/images/agent.img/icon1.png" alt="" class="essential_icon">
+    必备功能
+    <span class="essential_y1"></span>
+    <span class="essential_y2"></span>
+    <div class="timer">
+        <p class="time_P">
+            考核中
+            <span class="timer_s">任务倒计时:</span>
+            <span id="timer_cont"></span>
+            <input class="endTime" id="endTime" type="hidden" th:value="${numberMedol.endTime}">
+        </p>
+    </div>
+</div>
+<ul class="essential_list">
+    <li>
+        <img src="/images/agent.img/agentIcon1.png" alt="" class="agentIcon1" onclick="addAgency()">
+        增加代理
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon2.png" alt="" class="agentIcon2" onclick="addCommercialTenant()">
+        增加商户
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon3.png" alt="" class="agentIcon3" onclick="addSilverCard()">
+        增加新民金卡
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon4.png" alt="" class="agentIcon4" onclick="addStaff()">
+        增加员工
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon10.png" alt="" class="agentIcon9" onclick="addArea()">
+        我的地区
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon11.png" alt="" class="agentIcon11" onclick="addPlant()">
+        工厂入驻
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon12.png" alt="" class="agentIcon12" onclick="goShopping()">
+        商品采购
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon6.png" alt="" class="agentIcon6" onclick="addPartner()">
+        增加合伙人
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon7.png" alt="" class="agentIcon7" onclick="dataGram()">
+        资料包
+    </li>
+    <li>
+        <img src="/images/agent.img/agentIcon8.png" alt="" class="agentIcon8" onclick="setIndex()">
+        设置
+    </li>
+    <li onclick="goProcurementMarket()">
+        <img src="/images/agent.img/agentIcon14.png" alt="" class="agentIcon15">
+        采购市场
+    </li>
+    <li onclick="myClass()">
+        <img src="/images/class.png" class="agentIcon16">
+        我的课堂
+    </li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+<!--必备功能结束-->
+<script>
+    $(function () {
+        var s = setInterval(function () {
+            var endTime = $("#endTime").val();
+            var date = new Date();
+            var now = date.getTime();//获取当前时间
+            var endDate = new Date(endTime);//获取结束时间
+            var end = endDate.getTime();
+            var timer = end - now;//时间差
+            if(timer >= 0){
+                d = Math.floor(timer/1000/60/60/24);
+                h = Math.floor(timer/1000/60/60%24);
+                if (h < 10){
+                    h = '0'+ h;
+                }
+                $('#timer_cont').html(d + '天'+ h + '时');
+            }else{
+                clearInterval(s);
+            }
+        },1000)
+    });
+</script>
+<!--必备功能结束-->
+</body>
+</html>

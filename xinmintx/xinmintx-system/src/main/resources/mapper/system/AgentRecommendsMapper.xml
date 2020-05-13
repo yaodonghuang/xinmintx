@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.AgentRecommendsMapper">
+    
+    <resultMap type="AgentRecommends" id="AgentRecommendsResult">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+    </resultMap>
+
+    <sql id="selectAgentRecommendsVo">
+        select id, number from agent_recommends
+    </sql>
+
+    <select id="selectAgentRecommendsList" parameterType="AgentRecommends" resultMap="AgentRecommendsResult">
+        <include refid="selectAgentRecommendsVo"/>
+        <where>  
+            <if test="number != null "> and number = #{number}</if>
+        </where>
+    </select>
+    
+    <select id="selectAgentRecommendsById" parameterType="Long" resultMap="AgentRecommendsResult">
+        <include refid="selectAgentRecommendsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAgentRecommends" parameterType="AgentRecommends" useGeneratedKeys="true" keyProperty="id">
+        insert into agent_recommends
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="number != null ">number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="number != null ">#{number},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAgentRecommends" parameterType="AgentRecommends">
+        update agent_recommends
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="number != null ">number = #{number},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAgentRecommendsById" parameterType="Long">
+        delete from agent_recommends where id = #{id}
+    </delete>
+
+    <delete id="deleteAgentRecommendsByIds" parameterType="String">
+        delete from agent_recommends where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

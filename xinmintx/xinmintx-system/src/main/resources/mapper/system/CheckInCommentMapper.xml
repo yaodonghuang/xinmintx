@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.CheckInCommentMapper">
+    
+    <resultMap type="CheckInComment" id="CheckInCommentResult">
+        <result property="id"    column="id"    />
+        <result property="checkInId"    column="check_in_id"    />
+        <result property="comment"    column="comment"    />
+        <result property="commentName"    column="comment_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="pictureUrl"    column="picture_url"    />
+    </resultMap>
+
+    <sql id="selectCheckInCommentVo">
+        select id, check_in_id, comment, comment_name, create_time, picture_url from check_in_comment
+    </sql>
+
+    <select id="selectCheckInCommentList" parameterType="CheckInComment" resultMap="CheckInCommentResult">
+        <include refid="selectCheckInCommentVo"/>
+        <where>  
+            <if test="checkInId != null "> and check_in_id = #{checkInId}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+            <if test="commentName != null "> and comment_name like concat('%', #{commentName}, '%')</if>
+            <if test="pictureUrl != null  and pictureUrl != ''"> and picture_url = #{pictureUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectCheckInCommentById" parameterType="Long" resultMap="CheckInCommentResult">
+        <include refid="selectCheckInCommentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCheckInComment" parameterType="CheckInComment" useGeneratedKeys="true" keyProperty="id">
+        insert into check_in_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="checkInId != null ">check_in_id,</if>
+            <if test="comment != null  and comment != ''">comment,</if>
+            <if test="commentName != null ">comment_name,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="pictureUrl != null  and pictureUrl != ''">picture_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="checkInId != null ">#{checkInId},</if>
+            <if test="comment != null  and comment != ''">#{comment},</if>
+            <if test="commentName != null ">#{commentName},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="pictureUrl != null  and pictureUrl != ''">#{pictureUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCheckInComment" parameterType="CheckInComment">
+        update check_in_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkInId != null ">check_in_id = #{checkInId},</if>
+            <if test="comment != null  and comment != ''">comment = #{comment},</if>
+            <if test="commentName != null ">comment_name = #{commentName},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="pictureUrl != null  and pictureUrl != ''">picture_url = #{pictureUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCheckInCommentById" parameterType="Long">
+        delete from check_in_comment where id = #{id}
+    </delete>
+
+    <delete id="deleteCheckInCommentByIds" parameterType="String">
+        delete from check_in_comment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

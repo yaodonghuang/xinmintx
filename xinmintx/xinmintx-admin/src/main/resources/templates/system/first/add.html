@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增首页推荐位置商品')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-first-add">
+            <input id="goodsId" name="goodsId" type="hidden"/>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">选择商品：</label>
+                <div class="col-sm-8">
+                    <input name="goodsListName" id="goodsListName" class="form-control" onclick="selectGoods()" type="text" placeholder="请选择商品" required readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">首页推荐位置：</label>
+                <div class="col-sm-8">
+                    <input name="place" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">状态：</label>
+                <div class="col-sm-8">
+                    <select name="status" class="form-control">
+                        <option value="0">不启用</option>
+                        <option value="1">启用</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/first"
+        $("#form-first-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-first-add').serialize());
+            }
+        }
+
+        /*商品分类管理-新增-选择菜单树*/
+        function selectGoods() {
+            var url = prefix + "/selectGoods";
+            var options = {
+                title: '商品选择',
+                //width: "380",
+                url: url,
+                callBack: selectGood
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectGood(index, layero) {
+            var body = layer.getChildFrame('body', index);
+            $("#goodsId").val(body.find('#goodsId').val());
+            $("#goodsListName").val(body.find('#goodsListName').val());
+            layer.close(index);
+        }
+    </script>
+</body>
+</html>

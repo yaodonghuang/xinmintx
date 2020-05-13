@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.DepositSpecificationMapper">
+    
+    <resultMap type="com.xinmintx.system.domain.DepositSpecification" id="DepositSpecificationResult">
+        <result property="id"    column="id"    />
+        <result property="depositSum"    column="deposit_sum"    />
+        <result property="serviceCharge"    column="service_charge"    />
+        <result property="reservedOne"    column="reserved_one"    />
+        <result property="reservedTwo"    column="reserved_two"    />
+        <result property="reservedThree"    column="reserved_three"    />
+    </resultMap>
+
+    <sql id="selectDepositSpecificationVo">
+        select id, deposit_sum, service_charge, reserved_one, reserved_two, reserved_three from deposit_specification
+    </sql>
+
+    <select id="selectDepositSpecificationList" parameterType="com.xinmintx.system.domain.DepositSpecification" resultMap="DepositSpecificationResult">
+        <include refid="selectDepositSpecificationVo"/>
+        <where>  
+            <if test="depositSum != null "> and deposit_sum = #{depositSum}</if>
+            <if test="serviceCharge != null  and serviceCharge != ''"> and service_charge = #{serviceCharge}</if>
+            <if test="reservedOne != null  and reservedOne != ''"> and reserved_one = #{reservedOne}</if>
+            <if test="reservedTwo != null  and reservedTwo != ''"> and reserved_two = #{reservedTwo}</if>
+            <if test="reservedThree != null  and reservedThree != ''"> and reserved_three = #{reservedThree}</if>
+        </where>
+    </select>
+    
+    <select id="selectDepositSpecificationById" parameterType="Long" resultMap="DepositSpecificationResult">
+        <include refid="selectDepositSpecificationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDepositSpecification" parameterType="com.xinmintx.system.domain.DepositSpecification">
+        insert into deposit_specification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="depositSum != null ">deposit_sum,</if>
+            <if test="serviceCharge != null  and serviceCharge != ''">service_charge,</if>
+            <if test="reservedOne != null  and reservedOne != ''">reserved_one,</if>
+            <if test="reservedTwo != null  and reservedTwo != ''">reserved_two,</if>
+            <if test="reservedThree != null  and reservedThree != ''">reserved_three,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="depositSum != null ">#{depositSum},</if>
+            <if test="serviceCharge != null  and serviceCharge != ''">#{serviceCharge},</if>
+            <if test="reservedOne != null  and reservedOne != ''">#{reservedOne},</if>
+            <if test="reservedTwo != null  and reservedTwo != ''">#{reservedTwo},</if>
+            <if test="reservedThree != null  and reservedThree != ''">#{reservedThree},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDepositSpecification" parameterType="com.xinmintx.system.domain.DepositSpecification">
+        update deposit_specification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="depositSum != null ">deposit_sum = #{depositSum},</if>
+            <if test="serviceCharge != null  and serviceCharge != ''">service_charge = #{serviceCharge},</if>
+            <if test="reservedOne != null  and reservedOne != ''">reserved_one = #{reservedOne},</if>
+            <if test="reservedTwo != null  and reservedTwo != ''">reserved_two = #{reservedTwo},</if>
+            <if test="reservedThree != null  and reservedThree != ''">reserved_three = #{reservedThree},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDepositSpecificationById" parameterType="Long">
+        delete from deposit_specification where id = #{id}
+    </delete>
+
+    <delete id="deleteDepositSpecificationByIds" parameterType="String">
+        delete from deposit_specification where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

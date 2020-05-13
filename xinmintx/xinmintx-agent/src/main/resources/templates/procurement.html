@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>采购市场</title>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/bazaar.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jweixin-1.4.0.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script src="/js/sharelink.js"></script>
+</head>
+<body>
+<input type="hidden" id="ptUserId">
+<div class="header">
+    <span onclick="window.history.go(-1)"></span>
+    采购市场
+</div>
+<div class="header_title" onclick="onSale()">
+    正在销售
+</div>
+<div class="lr_nb">
+    <div class="slider_wrap line">
+        <div class="wx_items">
+            <div class="item_cell current">
+                <span th:onclick="|javascript:selectHot(1)|">热点好货</span>
+                <span class="bg"></span>
+            </div>
+            <div class="item_cell current" th:each="list:${commodityTypeList}">
+                <span th:text="${list.categoryName}" th:onclick="|javascript:selectShopping(${list.id})|"></span>
+                <span class="bg"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<ul class="list" id="shopping">
+
+</ul>
+<div class="box">
+    <div class="choose">
+        <p>
+            团购
+            <input type="radio" name="purchase" id="purchase">
+            <input type="hidden" id="shopingId">
+        </p>
+        <p>
+            <label for="">
+                <input type="radio" name="people" value="3">3人团
+            </label>
+            <label for="">
+                <input type="radio" name="people" value="5">5人团
+            </label>
+            <label for="">
+                <input type="radio" name="people" value="8">8人团
+            </label>
+        </p>
+        <p>
+            零售
+            <input type="radio" name="purchase" value="1" id="retail">
+        </p>
+        <div class="box_btn">
+            <div class="box_btn1" onclick="changsheng()">取消</div>
+            <div class="box_btn2" onclick="fasonglianjie()">确定</div>
+        </div>
+    </div>
+</div>
+<script>
+    function fasonglianjie() {
+        var people;
+        people = $('input:radio[name="purchase"]:checked').val();
+        if (people != 1) {
+            people = $('input:radio[name="people"]:checked').val();
+        }
+        var shopingId = $("#shopingId").val();
+        $.ajax({
+            url: "/agent/GroupBooking/addGroup",
+            method: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "people": people,
+                "shopingId": shopingId
+            },
+            success: function (res) {
+                $("#ptUserId").val(res.ptUserId);
+                if (res.i == 1) {
+                    alert("拼团成功");
+                    var id = $("#shopingId").val();
+                    location.href = "http://www.xinmintx.cn/#/groupBuyForDl?shopid="+id+"&groupid="+res.ptUserId;
+                }
+                if (res.i == 0) {
+                    alert("暂无该人数的拼团");
+                    $('.box').hide()
+                }
+                if (res.i == 2) {
+                    alert("拼团成功");
+                    var id = $("#shopingId").val();
+                    location.href = "http://www.xinmintx.cn/#/groupBuyForDl?shopid="+id+"&groupid="+res.ptUserId;
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $(".wx_items .item_cell").click(function () {
+            $(this).addClass('current').siblings().removeClass('current');
+            $('span').removeClass('bg1');
+            $(this).find('span').eq(1).addClass('bg1');
+            //$('span').removeClass('bg1');
+        });
+        selectHot(1);
+    });
+
+    function selectHot(id) {
+        $.ajax({
+            url: "/agent/procurementMarket/selectHotShopping",
+            method: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "id": id //商品类型主键
+            },
+            success: function (res) {
+                //console.log(res);
+                var _html = "";
+                for (var i = 0; i < res.length; i++) {
+                    _html += "<li >\n" +
+                        "\t<div class=\"list_left\" onclick='jumpHuiShang(" + res[i].id + ")'><img src=" + res[i].ossUrl + "></div>\n" +
+                        "\t<div class=\"list_right\">\n" +
+                        "\t<p >" + res[i].commodityName + "</p>\n" +
+                        "\t<p >" + res[i].activityTitle + "</p>\n" +
+                        "\t<p>\n" +
+                        "\t<span>代理价：</span>\n" +
+                        "\t<span class=\"span1\">￥" + res[i].agencyPrice + "</span>\n" +
+                        "\t<span >市场价：</span>\n" +
+                        "\t<span class=\"span1\">￥" + res[i].price + "</span>\n" +
+                        "\t<span>销售价：</span>\n" +
+                        "\t<span class=\"span1\">￥" + res[i].salesPrice + "</span>\n" +
+                        "\t</p>\n" +
+                        "\t<p class=\"pp\">\n" +
+                        "\t<button type=\"button\"  class=\"btn1\" onclick='jumpHuiShang(" + res[i].id + ")'>自购</button>\n"
+                    if (res[i].type == 1) {
+                        _html += "\t<button type=\"button\" class=\"btn2\" onclick='purchase(" + res[i].id + ")'>分享赚钱</button>\n"
+                    }
+                    _html += "\t</p>\n" +
+                        "\t</div>\n" +
+                        "\t</li>\n";
+
+                    $("#shopping").html(_html)
+                }
+            }
+        });
+    }
+
+    function selectShopping(id) {
+        $.ajax({
+            url: "/agent/procurementMarket/selectByTypeShopping",
+            method: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "id": id //商品类型主键
+            },
+            success: function (res) {
+                //console.log(res);
+                var _html = "";
+                for (var i = 0; i < res.length; i++) {
+                    _html += "<li >\n" +
+                        "\t<div class=\"list_left\" onclick='jumpHuiShang(" + res[i].id + ")'><img src=" + res[i].ossUrl + "></div>\n" +
+                        "\t<div class=\"list_right\">\n" +
+                        "\t<p >" + res[i].commodityName + "</p>\n" +
+                        "\t<p >" + res[i].activityTitle + "</p>\n" +
+                        "\t<p>\n" +
+                        "\t<span>代理价：</span>\n" +
+                        "\t<span class=\"span1\">￥" + res[i].agencyPrice + "</span>\n" +
+                        "\t<span >市场价：</span>\n" +
+                        "\t<span class=\"span1\">￥" + res[i].price + "</span>\n" +
+                        "\t<span>销售价：</span>\n" +
+                        "\t<span class=\"span1\">￥" + res[i].salesPrice + "</span>\n" +
+                        "\t</p>\n" +
+                        "\t<p class=\"pp\">\n" +
+                        "\t<button type=\"button\"  class=\"btn1\" onclick='jumpHuiShang(" + res[i].id + ")'>自购</button>\n"
+                    if (res[i].type == 1) {
+                        _html += "\t<button type=\"button\" class=\"btn2\" onclick='purchase(" + res[i].id + ")'>分享赚钱</button>\n"
+                    }
+                    _html += "\t</p>\n" +
+                        "\t</div>\n" +
+                        "\t</li>\n";
+
+                    $("#shopping").html(_html)
+                }
+            }
+        });
+    }
+
+    //点击单个商品跳转详情页
+    function jumpGroup(id) {
+        location.href = "/agent/group/jumpGroup/" + id;
+    };
+
+    function jumpHuiShang(id) {
+        location.href = "http://www.xinmintx.cn/#/purchase?shopid=" + id;
+    };
+
+    //TODO
+    function share() {
+        var id = $("#shopingId").val();
+        location.href = "http://www.xinmintx.cn/#/groupBuyForDl?shopid="+id+"&groupid="+2;
+    };
+
+    function purchase(id) {
+        $("#shopingId").val(id);
+        $('.box').show() //hide()
+    }
+
+    function changsheng() {
+        $('.box').hide() //hide()
+    }
+</script>
+</body>
+</html>

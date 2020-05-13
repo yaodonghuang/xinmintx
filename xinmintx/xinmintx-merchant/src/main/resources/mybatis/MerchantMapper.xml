@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.MerchantMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.merchant.model.Merchant">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="order_id" jdbcType="INTEGER" property="orderId"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
+    <result column="recommender" jdbcType="INTEGER" property="recommender"/>
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+    <result column="cellphone" jdbcType="VARCHAR" property="cellphone"/>
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard"/>
+    <result column="merchant_type" jdbcType="INTEGER" property="merchantType"/>
+    <result column="merchant_table" jdbcType="INTEGER" property="merchantTable"/>
+    <result column="address" jdbcType="VARCHAR" property="address"/>
+    <result column="region_name" jdbcType="VARCHAR" property="regionName"/>
+    <result column="region_code" jdbcType="VARCHAR" property="regionCode"/>
+    <result column="merchant_branch_office_id" jdbcType="VARCHAR" property="merchantBranchOfficeId"/>
+    <result column="turnover" jdbcType="DECIMAL" property="turnover"/>
+    <result column="is_review" jdbcType="INTEGER" property="isReview"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    <result column="merchant_category" jdbcType="VARCHAR" property="merchantCategory"/>
+    <result column="per_capita" jdbcType="DECIMAL" property="perCapita"/>
+    <result column="token" jdbcType="VARCHAR" property="token"/>
+    <result column="amount_raised" jdbcType="DECIMAL" property="amountRaised"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,order_id,name,idcard,recommender,merchant_name,cellphone,bank_card,
+        merchant_type,merchant_table,address,region_name,region_code,merchant_branch_office_id,
+        turnover,is_review,create_time,create_user,update_time,update_user,
+        merchant_category,per_capita,token,freezing_amount,cash_amount,amount_raised
+    </sql>
+
+    <sql id="Bank_Info" >
+    id, merchant_id, id_card, phone, name, card_num, bank_name, short_name, create_time
+    </sql>
+    <insert id="addBytel">
+        insert into merchant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="idcard != null">
+                idcard,
+            </if>
+            <if test="recommender != null">
+                recommender,
+            </if>
+            <if test="merchantName != null">
+                merchant_name,
+            </if>
+            <if test="cellphone != null">
+                cellphone,
+            </if>
+            <if test="bankCard != null">
+                bank_card,
+            </if>
+            <if test="merchantType != null">
+                merchant_type,
+            </if>
+            <if test="merchantTable != null">
+                merchant_table,
+            </if>
+            <if test="merchantBranchOfficeId != null">
+                merchant_branch_office_id,
+            </if>
+            <if test="regionName != null">
+                region_name,
+            </if>
+            <if test="regionCode != null">
+                region_code,
+            </if>
+            <if test="turnover != null">
+                turnover,
+            </if>
+            <if test="isReview != null">
+                is_review,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="merchantCategory != null">
+                merchant_category,
+            </if><if test="perCapita != null">
+            per_capita,
+        </if>
+            <if test="token != null">
+                token,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{order_id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="idcard != null">
+                #{idcard},
+            </if>
+            <if test="recommender != null">
+                #{recommender},
+            </if>
+            <if test="merchantName != null">
+                #{merchant_name},
+            </if>
+            <if test="cellphone != null">
+                #{cellphone},
+            </if>
+            <if test="bankCard != null">
+                #{bank_card},
+            </if>
+            <if test="merchantType != null">
+                #{merchant_type},
+            </if>
+            <if test="merchantTable != null">
+                #{merchant_table},
+            </if>
+            <if test="merchantBranchOfficeId != null">
+                #{merchant_branch_office_id},
+            </if>
+            <if test="regionName != null">
+                #{region_name},
+            </if>
+            <if test="regionCode != null">
+                #{region_code},
+            </if>
+            <if test="turnover != null">
+                #{turnover},
+            </if>
+            <if test="isReview != null">
+                #{is_review},
+            </if>
+            <if test="createTime != null">
+                #{create_time},
+            </if>
+            <if test="createUser != null">
+                #{create_user},
+            </if>
+            <if test="updateTime != null">
+                #{update_time},
+            </if>
+            <if test="updateUser != null">
+                #{update_user},
+            </if>
+            <if test="merchantCategory != null">
+                #{merchant_category},
+            </if><if test="perCapita != null">
+            #{per_capita},
+        </if>
+            <if test="token != null">
+                #{token},
+            </if>
+        </trim>
+    </insert>
+    <insert id="createGoods" useGeneratedKeys="true" keyProperty="id" parameterType="com.xinmintx.merchant.model.MerchantGoods">
+        insert into merchant_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="merchantId !=null">
+                merchant_id,
+            </if>
+            <if test="type !=null">
+                type,
+            </if>
+            <if test="communityPrice !=null">
+                community_price,
+            </if>
+            <if test="onlinePrice !=null">
+                online_price,
+            </if>
+            <if test="description !=null">
+                description,
+            </if>
+            <if test="createTime !=null">
+                create_time,
+            </if>
+            <if test="shelfStatus !=null">
+                shelf_status,
+            </if>
+            <if test="bigdecimal !=null">
+                bigdecimal,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="merchantId !=null">
+                #{merchantId},
+            </if>
+            <if test="type !=null">
+                #{type},
+            </if>
+            <if test="communityPrice !=null">
+                #{communityPrice},
+            </if>
+            <if test="onlinePrice !=null">
+                #{onlinePrice},
+            </if>
+            <if test="description !=null">
+                #{description},
+            </if>
+            <if test="createTime !=null">
+                #{createTime},
+            </if>
+            <if test="shelfStatus !=null">
+                #{shelfStatus},
+            </if>
+            <if test="bigdecimal !=null">
+                #{bigdecimal},
+            </if>
+        </trim>
+    </insert>
+    <insert id="addPic" parameterType="java.util.List">
+        insert into merchant_goods_pic
+        (
+        mgoods_id,
+        pic)
+        values
+        <foreach collection="list" item="list" index="index" separator=",">
+            (
+            #{list.mgoodsId},
+            #{list.pic}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertFactoryCashInfo" parameterType="map">
+        insert into community_cash_info (merchant_id, request_sn,create_date)
+        values (#{id,jdbcType=BIGINT}, #{requestSN,jdbcType=VARCHAR}, now())
+    </insert>
+    <update id="updateBytel">
+         update merchant
+        set token = #{merchant.token}
+        where id = #{merchant.id}
+    </update>
+    <update id="upMerchantGoods">
+        update merchant_goods
+        <set>
+            <if test="merchantGoods.name !=null">
+                name = #{merchantGoods.name},
+            </if>
+            <if test="merchantGoods.type !=null">
+                type = #{merchantGoods.type},
+            </if>
+            <if test="merchantGoods.communityPrice !=null">
+                community_price = #{merchantGoods.communityPrice},
+            </if>
+            <if test="merchantGoods.onlinePrice !=null">
+                online_price = #{merchantGoods.onlinePrice},
+            </if>
+            <if test="merchantGoods.description !=null">
+                description = #{merchantGoods.description},
+            </if>
+            <if test="merchantGoods.shelfStatus !=null">
+                shelf_status = #{merchantGoods.shelfStatus},
+            </if>
+            <if test="merchantGoods.bigdecimal !=null">
+                bigdecimal = #{merchantGoods.bigdecimal}
+            </if>
+        </set>
+        where id = #{merchantGoods.id}
+    </update>
+    <update id="upGoodsState">
+        update merchant_goods
+        set
+        shelf_status = #{state}
+        where
+        id = #{goodsId}
+    </update>
+    <delete id="delPic">
+        delete from merchant_goods_pic
+        where mgoods_id = #{mgoodsId}
+    </delete>
+    <delete id="delGoods">
+        delete from merchant_goods
+        where id = #{goodsId}
+    </delete>
+    <delete id="delGoodsPic">
+        delete from merchant_goods_pic
+        where mgoods_id = #{goodsId}
+    </delete>
+    <select id="selectByTel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from merchant
+        where
+        cellphone = #{phone}
+    </select>
+    <select id="selectIphone" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from merchant  where cellphone = #{phone})
+    </select>
+    <select id="queryByToken" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from merchant
+        where token =#{token}
+    </select>
+    <select id="queryMerchantGoods" resultType="com.xinmintx.merchant.model.MerchantGoods">
+        select id,name,merchant_id,type,community_price,online_price,description,create_time,shelf_status,bigdecimal
+        from merchant_goods
+        where
+        id = #{goodsId}
+    </select>
+    <select id="queryMerchantGoodsPic" resultType="com.xinmintx.merchant.model.MerchantGoodsPic">
+        select id,mgoods_id,pic
+        from merchant_goods_pic
+        where
+        mgoods_id = #{goodsId}
+    </select>
+    <select id="queryMerchantGoodsList" resultType="com.xinmintx.merchant.model.MerchantGoods">
+        select id,name,merchant_id,type,community_price,online_price,description,create_time,shelf_status,bigdecimal
+        from merchant_goods
+        where
+        merchant_id = #{id}
+    </select>
+    <select id="queryMerchantGoodsListByState" resultType="com.xinmintx.merchant.model.MerchantGoods">
+        select id,name,merchant_id,type,community_price,online_price,description,create_time,shelf_status,bigdecimal
+        from merchant_goods
+        where
+        merchant_id = #{id}
+        and
+        shelf_status = #{state}
+    </select>
+    <select id="selectById" resultType="com.xinmintx.merchant.model.Merchant">
+        select freezing_amount,cash_amount from merchant
+        where token = #{token}
+    </select>
+    <select id="queryOrderList" resultType="com.xinmintx.merchant.model.GoodsOrder">
+        select id,member_id,order_state,receive_address,receive_name,receive_phone,total_amount,deputy_info,
+        goods_id,merchant_id,community_id,price,order_type,send_date,create_time,receive_message,total_amount,u_order_id,
+        print_number,deputy_help,consignee_info
+        from goods_order
+        where
+        community_id = #{communityId}
+        and merchant_id = #{merchantId}
+        and order_state in (2,3)
+        and create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+        AND FROM_UNIXTIME(#{endDate})
+    </select>
+    <select id="queryOrder" resultType="com.xinmintx.merchant.model.OrderExt">
+        select gd.id, gd.goods_id,gd.quantity,gd.price,gd.goods_pic,mg.name,mg.bigdecimal
+        from goods_order_detail gd
+        left join merchant_goods mg
+        on gd.goods_id = mg.id
+        where gd.order_id = #{id}
+    </select>
+    <select id="queryMember" resultType="com.xinmintx.merchant.model.Member">
+        select id
+        from member
+        where token = #{token}
+    </select>
+    <select id="queryCommunityOrder" resultType="com.xinmintx.merchant.model.CommunityOrder">
+        select  gd.goods_id,gd.goods_name,gd.goods_pic,go.community_id,c.`name`,gd.quantity,gd.price,gd.create_time,go.id,mg.bigdecimal,gd.total_amount,go.accept_order
+        from goods_order go
+				LEFT JOIN goods_order_detail gd
+				ON go.id = gd.order_id
+				LEFT JOIN community c
+				on go.community_id = c.id
+				LEFT JOIN merchant_goods mg
+				ON gd.goods_id = mg.id
+        where go.merchant_id = #{merchantId}
+        and go.order_state in (2,3)
+        and gd.create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+        AND FROM_UNIXTIME(#{endDate})
+    </select>
+
+    <select id="selectOrder" resultType="com.xinmintx.merchant.model.GoodsOrderDetail">
+    select  id
+    from goods_order_detail
+    where
+    order_id = #{id}
+</select>
+    <select id="queryOrderHistory" resultType="com.xinmintx.merchant.model.CommunityOrder">
+        select  gd.goods_id,gd.goods_name,gd.goods_pic,go.community_id,c.`name`,gd.quantity,gd.price,gd.create_time,go.id,mg.bigdecimal,go.total_amount,go.accept_order
+        from goods_order go
+				LEFT JOIN goods_order_detail gd
+				ON go.id = gd.order_id
+				LEFT JOIN community c
+				on go.community_id = c.id
+				LEFT JOIN merchant_goods mg
+				ON gd.goods_id = mg.id
+        where go.merchant_id = #{merchantId}
+        and gd.create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+        AND FROM_UNIXTIME(#{endDate})
+        <!--<if test="orderState != null and orderState != ''">
+            and gd.order_state = #{orderState}
+        </if>-->
+        order by gd.create_time desc
+    </select>
+    <select id="queryHistoricalOrder" resultType="com.xinmintx.merchant.model.GoodsOrder">
+        select id,member_id,order_state,receive_address,receive_name,receive_phone,total_amount,
+        goods_id,merchant_id,community_id,price,order_type,send_date,create_time
+        from goods_order
+        where
+        community_id = #{communityId}
+        and merchant_id = #{merchantId}
+        and create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+        AND FROM_UNIXTIME(#{endDate})
+    </select>
+    <select id="queryCommunityOrderUseForPrinter" resultType="com.xinmintx.merchant.model.CommunityOrder">
+        select  gd.goods_id,gd.goods_name,gd.goods_pic,go.community_id,c.`name`,gd.quantity,
+        gd.price,gd.create_time,go.id,mg.bigdecimal,gd.total_amount,go.accept_order,go.receive_name,
+        go.receive_phone,go.receive_message,go.member_id,gd.order_state,c.`consignee_address` as communityAddress
+        from goods_order go
+        LEFT JOIN goods_order_detail gd
+        ON go.id = gd.order_id
+        LEFT JOIN community c
+        on go.community_id = c.id
+        LEFT JOIN merchant_goods mg
+        ON gd.goods_id = mg.id
+        <where>
+            <if test="communityId != null ">
+                and go.community_id = #{communityId}
+            </if>
+            <if test="merchantId != null ">
+                and go.merchant_id = #{merchantId}
+            </if>
+            <if test="beginDate != null and endDate != null">
+                and gd.create_time BETWEEN FROM>_UNIXTIME(#{beginDate})
+                AND FROM_UNIXTIME(#{endDate})
+            </if>
+        </where>
+    </select>
+
+    <update id="updateOrderAcceptOrder" parameterType="map">
+        update goods_order
+        set accept_order = #{acceptOrder}
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <update id="upOrderStatu" parameterType="map">
+        update goods_order_detail
+        set order_state = #{orderStatu}
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <update id="upGoodsOrderStatu">
+        update goods_order
+        set order_state = #{orderStatu}
+        where id = #{orderId}
+    </update>
+
+    <select id="getOrderNoByIds" parameterType="map" resultType="java.lang.String">
+        select order_no from
+        u_order where id = #{id}
+    </select>
+
+    <update id="updateOrderAndDetailState" parameterType="map">
+        UPDATE `goods_order` go, `goods_order_detail` god
+        SET go.`order_state` = #{orderState},
+        go.`if_pay` = #{ifPay},
+        god.`order_state` = #{orderState},
+        god.`if_pay` = #{ifPay},
+        go.accept_order = #{acceptOrder}
+        WHERE go.`id` = god.`order_id`
+        AND god.`order_id` = #{orderId}
+    </update>
+
+    <update id="reduceMemberFreezMoney" parameterType="map">
+        update member set freezing_amount = freezing_amount - #{money} where id = #{memberId}
+    </update>
+
+    <select id="getFreezingAmount" parameterType="map" resultType="java.math.BigDecimal">
+        select freezing_amount from member where id = #{memberId}
+    </select>
+
+    <insert id="insertLogs" parameterType="com.xinmintx.merchant.model.MemberAmountLog">
+        insert into member_amount_log (member_id, type, price, balance,
+          remark,source)
+        values (#{memberId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL},
+          #{remark,jdbcType=VARCHAR}, #{source,jdbcType=INTEGER})
+    </insert>
+
+    <update id="reduceMerchantFreezMoney" parameterType="map">
+        update merchant set freezing_amount = freezing_amount - #{money} where id = #{merchantId}
+    </update>
+
+    <select id="getFreezingAmountOfMerchant" parameterType="map" resultType="java.math.BigDecimal">
+        select freezing_amount from merchant where id = #{merchantId}
+    </select>
+    <select id="queryByRequest" resultType="com.xinmintx.merchant.model.CommunityCashInfo">
+        select id,merchant_id,request_sn,create_date
+        from community_cash_info
+        where merchant_id = #{id}
+        order by create_date desc
+    </select>
+
+    <insert id="insertMerchantLogs" parameterType="com.xinmintx.merchant.model.MerchantAmountLog">
+        insert into merchant_amount_log (merchant_id, type, price, balance,
+          remark)
+        values (#{merchantId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL},
+          #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getBankCardInfoById" parameterType="map" resultType="com.xinmintx.merchant.model.MerchantBankCard">
+        select
+        <include refid="Bank_Info" />
+        from merchant_bank_card
+        where id = #{bankCardId,jdbcType=INTEGER}
+    </select>
+    <select id="queryTransaction" resultType="com.xinmintx.merchant.model.MerchantAmountLog">
+        select id,merchant_id,create_time,`type`,price,balance,remark
+        from merchant_amount_log
+        where merchant_id = #{id}
+        <if test="type!=null and type!=''">
+            and `type` = #{type}
+        </if>
+        order by create_time desc
+    </select>
+
+
+    <insert id="insertPn" parameterType="map">
+    insert into pobo_notify (request_sn, ret_code,
+      ret_msg, merchant_id, order_date,
+      order_status, order_time, txn_amt,
+      fee, notify_url, sign_type,
+      signature)
+    values (#{requestSN,jdbcType=VARCHAR}, #{retCode,jdbcType=VARCHAR},
+      #{retMsg,jdbcType=VARCHAR}, #{merchantId,jdbcType=VARCHAR}, #{orderDate,jdbcType=VARCHAR},
+      #{orderStatus,jdbcType=VARCHAR}, #{orderTime,jdbcType=VARCHAR}, #{txnAmt,jdbcType=VARCHAR},
+      #{fee,jdbcType=VARCHAR}, #{notifyUrl,jdbcType=VARCHAR}, #{signType,jdbcType=VARCHAR},
+      #{signature,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateMerchantMoney" parameterType="map">
+        UPDATE `merchant`
+        SET cash_amount = cash_amount - #{money}
+        WHERE id =
+        (SELECT merchant_id FROM `community_cash_info` WHERE request_sn = #{requestSn})
+        AND #{money} <![CDATA[ <= ]]> cash_amount
+    </update>
+    <update id="updatePrintNumber">
+        update goods_order
+        set print_number = 1
+        where id = #{id}
+    </update>
+
+    <select id="getMerchantInfo" parameterType="map" resultType="com.xinmintx.merchant.model.Merchant">
+        SELECT
+          m.`id`,m.`cash_amount`
+        FROM
+          `community_cash_info` cci
+          LEFT JOIN merchant m
+            ON cci.`merchant_id` = m.`id`
+        WHERE cci.`request_sn` = #{requestSN}
+    </select>
+    <select id="queryGoodsOrder" resultType="com.xinmintx.merchant.model.PurchaseHistory">
+        select m.avatar_url,m.name,gd.quantity,gd.create_time
+        from goods_order_detail gd
+        LEFT JOIN member m
+        on gd.member_id = m.id
+        where
+        gd.goods_id = #{goodsId}
+        and gd.order_state = 5
+    </select>
+    <select id="queryAddress" resultType="java.lang.String">
+        select consignee_address
+        from community
+        where id = #{communityId}
+    </select>
+    <select id="queryPrinterSn" resultType="com.xinmintx.merchant.model.MerchantPrinter">
+        select id,merchant_id,sn,printkey,printer_name,if_auto from merchant_printer where merchant_id = #{id}
+    </select>
+    <select id="selectGoodsOrder" resultType="com.xinmintx.merchant.model.GoodsOrder">
+         select id,member_id,order_state,receive_address,receive_name,receive_phone,total_amount,deputy_info,
+        goods_id,merchant_id,community_id,price,order_type,send_date,create_time,receive_message,total_amount,u_order_id,
+        print_number,deputy_help
+        from goods_order
+        where
+        id = #{orderId}
+    </select>
+
+    <select id="getUserAccount" resultType="com.xinmintx.merchant.model.UserAccount">
+        select id,user_id,money,freeze_money
+        from user_account
+        where user_id = #{userId}
+    </select>
+    <select id="queryOrdersList" resultType="com.xinmintx.merchant.model.GoodsOrder">
+        select id,member_id,order_state,receive_address,receive_name,receive_phone,total_amount,deputy_info,
+        goods_id,merchant_id,community_id,price,order_type,send_date,create_time,receive_message,total_amount,u_order_id,
+        print_number,deputy_help,consignee_info
+        from goods_order
+        where
+        community_id = #{communityId}
+        and merchant_id = #{merchantId}
+        and order_state =#{orderState}
+        and create_time BETWEEN FROM_UNIXTIME(#{beginDate})
+        AND FROM_UNIXTIME(#{endDate})
+    </select>
+
+    <insert id="insertUserAccount" parameterType="com.xinmintx.merchant.model.UserAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into user_account (user_id, freeze_money)
+        values (#{userId,jdbcType=INTEGER},#{freezeMoney})
+    </insert>
+
+    <insert id="insertUserAccountRecord" parameterType="com.xinmintx.merchant.model.UserAccountRecord">
+        insert into user_account_record (user_id, order_id,
+      user_account_id, money_change, description,
+      chang_price)
+    values (#{userId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER},
+      #{userAccountId,jdbcType=INTEGER}, #{moneyChange,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR},
+      #{changPrice,jdbcType=DECIMAL})
+    </insert>
+
+    <update id="updateUserAccount" parameterType="com.xinmintx.merchant.model.UserAccount">
+        update user_account
+        set user_id = #{userId,jdbcType=INTEGER},
+          money = #{money,jdbcType=DOUBLE},
+          freeze_money = #{freezeMoney,jdbcType=DOUBLE}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

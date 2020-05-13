@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('查看订单详情')"/>
+    <meta charset="UTF-8">
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="panel panel-default" th:each="goodsOrderDetailList : ${goodsOrderDetailList}">
+        <div class="panel-heading"><font color="#4876FF">订单管理</font></div>
+        <table class="table">
+            <tr>
+                <th>订单id</th>
+                <th>商品id</th>
+                <th>商品单价(元)</th>
+                <th>商品数量</th>
+                <th>商品名称</th>
+                <th>商品详情名称</th>
+                <th>商品规格</th>
+                <th>商品图片</th>
+                <th>商品评价</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>快递单号</th>
+                <th>订单状态</th>
+                <th>是否缺货</th>
+                <th>重量(克)</th>
+                <th>是否被提醒</th>
+                <th>退款信息</th>
+            </tr>
+            <tr>
+                <td>
+                    <span th:text="${goodsOrderDetailList.orderId}"></span>
+                </td>
+                <td>
+                    <span th:text="${goodsOrderDetailList.goodsId}"></span>
+                </td>
+                <td>
+                    <span th:text="${goodsOrderDetailList.price}"></span>
+                </td>
+                <td>
+                    <span th:text=" ${goodsOrderDetailList.quantity}"></span>
+                </td>
+                <td>
+                    <span th:text=" ${goodsOrderDetailList.goodsName}"></span>
+                </td>
+                <td>
+                    <span th:text=" ${goodsOrderDetailList.goodsDetailsName}"></span>
+                </td>
+                <td>
+                    <span th:text=" ${goodsOrderDetailList.specValue}"></span>
+                </td>
+                <td>
+                    <img th:src=" ${goodsOrderDetailList.goodsPic}" width="100px" height="100px">
+                </td>
+                <td>
+                    <span th:text=" ${goodsOrderDetailList.evaluate}"></span>
+                </td>
+                <td>
+                    <span th:text=" ${#dates.format(goodsOrderDetailList.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </td>
+                <td>
+                    <span th:text="${#dates.format(goodsOrderDetailList.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </td>
+                <td>
+                    <span th:text="${goodsOrderDetailList.courierNumber}"></span>
+                </td>
+                <td>
+                    <span th:if="${goodsOrderDetailList.orderState == 1}">待付款</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 2}">待发货</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 3}">待收货</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 4}">已取消</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 5}">已收货</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 6}">物流异常</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 7}">待分享</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 8}">退款中</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 9}">已退款</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 10}">退款失败</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 11}">申请退货</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 12}">退货中</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 13}">退货成功</span>
+                    <span th:if="${goodsOrderDetailList.orderState == 14}">退货失败</span>
+                </td>
+                <td>
+                    <span th:if="${goodsOrderDetailList.lack == 0}">不缺货</span>
+                    <span th:if="${goodsOrderDetailList.lack == 1}">缺货</span>
+                </td>
+                <td>
+                    <span th:text="${goodsOrderDetailList.weight}"></span>
+                </td>
+                <td>
+                    <span th:if="${goodsOrderDetailList.ifRemind == 0}">未提醒</span>
+                    <span th:if="${goodsOrderDetailList.ifRemind == 1}">已提醒</span>
+                </td>
+                <td>
+                    <span th:text="${goodsOrderDetailList.refundMsg}"></span>
+                </td>
+            </tr>
+        </table>
+
+
+        <p class="bg-primary">.</p>
+
+
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+
+</body>
+</html>

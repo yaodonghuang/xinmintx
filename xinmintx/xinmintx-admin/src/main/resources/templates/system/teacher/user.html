@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('用户信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>姓名：</p>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <p>手机号：</p>
+                                <input type="text" name="cellphone"/>
+                            </li>
+                            <li>
+                                <p>性别：</p>
+<!--                                <input type="text" name="gender"/>-->
+                                <select name="gender">
+                                    <option value="">所有</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>
+                            </li>
+                            <li>
+                                <p>用户角色：</p>
+<!--                                <input type="text" name="userRole"/>-->
+                                <select name="userRole">
+                                    <option value="">所有</option>
+                                    <option value="1">boss</option>
+                                    <option value="2">合伙人</option>
+                                    <option value="3">分公司</option>
+                                    <option value="4">联合创始人</option>
+                                    <option value="5">代理</option>
+                                    <option value="6">员工</option>
+                                    <option value="7">高级合伙人</option>
+                                    <option value="10">学员</option>
+                                </select>
+                            </li>
+                            <li>
+                                <p>是否为讲师：</p>
+                                <select name="lecturerStatus">
+                                    <option value="">所有</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </li>
+                            <li>
+                                <p>讲师等级：</p>
+<!--                                <input type="text" name="lecturerGrade"/>-->
+                                <select name="lecturerGrade">
+                                    <option value="">所有</option>
+                                    <option value="1">初级</option>
+                                    <option value="2">中级</option>
+                                    <option value="3">高级</option>
+                                </select>
+                            </li>
+                            <li>
+                                <p>是否学员：</p>
+<!--                                <input type="text" />-->
+                                <select name="student">
+                                    <option value="">所有</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </li>
+                            <li>
+                                <p>讲师id：</p>
+                                <input type="text" name="teacherId"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:addTeacher:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:addTeacher:remove')}]];
+        var prefix = ctx + "system/addTeacher";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "用户信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field : 'name', 
+                    title : '姓名'
+                },
+                {
+                    field : 'cellphone', 
+                    title : '手机号'
+                },
+                {
+                    field : 'gender', 
+                    title : '性别',
+                    formatter : function speType(value, row, index) {
+                        if (value === 1){
+                            return "男";
+                        }
+                        if (value === 2){
+                            return "女";
+                        }
+                    }
+                },
+                {
+                    field : 'userRole', 
+                    title : '用户角色(1,boss;2,合伙人;3,分公司;4,联合创始人;5,代理;6,员工；7，高级合伙人 ; 10.学员)',
+                    formatter : function speType(value, row, index) {
+                        if (value === 1){
+                            return "boss";
+                        }
+                        if (value === 2){
+                            return "合伙人";
+                        }
+                        if (value === 3){
+                            return "分公司";
+                        }
+                        if (value === 4){
+                            return "联合创始人";
+                        }
+                        if (value === 5){
+                            return "代理";
+                        }
+                        if (value === 6){
+                            return "员工";
+                        }
+                        if (value === 7){
+                            return "高级合伙人";
+                        }
+                        if (value === 10){
+                            return "学员";
+                        }
+                    }
+                },
+                {
+                    field : 'lecturerStatus', 
+                    title : '是否讲师',
+                    formatter : function speType(value, row, index) {
+                        if (value === 1){
+                            return "是";
+                        }
+                        if (value === 0){
+                            return "否";
+                        }
+                    }
+                },
+                {
+                    field : 'lecturerGrade', 
+                    title : '讲师等级',
+                    formatter : function speType(value, row, index) {
+                        if (value === 1){
+                            return "初级";
+                        }
+                        if (value === 2){
+                            return "中级";
+                        }
+                        if (value === 3){
+                            return "高级";
+                        }
+                    }
+                },
+                {
+                    field : 'student', 
+                    title : '是否学员',
+                    formatter : function speType(value, row, index) {
+                        if (value === 1){
+                            return "是";
+                        }
+                        if (value === 0){
+                            return "否";
+                        }
+                    }
+                },
+                {
+                    field : 'teacherId', 
+                    title : '讲师id'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

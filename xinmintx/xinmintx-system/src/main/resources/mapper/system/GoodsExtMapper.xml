@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsExtMapper">
+    <resultMap type="com.xinmintx.system.domain.GoodsExt" id="Result">
+        <id property="id" column="id"/>
+        <result property="source"    column="source" />
+        <result property="relateId"    column="relate_id" />
+        <result property="typeId"    column="type_id" />
+        <result property="choiceness"    column="choiceness" />
+        <result property="hotSale"    column="hot_sale" />
+        <result property="preorder"    column="preorder" />
+        <result property="typeName"    column="type_name" />
+        <result property="goodsListName"    column="goods_list_name" />
+        <result property="goodsName"    column="goods_name" />
+        <result property="content"    column="content" />
+        <result property="turnsPhoto"    column="turns_photo" />
+        <result property="speType"    column="spe_type" />
+        <result property="price"    column="price" />
+        <result property="agencyPrice"    column="agency_price" />
+        <result property="bazaarPrice"    column="bazaar_price" />
+        <result property="procurementPrice"    column="procurement_price" />
+        <result property="linePrice"    column="line_price" />
+        <result property="stockNum"    column="stock_num" />
+        <result property="salesInitial"    column="sales_initial" />
+        <result property="activityTitle"    column="activity_title" />
+        <result property="salesActual"    column="sales_actual" />
+        <result property="status"    column="status" />
+        <result property="sort"    column="sort" />
+        <result property="isDelete"    column="is_delete" />
+        <result property="giftBag"    column="gift_bag" />
+    </resultMap>
+
+    <select id="selectByCategoryCode" resultMap="Result">
+        SELECT g.*, gt.type_name from goods g
+        INNER join goods_type gt
+        where g.type_id = gt.id
+        <if test="giftBag != null">
+            and g.gift_bag = #{giftBag}
+        </if>
+        <if test="goodsListName!=null">
+            and goods_list_name like CONCAT('%',#{goodsListName},'%')
+        </if>
+        <if test="goodsName!=null">
+            and goods_name like CONCAT('%',#{goodsName},'%')
+        </if>
+        <if test="typeId!=null and typeId!=0">
+            and type_id = #{typeId}
+        </if>
+        <if test="status!=null">
+            and status = #{status}
+        </if>
+        order by g.id desc
+    </select>
+
+
+</mapper>

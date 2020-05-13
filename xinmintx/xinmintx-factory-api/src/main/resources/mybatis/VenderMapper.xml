@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.factory.api.mapper.VenderMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.factory.api.pojo.Factory">
+        <id column="factory_id" jdbcType="INTEGER" property="factoryId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="factory_code" jdbcType="VARCHAR" property="factoryCode"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    factory_id,type,factory_code,name,avatar,address,phone,password,salt,create_time,del_flag,token
+  </sql>
+    <insert id="addBytel" keyColumn="id" keyProperty="id" parameterType="com.xinmintx.factory.api.pojo.Factory" useGeneratedKeys="true">
+        insert into factory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">
+                type,
+            </if>
+            <if test="factoryCode != null">
+                factory_code,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="factoryCode != null">
+                #{factoryCode},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="salt != null">
+                #{salt},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag},
+            </if>
+            <if test="token != null">
+                #{token},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBytel" parameterType="com.xinmintx.factory.api.pojo.Factory">
+        update factory
+        set token = #{vender.token}
+        where factory_id = #{vender.factoryId}
+    </update>
+    <update id="upStatu">
+        update goods_order_detail
+        set order_state = #{statu}
+        where id = #{orderNum}
+    </update>
+    <update id="upMainOrder">
+        update goods_order
+        set order_state = #{statu}
+        <if test="statu == 8">
+            ,refund_time = now()
+        </if>
+        where id = #{orderNum}
+    </update>
+    <update id="upSonStatu">
+        update goods_order_detail
+        set order_state = #{statu}
+        where order_id = #{order}
+    </update>
+
+    <select id="selectByTel" resultType="com.xinmintx.factory.api.pojo.Factory">
+        select
+        <include refid="Base_Column_List"/>
+        from factory
+        where phone = #{phone}
+    </select>
+    <select id="queryByToken" resultType="com.xinmintx.factory.api.pojo.Factory">
+        select <include refid="Base_Column_List"/>
+        from factory
+        where token =#{token}
+    </select>
+
+    <select id="selectIphone" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from factory where phone = #{phone})
+    </select>
+    <select id="queryByOrderId" resultType="com.xinmintx.factory.api.pojo.GoodsOrder">
+        select * from
+        goods_order
+        where
+        id=#{orderId}
+    </select>
+    <select id="queryById" resultType="com.xinmintx.factory.api.pojo.VenderOrder">
+        select * from
+        goods_order_detail
+        where
+        id= #{orderNum}
+    </select>
+
+    <update id="updateSonStatusList" parameterType="map">
+        update goods_order_detail
+        set order_state = #{statu}
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

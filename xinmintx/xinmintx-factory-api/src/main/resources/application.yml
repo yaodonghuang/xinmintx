@@ -1,0 +1,10 @@
+app:
+  pay:
+    wx:
+      app_id: wxfae6eed7965225be
+      mch_id: 1556750781
+      api_key: 1556750781
+      api_secret: 8109b02e63e24f57b388c08c9204a7da
+      refund_notify_url: http://factory.xinmintx.cn
+      certificate_path: /home/tomcat-factory/cer/apiclient_cert.p12
+      refund_url: https://api.mch.weixin.qq.com/secapi/pay/refund          # 申请退款url

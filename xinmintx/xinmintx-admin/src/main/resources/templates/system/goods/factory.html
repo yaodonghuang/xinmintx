@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('厂家信息列表')" />
+</head>
+<style>
+    .changeColor{
+        background-color: #31b0d5  !important;
+        color: white;
+    }
+</style>
+<body class="gray-bg">
+<input id="factoryId" name="factoryId" type="hidden"/>
+<input id="factoryName" name="factoryName" type="hidden"/>
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>厂家名称：</p>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <p>厂家地址：</p>
+                                <input type="text" name="address"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:factory:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:factory:remove')}]];
+        var prefix = ctx + "system/factory";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "厂家信息",
+                columns: [
+                {
+                    field : 'factoryId', 
+                    title : '主键id',
+                    visible: false
+                },
+                {
+                    field : 'type', 
+                    title : '厂家类型'
+                },
+                {
+                    field : 'name', 
+                    title : '厂家名称'
+                },
+                {
+                    field : 'address', 
+                    title : '厂家地址'
+                },
+                {
+                    field : 'phone', 
+                    title : '厂家联系电话'
+                },
+                {
+                    field : 'bankCard',
+                    title : '厂家银行卡号'
+                }],
+                onClickRow: function (row,$element) {
+                    $('.changeColor').removeClass('changeColor');
+                    $($element).addClass('changeColor');
+                    $("#factoryId").val(row.factoryId);
+                    $("#factoryName").val(row.name);
+                }
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

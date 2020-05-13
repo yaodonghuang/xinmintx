@@ -1,0 +1,327 @@
+body {
+  background-color: #FAFAFA;
+  overflow-x: hidden;
+}
+.header {
+  width: 100%;
+  height: 0.94rem;
+  background-color: #FFF;
+}
+.header p {
+  line-height: 0.94rem;
+  font-size: 36px;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #000000;
+  position: relative;
+  text-align: center;
+}
+.header p img {
+  width: 0.2rem;
+  height: 0.35rem;
+  position: absolute;
+  left: 0.31rem;
+  top: 0.31rem;
+}
+#performance_menu{
+  position: absolute;
+  top: 0.04rem;
+  right: 0.3rem;
+  font-size:0.24rem;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(0,0,0,1);
+}
+.list {
+  margin-left: 0.31rem;
+}
+.list li {
+  width: 6.88rem;
+  height: 0.94rem;
+  background: #ffffff;
+  border-radius: 0.1rem;
+  margin-top: 0.2rem;
+}
+.list li .list_top {
+  line-height: 0.6rem;
+  width: 6.88rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.26rem;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.list li .list_top .list_top_p1 {
+  text-indent: 0.21rem;
+}
+.list li .list_top .list_top_p2 {
+  margin-right: 0.21rem;
+}
+.list li .list_bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.18rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+}
+.list li .list_bottom .list_bottom_p1 {
+  text-indent: 0.21rem;
+}
+.list li .list_bottom .list_bottom_p2 {
+  margin-right: 0.21rem;
+}
+
+
+
+
+
+
+
+/*我的课堂样式*/
+.user_menu{
+  display: flex;
+  margin-top: 0.22rem;
+}
+.user_menu img{
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-left: 0.23rem;
+  margin-right: 0.1rem;
+}
+.user_menu .user_menu_right{
+
+}
+.user_menu .user_menu_right .user_name{
+  font-size:0.34rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(29,29,29,1);
+  margin-top: 0.31rem;
+  margin-bottom: 0.21rem;
+}
+.user_menu .user_menu_right .user_detail{
+  font-size:0.22rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(153,153,153,1);
+}
+.user_menu .user_menu_right .user_detail .first_span{
+ padding-right: 0.21rem;
+}
+.teacher_card{
+ background-image: url("/images/teacher_bg.png");
+  width: 6.7rem;
+  height: 3.58rem;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin: 0.19rem 0 0 0.4rem;
+  position: relative;
+}
+.teacher_card .teacher_card_text{
+  font-size:0.48rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(255,255,255,1);
+  position: relative;
+  top: 0.41rem;
+  left: 0.48rem;
+}
+.teacher_card .teacher_card_type{
+  font-size:0.33rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(255,255,255,1);
+  position: absolute;
+  top:0.50rem ;
+  right: 0.32rem;
+}
+.teacher_card .teacher_card_num{
+  position: relative;
+  top: 0.71rem;
+  font-size:0.75rem;
+  font-weight:normal;
+  color:rgba(255,255,255,1);
+  text-align: center;
+}
+.my_student{
+  margin: 0.29rem 0 0 0.5rem;
+ }
+.my_student .my_student_top{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.39rem;
+}
+.my_student .my_student_top .my_student_p1{
+  /*display: flex;*/
+  font-size:0.29rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(51,51,51,1);
+}
+.my_student .my_student_top .my_student_p1 span{
+  display: inline-block;
+  width:0.06rem;
+  height:0.24rem;
+  background:rgba(243,160,30,1);
+  margin: 0.08rem 0.12rem 0 0;
+}
+
+.my_student .my_student_top .my_student_p2{
+  font-size:0.22rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(153,153,153,1);
+  display: flex;
+  position: relative;
+  top: 0.04rem;
+}
+.my_student .my_student_top .my_student_p2 img{
+  width: 0.13rem;
+  height: 0.2rem;
+  margin: 0.06rem 0.57rem 0 0.2rem;
+}
+.student_list{
+  width:6.3rem;
+  /*height:1.86rem;*/
+  background:rgba(244,244,244,1);
+  border-radius:0.2rem;
+  margin-left: 0.54rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+.student_list li{
+  width:3.15rem;
+}
+.student_list li p{
+  font-size:0.22rem;
+  font-family:Adobe Heiti Std;
+  font-weight:normal;
+  color:rgba(67,67,67,1);
+  display: flex;
+  justify-content: space-around;
+  line-height: 0.44rem;
+}
+.code{
+  background-image: url("/images/code_bg.png");
+  width: 3.56rem;
+  height: 3.56rem;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-left: 1.98rem;
+  margin-bottom: 0.64rem;
+}
+#qr_code canvas{
+  width: 1.26rem;
+  height: 1.26rem;
+  position: relative;
+  top: 1.61rem;
+  left: 1.154rem;
+}
+
+#performance_text{
+  text-align: center;
+  position: relative;
+  left: 0;
+  font-size:42px;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(255,255,255,1);
+}
+#my_students{
+  margin-top: 1.37rem;
+}
+#my_student_tops{
+  margin-bottom: 0.98rem;
+}
+#teacher_cards{
+  margin-top: 0.34rem;
+}
+
+
+
+
+
+/*studen_list*/
+.content
+{
+  width: 100%;
+  height: auto;
+}
+.title
+{
+  height: 0.8rem;
+  width: 100%;
+  display: flex;
+}
+.common
+{
+  width: 50%;
+  font-size:0.26rem;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,51,51,1);
+  background-color: #FFF;
+  line-height: 0.8rem;
+  text-align: center;
+  position: relative;
+}
+.common_foot{
+  width: 0.8rem;
+  height: 0.04rem;
+  position: absolute;
+  left: 1.40rem;
+  top: 0.76rem;
+}
+.common_foots{
+  background-color: rgba(251,86,10,1);
+}
+.selected
+{
+  color:rgba(251,86,10,1);
+}
+.contentBody
+{
+  width: 100%;
+}
+.contendiv
+{
+
+  width: 100%;
+  float: left;
+}
+.divHidden
+{
+  display: none;
+}
+
+
+
+
+
+.student_msgs{
+  display: flex;
+  margin: 0.1rem 0;
+  background-color: #FFF;
+  width: 100%;
+  height: 1.22rem;
+}
+.student_msgs img{
+  width: 0.63rem;
+  height: 0.63rem;
+  margin: 0.3rem 0.35rem 0 0.49rem;
+  border: 0;
+  outline: none;
+}
+.student_msgs .student_msg{
+  font-size:26px;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(0,0,0,1);
+  margin-top: 0.22rem;
+}
+.student_msgs .student_msg .student_msg_p1 {
+
+  margin-bottom: 0.18rem;
+}

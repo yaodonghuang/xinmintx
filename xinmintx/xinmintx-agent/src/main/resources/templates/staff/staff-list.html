@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>推荐员工</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/Rpartner.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <span class="back" onclick="window.history.go(-1)"></span>
+    推荐员工
+</div>
+<ul class="list">
+    <li th:each="list:${stafflist}" th:onclick="|javascript:goStaff_base(${list.id})|">
+        <div class="left">
+            <img class="left_l" th:if="${list.avatar != null}" th:src="${list.avatar}">
+            <div class="left_l" th:if="${list.avatar == null}"></div>
+            <div class="left_r">
+                <div class="txt">
+                    <p class="right_p1" th:text="${list.name}"></p>
+                    <p th:if="${list.gender==1}" class="txt_sex">男</p>
+                    <p th:if="${list.gender==2}" class="txt_sex">女</p>
+                </div>
+                <p class="tel" th:text="${list.cellphone}"></p>
+            </div>
+        </div>
+        <div class="right">员工</div>
+    </li>
+</ul>
+
+</body>
+<script>
+    //员工设置
+    function goStaff_base(id) {
+        location.href="/agent/staff/goStaffBase/"+id;
+    }
+</script>
+</html>

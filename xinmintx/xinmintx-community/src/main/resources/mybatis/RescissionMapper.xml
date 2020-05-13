@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.RescissionMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into rescission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rescission.communityId != null">
+                community_id,
+            </if>
+            <if test="rescission.memberId != null">
+                member_id,
+            </if>
+            <if test="rescission.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="rescission.type != null">
+                type,
+            </if>
+            <if test="rescission.proportion != null">
+                proportion,
+            </if>
+            <if test="rescission.createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rescission.communityId != null">
+                #{rescission.communityId},
+            </if>
+            <if test="rescission.memberId != null">
+                #{rescission.memberId},
+            </if>
+            <if test="rescission.merchantId != null">
+                #{rescission.merchantId},
+            </if>
+            <if test="rescission.type != null">
+                #{rescission.type},
+            </if>
+            <if test="rescission.proportion != null">
+                #{rescission.proportion},
+            </if>
+            <if test="rescission.createTime != null">
+                #{rescission.createTime},
+            </if>
+        </trim>
+    </insert>
+    <select id="existByMemberId" resultType="java.lang.Boolean">
+        select if(count(id) = 0,0,1) from rescission where member_id =#{memberId}
+    </select>
+    <select id="getByCommunityIdAndMerchantIdAndType" resultType="map">
+        select proportion,count(id) votinged from rescission where community_id =#{communityId} and merchant_id =#{merchantId} and type =#{type} order by create_time desc limit 1
+    </select>
+
+</mapper>

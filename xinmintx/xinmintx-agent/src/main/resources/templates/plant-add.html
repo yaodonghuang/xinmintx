@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+	<title>工厂入驻</title>
+	<link rel="stylesheet" href="/css/weui.min.css">
+	<link rel="stylesheet" href="/css/weui.css">
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/form.css">
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/jweixin-1.4.0.js"></script>
+	<script src="/js/wechatpay.js"></script>
+</head>
+<body>
+<div class="header">
+	<p class="header_title">
+		<span onclick="window.history.go(-1)"></span>
+		工厂入驻
+	</p>
+</div>
+<form method="post" id="addMerchant-form">
+	<div class="up_id">
+		<p class="id_title">请拍摄并上传你的有效身份证</p>
+		<ul class="up_list">
+			<li>
+				<img src="/images/upload/id1.png" alt="">
+				<input type="file" accept="image/*" onchange="photoUpload(event)">
+				<input type="hidden" id="idcardFront" name="idcardFront">
+				<div class="up_btn">上传身份证正面</div>
+			</li>
+			<li>
+				<img src="/images/upload/id2.png" alt="">
+				<input type="file" accept="image/*" onchange="photoUpload(event)">
+				<input type="hidden" id="idcardBack" name="idcardBack">
+				<div class="up_btn">上传身份证反面</div>
+			</li>
+		</ul>
+	</div>
+	<ul class="mess_top">
+		<li>请输入商户信息</li>
+		<li>
+			<label for="name">姓名</label>
+			<input type="text" id="name" name="personname">
+		</li>
+		<li>
+			<label for="card">身份证号码</label>
+			<input type="text" id="card" name="idcard">
+		</li>
+		<li>
+			<label for="map">地址</label>
+			<input type="text" id="map" name="address">
+		</li>
+	</ul>
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell">
+			<div class="weui-cell__hd"><label for="home-city" class="weui-label">地区</label></div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" id="home-city" type="text" value="北京 北京市 东城区">
+				<input id="regionCode" name="regionCode"  type="hidden" value="110000,110000,110101">
+				<input id="regionName" name="regionName"  type="hidden" value="北京,北京市,东城区">
+			</div>
+		</div>
+	</div>
+	<ul class="mess_bottom">
+		<li>
+			<label for="idCard">银行卡号</label>
+			<input type="number" id="idCard" name="bankCard">
+		</li>
+		<li>
+			<label for="cellphone">预留手机号</label>
+			<input type="number" id="cellphone" name="phoneId">
+		</li>
+	</ul>
+	<div action="" class="content">
+		<p class="content_p">请上传银行卡照片</p>
+		<ul class="photo_card">
+			<li>
+				<img src="/images/upload/icon.png" alt="">
+				<div class="up_img">
+					上传银行卡照片
+					<input type="file" placeholder="上传银行卡照片" accept="image/*" onchange="photoUpload2(event)">
+					<input type="hidden" id="bankCardFront" name="bankCardFront">
+				</div>
+				<span class="text1">正</span>
+			</li>
+			<li>
+				<img src="/images/upload/icon.png" alt="">
+				<div class="up_img">
+					上传银行卡照片
+					<input type="file" placeholder="上传银行卡照片" accept="image/*" onchange="photoUpload2(event)">
+					<input type="hidden" id="bankCardBack" name="bankCardBack">
+				</div>
+				<span class="text1">反</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="new">
+		<p class="new_p">请上传工厂有效照片</p>
+		<div action="" class="form">
+			<ul class="photo">
+				<li>
+					<img src="/images/upload/icon.png" alt="">
+					<div class="up_img">
+						上传门头照片
+						<input type="file" value="上传门头照片" accept="image/*" onchange="photoUpload2(event)">
+						<input type="hidden" id="doorHeadPhoto" name="doorHeadPhoto">
+					</div>
+				</li>
+				<li>
+					<img src="/images/upload/icon.png" alt="">
+					<div class="up_img">
+						上传厂内照片
+						<input type="file" value="上传店内照片" accept="image/*" onchange="photoUpload2(event)">
+						<input type="hidden" id="factoryPhoto" name="factoryPhoto">
+					</div>
+				</li>
+				<li>
+					<img src="/images/upload/icon.png" alt="">
+					<div class="up_img">
+						上传作业照片
+						<input type="file" value="上传店内照片" accept="image/*" onchange="photoUpload2(event)">
+						<input type="hidden" id="workPhoto" name="workPhoto">
+					</div>
+				</li>
+				<li>
+					<img src="/images/upload/icon.png" alt="">
+					<div class="up_img">上传营业执照
+						<input type="file" value="上传营业执照" accept="image/*" onchange="photoUpload2(event)">
+						<input type="hidden" id="businessLicense" name="businessLicense">
+					</div>
+				</li>
+			</ul>
+			<input type="button" value="确认上传"  id="btns" onclick="addMerchant();">
+		</div>
+	</div>
+</form>
+<div class="warning">
+	<div class="warning_content">
+		<p class="warning_title">提示</p>
+		<p class="warning_text"></p>
+		<p class="warning_btn"  onclick="fn()">确定</p>
+	</div>
+</div>
+<div class="success">
+	<div class="success_content">
+		<p class="success_text">添加成功</p>
+		<div class="success_btn" onclick="success()">我知道了</div>
+	</div>
+</div>
+<script src="/js/rem.js"></script>
+</body>
+<script src="/js/fastclick.js"></script>
+<script>
+	$(function() {
+		FastClick.attach(document.body);
+	});
+</script>
+<script src="/js/jquery-weui.min.js"></script>
+<script src="/js/city-picker.min.js"></script>
+<script>
+	$("#home-city").cityPicker({
+		title: "选择地区",
+		onChange: function (picker, values, displayValues) {
+			$("#regionName").val(displayValues);
+			$("#regionCode").val(values);
+		}
+	});
+</script>
+<script>
+	function photoUpload(event) {
+		var file = event.target.files[0];
+		if (file) {
+			var formData = new FormData();
+			formData.append('file', file);
+			$.ajax({
+				url: "/api/photoUpload",
+				data: formData,
+				type: "POST",
+				async: false,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function (data) {
+					//成功
+					event.target.parentNode.children[0].src = data;
+					event.target.parentNode.children[2].value = data;
+				}
+			});
+		}
+	}
+	function photoUpload2(event) {
+		var file = event.target.files[0];
+		if (file) {
+			var formData = new FormData();
+			formData.append('file', file);
+			$.ajax({
+				url: "/api/photoUpload",
+				data: formData,
+				type: "POST",
+				async: false,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function (data) {
+					//成功
+					event.target.parentNode.parentNode.children[0].src =data;
+					event.target.parentNode.children[1].value = data;
+				}
+			});
+		}
+	}
+
+	function fn() {
+		$('.warning').hide();
+		return;
+	}
+	function success() {
+		$('.success').hide();
+		location.href = "/agent/user/index";
+		return;
+	}
+	function addMerchant(){
+		var idcardFront = $("#idcardFront").val();
+		var idcardBack = $("#idcardBack").val();
+		var bankCardFront = $("#bankCardFront").val();
+		var bankCardBack = $("#bankCardBack").val();
+		var doorHeadPhoto = $("#doorHeadPhoto").val();
+		var workPhoto = $("#workPhoto").val();
+		var factoryPhoto = $("#factoryPhoto").val();
+		var businessLicense = $("#businessLicense").val();
+		var cellphone = $("#cellphone").val();
+		var name = $("#name").val();
+		var map = $("#map").val();
+		var regionName = $("#regionName").val();
+		var card = $("#card").val();
+		var idCard = $("#idCard").val();
+		var myRegcard = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+		var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+		if (isEmpty(idcardFront)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择身份证正面！');
+			return;
+		}
+		if (isEmpty(idcardBack)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择身份证反面！');
+			return;
+		}
+		if (isEmpty(name)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！姓名不能为空！');
+			return;
+		}
+		if (isEmpty(map)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！地址不能为空！');
+			return;
+		}
+		if (isEmpty(regionName)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！地区不能为空！');
+			return;
+		}
+		if (isEmpty(idCard)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！银行卡号不能为空！');
+			return;
+		}
+		if (!myreg.test(cellphone)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！手机号有误！');
+			return;
+		}
+		if (!myRegcard.test(card)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！身份证号有误！');
+			return;
+		}
+		if (isEmpty(bankCardFront)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择银行卡照片正面！');
+			return;
+		}
+		if (isEmpty(bankCardBack)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择银行卡照片反面！');
+			return;
+		}
+		if (isEmpty(doorHeadPhoto)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择门头照片！');
+			return;
+		}
+		if (isEmpty(factoryPhoto)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择厂内照片！');
+			return;
+		}
+		if (isEmpty(workPhoto)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择作业照片！');
+			return;
+		}
+		if (isEmpty(businessLicense)) {
+			$('.warning').show()
+			$('.warning_text').text('您好！请选择营业执照！');
+			return;
+		}
+		$.ajax({
+			url: "/agent/plant/addFactory",
+			method: "POST",
+			contentType: "application/x-www-form-urlencoded",
+			data: $("#addMerchant-form").serialize(),
+			success: function (res) {
+				if (res.code === 200) {
+					if (res.data !== null) {
+						onBridgeReady(res.data);
+					} else {
+						$('.success').show();
+						// $('.warning').show()
+						// $('.warning_text').text('您好！添加成功！');
+					}
+				} else {
+					// alert("信息已存在,请检查信息");
+					$('.warning').show()
+					$('.warning_text').text('信息已存在,请检查信息！');
+					$("#addMerchant-form").reset;
+				}
+			}
+		});
+	}
+	function isNotEmpty(data) {
+		if (data === undefined || data === null || data === "" || data.length < 1){
+			return false;
+		}
+		return true;
+	}
+
+	function isEmpty(data) {
+		return !isNotEmpty(data);
+	}
+</script>
+</html>

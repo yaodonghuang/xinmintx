@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GiftMapper">
+    
+    <resultMap type="Gift" id="GiftResult">
+        <result property="id"    column="id"    />
+        <result property="giftName"    column="gift_name"    />
+        <result property="giftType"    column="gift_type"    />
+        <result property="giftGroup"    column="gift_group"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="ifDelete"    column="if_delete"    />
+        <result property="giftState"    column="gift_state"    />
+        <result property="sourceId"    column="source_id"    />
+        <result property="favorableRate"    column="favorable_rate"    />
+        <result property="fullReducePrice"    column="full_reduce_price"    />
+        <result property="cashCoupon"    column="cash_coupon"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="skuId"    column="sku_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="turnsPhoto"    column="gift_pic"    />
+        <result property="goodsListName"    column="goods_list_name"    />
+        <result property="price"    column="price"    />
+    </resultMap>
+
+    <sql id="selectGiftVo">
+        select id, gift_name, gift_type,gift_group, create_time, update_time, end_date, if_delete, gift_state, source_id, favorable_rate, full_reduce_price, cash_coupon, goods_id, sku_id, remark, quantity, gift_pic, price from gift
+    </sql>
+    <delete id="delGiftByIds">
+        delete from gift
+        where id =#{ids}
+    </delete>
+
+    <select id="selectGiftList" parameterType="Gift" resultMap="GiftResult">
+        <include refid="selectGiftVo"/>
+        <where>  
+            <if test="giftName != null  and giftName != ''"> and gift_name like concat('%', #{giftName}, '%')</if>
+            <if test="giftType != null  and giftType != ''"> and gift_type = #{giftType}</if>
+            <if test="beginTimeStamp != null and beginTimeStamp != ''"> and UNIX_TIMESTAMP(end_date) <![CDATA[>=]]> #{beginTimeStamp}</if>
+            <if test="endTimeStamp != null and endTimeStamp != ''"> and UNIX_TIMESTAMP(end_date) <![CDATA[<= ]]> #{endTimeStamp}</if>
+            <if test="ifDelete != null "> and if_delete = #{ifDelete}</if>
+            <if test="giftState != null  and giftState != ''"> and gift_state = #{giftState}</if>
+            <if test="sourceId != null "> and source_id = #{sourceId}</if>
+            <if test="favorableRate != null "> and favorable_rate = #{favorableRate}</if>
+            <if test="fullReducePrice != null  and fullReducePrice != ''"> and full_reduce_price = #{fullReducePrice}</if>
+            <if test="cashCoupon != null "> and cash_coupon = #{cashCoupon}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="skuId != null "> and sku_id = #{skuId}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+        </where>
+    </select>
+    
+    <select id="selectGiftById" parameterType="Long" resultMap="GiftResult">
+        select g.id, g.gift_name, g.gift_type, g.create_time, g.update_time, g.end_date,
+        g.if_delete, g.gift_state, g.source_id, g.favorable_rate, g.full_reduce_price, g.cash_coupon,
+        g.goods_id, g.sku_id, g.remark, g.quantity, g.gift_pic,gs.goods_list_name,g.gift_group
+        from gift g
+        left join goods gs
+        on g.goods_id = gs.id
+        where g.id = #{id}
+    </select>
+    <select id="selectReceiptor" resultType="com.xinmintx.system.domain.Member">
+        select m.name,m.id,m.platform_count,m.merchant_count
+        from member m
+        LEFT JOIN member_gift mt
+        on mt.member_id = m.id
+        where mt.gift_id = #{giftId}
+    </select>
+
+    <insert id="insertGift" parameterType="Gift" useGeneratedKeys="true" keyProperty="id">
+        insert into gift
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="giftName != null  and giftName != ''">gift_name,</if>
+            <if test="giftType != null  and giftType != ''">gift_type,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="endDate != null ">end_date,</if>
+            <if test="ifDelete != null ">if_delete,</if>
+            <if test="giftState != null  and giftState != ''">gift_state,</if>
+            <if test="sourceId != null ">source_id,</if>
+            <if test="favorableRate != null ">favorable_rate,</if>
+            <if test="fullReducePrice != null  and fullReducePrice != ''">full_reduce_price,</if>
+            <if test="cashCoupon != null ">cash_coupon,</if>
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="skuId != null ">sku_id,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="quantity != null ">quantity,</if>
+            <if test="turnsPhoto != null and turnsPhoto != ''">gift_pic,</if>
+            <if test="quantity != null ">total_qty,</if>
+            <if test="giftGroup != null  and giftGroup != ''">gift_group,</if>
+            <if test="price != null  and price != ''">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="giftName != null  and giftName != ''">#{giftName},</if>
+            <if test="giftType != null  and giftType != ''">#{giftType},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="endDate != null ">#{endDate},</if>
+            <if test="ifDelete != null ">#{ifDelete},</if>
+            <if test="giftState != null  and giftState != ''">#{giftState},</if>
+            <if test="sourceId != null ">#{sourceId},</if>
+            <if test="favorableRate != null ">#{favorableRate},</if>
+            <if test="fullReducePrice != null  and fullReducePrice != ''">#{fullReducePrice},</if>
+            <if test="cashCoupon != null ">#{cashCoupon},</if>
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="skuId != null ">#{skuId},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="quantity != null ">#{quantity},</if>
+            <if test="turnsPhoto != null and turnsPhoto != ''">#{turnsPhoto},</if>
+            <if test="quantity != null ">#{quantity},</if>
+            <if test="giftGroup != null  and giftGroup != ''">#{giftGroup},</if>
+            <if test="price != null  and price != ''">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGift" parameterType="Gift">
+        update gift
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="giftName != null  and giftName != ''">gift_name = #{giftName},</if>
+            <if test="giftType != null  and giftType != ''">gift_type = #{giftType},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="endDate != null ">end_date = #{endDate},</if>
+            <if test="ifDelete != null ">if_delete = #{ifDelete},</if>
+            <if test="giftState != null  and giftState != ''">gift_state = #{giftState},</if>
+            <if test="sourceId != null ">source_id = #{sourceId},</if>
+            <if test="favorableRate != null ">favorable_rate = #{favorableRate},</if>
+            <if test="fullReducePrice != null  and fullReducePrice != ''">full_reduce_price = #{fullReducePrice},</if>
+            <if test="cashCoupon != null ">cash_coupon = #{cashCoupon},</if>
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="skuId != null ">sku_id = #{skuId},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="quantity != null ">quantity = #{quantity},</if>
+            <if test="turnsPhoto != null and turnsPhoto != ''">gift_pic = #{turnsPhoto},</if>
+            <if test="quantity != null ">total_qty = #{quantity},</if>
+            <if test="giftGroup != null  and giftGroup != ''">gift_group = #{giftGroup},</if>
+            <if test="price != null  and price != ''">price = #{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteGiftById" parameterType="Long">
+        update gift set gift_state = "1" where id = #{id}
+    </update>
+
+    <update id="deleteGiftByIds" parameterType="String">
+        update gift set
+        gift_state =
+        case
+        when gift_state="0" then "1"
+        when gift_state="1" then "0"
+        else gift_state end
+        where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    
+</mapper>

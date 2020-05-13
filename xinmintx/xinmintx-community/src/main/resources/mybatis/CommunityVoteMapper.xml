@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.CommunityVoteMapper">
+    <select id="ifBelongToCommunity" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from community_member where community_id = #{communityId} and member_id = #{memberId})
+    </select>
+
+    <select id="ifBeginVote" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from community_vote where community_id = #{communityId} and originator_id = #{memberId})
+    </select>
+
+    <delete id="deleteAllVoteInfo" parameterType="map">
+        delete from community_vote where community_id = #{communityId}
+    </delete>
+
+    <select id="ifComplete" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from community_vote where community_id = #{communityId} and if_complete = #{ifComplete})
+    </select>
+
+    <update id="updateMemberVoteInfo" parameterType="map">
+        update community_member
+        set if_vote = #{ifVote}
+        where community_id = #{communityId}
+        <if test="memberId != null and memberId != ''">
+            and member_id = #{memberId}
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="com.xinmintx.community.model.CommunityVote" >
+        insert into community_vote (community_id, reason,
+          other_reason, originator_id,
+          agree_num, refuse_num, if_complete)
+        values (#{communityId,jdbcType=BIGINT}, #{reason,jdbcType=INTEGER},
+          #{otherReason,jdbcType=VARCHAR}, #{originatorId,jdbcType=BIGINT},
+          #{agreeNum,jdbcType=INTEGER}, #{refuseNum,jdbcType=INTEGER}, #{ifComplete,jdbcType=TINYINT})
+    </insert>
+
+    <select id="ifMemberVote" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from community_member where community_id = #{communityId} and member_id = #{memberId} and if_vote = #{ifVote})
+    </select>
+
+    <select id="getVoteInfo" parameterType="map" resultType="java.util.Map">
+        SELECT m.`name`,cv.`reason`,cv.`other_reason` otherReason,cv.id,cv.create_time createTime,
+        cv.agree_num agreeNum,cv.refuse_num refuseNum,cv.if_complete ifComplete
+        FROM `community_vote` cv
+        LEFT JOIN member m
+        ON cv.`originator_id` = m.id
+        WHERE cv.community_id = #{communityId}
+    </select>
+
+    <update id="updateNumOfVote" parameterType="com.xinmintx.community.model.CommunityVote">
+        update community_vote
+        <set>
+            <if test="agreeNum != null and agreeNum != ''">
+                agree_num = agree_num + #{agreeNum}
+            </if>
+            <if test="refuseNum != null and refuseNum != ''">
+                ,refuse_num = refuse_num + #{refuseNum}
+            </if>
+            <if test="ifComplete != null and ifComplete != ''">
+                ,if_complete = #{ifComplete}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getCountByCommunityId" resultType="java.lang.Integer">
+        select count(1)
+        from community_member
+        where community_id = #{communityId}
+        <if test="ifVote != null and ifVote != ''">
+           AND if_vote = #{ifVote}
+        </if>
+    </select>
+
+    <select id="getAgreeNum" parameterType="map" resultType="java.lang.Integer">
+        select agree_num from community_vote where id = #{id}
+    </select>
+
+    <update id="updatePresident" parameterType="map">
+        UPDATE community c,community_vote cv
+        SET c.`create_id` = cv.`originator_id`
+        WHERE c.`id` = #{communityId}
+        AND cv.`community_id` = #{communityId}
+    </update>
+
+    <select id="getMemberIdByCommunityId" parameterType="map" resultType="java.lang.Long">
+        select originator_id from community_vote where community_id = #{communityId}
+    </select>
+
+    <select id="ifExistsConsigneeAddress" parameterType="map" resultType="java.lang.Integer">
+        SELECT 1 FROM DUAL WHERE EXISTS(SELECT 1 FROM community WHERE id = #{communityId} AND consignee_address IS NOT NULL)
+    </select>
+
+</mapper>

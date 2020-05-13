@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.ExclusiveBoardMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.merchant.model.Merchant">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+        <result column="recommender" jdbcType="INTEGER" property="recommender" />
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+        <result column="cellphone" jdbcType="VARCHAR" property="cellphone" />
+        <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+        <result column="merchant_type" jdbcType="INTEGER" property="merchantType" />
+        <result column="merchant_table" jdbcType="INTEGER" property="merchantTable" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+        <result column="region_code" jdbcType="VARCHAR" property="regionCode" />
+        <result column="merchant_branch_office_id" jdbcType="INTEGER" property="merchantBranchOfficeId" />
+        <result column="turnover" jdbcType="DECIMAL" property="turnover" />
+        <result column="is_review" jdbcType="INTEGER" property="isReview" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="createUser" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_Time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="updateUser" jdbcType="VARCHAR" property="updateUser" />
+        <result column="merchant_category" jdbcType="INTEGER" property="merchantCategory" />
+    </resultMap>
+    <insert id="addMerchantsGift">
+        insert into gift
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="giftName != null">
+                gift_name,
+            </if>
+            <if test="giftType != null">
+                gift_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="ifDelete != null">
+                if_delete,
+            </if>
+            <if test="giftState != null">
+                gift_state,
+            </if>
+            <if test="sourceId != null">
+                source_id,
+            </if>
+            <if test="favorableRate != null">
+                favorable_rate,
+            </if>
+            <if test="fullReducePrice != null">
+                full_reduce_price,
+            </if>
+            <if test="cashCoupon != null">
+                cash_coupon,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="skuId != null">
+                sku_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="perCapita != null">
+                per_capita,
+            </if>
+            <if test="giftPic != null">
+                gift_pic,
+            </if>
+            <if test="quantity != null">
+                total_qty,
+            </if>
+            <if test="giftGroup != null">
+                gift_group,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="giftName != null">
+                #{giftName},
+            </if>
+            <if test="giftType != null">
+                #{giftType},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="endDate != null">
+                #{endDate},
+            </if>
+            <if test="ifDelete != null">
+                #{ifDelete},
+            </if>
+            <if test="giftState != null">
+                #{giftState},
+            </if>
+            <if test="sourceId != null">
+                #{sourceId},
+            </if>
+            <if test="favorableRate != null">
+                #{favorableRate},
+            </if>
+            <if test="fullReducePrice != null">
+                #{fullReducePrice},
+            </if>
+            <if test="cashCoupon != null">
+                #{cashCoupon},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId},
+            </if>
+            <if test="skuId != null">
+                #{skuId},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="quantity != null">
+                #{quantity},
+            </if>
+            <if test="perCapita != null">
+                #{perCapita},
+            </if>
+            <if test="giftPic != null">
+                #{giftPic},
+            </if>
+            <if test="quantity != null">
+                #{quantity},
+            </if>
+            <if test="giftGroup != null">
+                #{giftGroup},
+            </if>
+        </trim>
+    </insert>
+    <update id="delMerchantsGift">
+        update gift
+        set gift_state =
+        case
+        when gift_state="0" then "1"
+        when gift_state="1" then "0"
+        else gift_state end
+        where
+        id = #{giftId}
+    </update>
+    <update id="upMerchantsGift">
+        update gift
+        <set>
+            <if test="giftName != null">
+                gift_name = #{giftName},
+            </if>
+            <if test="giftType != null">
+                gift_type = #{gift_type},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+            <if test="favorableRate != null">
+                favorable_rate = #{favorableRate},
+            </if>
+            <if test="fullReducePrice != null">
+                full_reduce_price = #{fullReducePrice},
+            </if>
+            <if test="cashCoupon != null">
+                cash_coupon = #{cashCoupon},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="giftPic != null">
+                gift_pic = #{giftPic},
+            </if>
+            <if test="quantity != null">
+                total_qty = #{quantity},
+            </if>
+            <if test="giftGroup != null">
+                gift_group = #{giftGroup},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="queryByClassify" resultType="com.xinmintx.merchant.model.StoreInformation">
+        select m.id,m.merchant_name,gt.favorable_rate,
+        m.per_capita,mt.type,gt.gift_name,u.photo_url
+        from merchant m
+        LEFT JOIN gift gt
+        on m.id=gt.source_id
+        LEFT JOIN unit_photo u
+        on m.id=u.company_id
+        LEFT JOIN merchant_type mt
+        on m.merchant_category=mt.type_id
+        where
+        mt.type = #{category}
+        and u.type = 3
+         GROUP BY m.id
+    </select>
+    <select id="queryByShop" resultType="com.xinmintx.merchant.model.StoreInformation">
+        select m.id,m.merchant_name,gt.favorable_rate,m.per_capita,
+        mt.type,gt.gift_name,gt.cash_coupon,gt.quantity,gs.line_price
+        gt.end_date,gt.goods_id,gt.remark,gt.gift_pic
+        from merchant m
+        LEFT JOIN gift gt
+        on m.id=gt.source_id
+        LEFT JOIN goods gs
+        on gs.id = gt.goods_id
+        LEFT JOIN merchant_type mt
+        on m.merchant_category=mt.type_id
+        where
+        m.id = #{id}
+        and gift_state= 0
+        and gt.quantity > 0
+    </select>
+    <select id="queryAllShop" resultType="com.xinmintx.merchant.model.StoreInformation">
+        select m.id,m.merchant_name,gt.favorable_rate,
+        m.per_capita,mt.type,gt.gift_name,u.photo_url
+        from merchant m
+        LEFT JOIN gift gt
+        on m.id=gt.source_id
+        LEFT JOIN unit_photo u
+        on m.id=u.company_id
+        LEFT JOIN merchant_type mt
+        on m.merchant_category=mt.type_id
+        where 1 = 1
+        <if test="regionCode != null and regionCode !=''">
+            and m.region_code = #{regionCode}
+        </if>
+        GROUP BY m.id
+    </select>
+    <select id="queryByGiftId" resultType="com.xinmintx.merchant.model.StoreInformation">
+        select  gt.gift_type,gt.gift_pic,m.merchant_name,gt.gift_name,gt.favorable_rate,
+        m.address,gt.cash_coupon,gt.full_reduce_price,gt.end_date,gt.remark
+        FROM gift gt
+        LEFT JOIN merchant m
+        on m.id=gt.source_id
+        where
+        gt.id = #{giftId}
+    </select>
+    <select id="queryByShopId" resultType="com.xinmintx.merchant.model.StoreInformation">
+         select m.id,m.merchant_name,gt.favorable_rate,
+        m.per_capita,mt.type,gt.gift_name,u.photo_url
+        from merchant m
+        LEFT JOIN gift gt
+        on m.id=gt.source_id
+        LEFT JOIN unit_photo u
+        on m.id=u.company_id
+        LEFT JOIN merchant_type mt
+        on m.merchant_category=mt.type_id
+        where
+        m.id = #{shopId}
+        and gift_state= 0
+        and quantity &gt;= 1
+        GROUP BY m.id
+    </select>
+    <select id="queryById" resultType="com.xinmintx.merchant.model.StoreInformation">
+         select m.id,m.merchant_name,gt.favorable_rate,
+        m.per_capita,mt.type,gt.gift_name,u.photo_url
+        from merchant m
+        LEFT JOIN gift gt
+        on m.id=gt.source_id
+        LEFT JOIN unit_photo u
+        on m.id=u.company_id
+        LEFT JOIN merchant_type mt
+        on m.merchant_category=mt.type_id
+        where m.id =#{shopId}
+        GROUP BY m.id
+    </select>
+</mapper>

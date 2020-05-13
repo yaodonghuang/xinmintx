@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>余额提现</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/balance.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <style type="text/css">
+        .kong {
+            display: inline-block;
+            padding: 0 0.14rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="title">
+    <p class="title_p">
+        <span class="back" onclick="window.history.go(-1)"></span>
+        余额提现
+    </p>
+
+</div>
+<div class="balance_content">
+    <div class="none"></div>
+    <div class="content">
+        <div class="left">
+            <p>到账银行卡
+                <span>
+                     <span id="names" class="kong"></span>
+                    <span id="bankName" class="kong"></span>
+                    (<span id="kh" class="kong"></span>)
+                </span>
+            </p>
+
+            <p class="time">2个小时内到账</p>
+        </div>
+    </div>
+    <ul class="money">
+        <li>提现金额</li>
+        <li>
+            <label for="moneys">￥</label><input id="moneys" type="number">
+        </li>
+    </ul>
+    <div class="footer">
+        <p class="footer_p1">
+            可提现金额：<span id="yue"></span>元
+        </p>
+        <p class="footer_p2">
+            <img src="/images/balance/warn.png" alt="">
+            每天单笔提现金额不可超过1万元,起提金额为10元，手续费为每次提现金额5%，手续费不足一元按一元算
+        </p>
+        <div class="btn" >
+            <button class="btn" id="txian" onclick="withdrawDeposit()">确认提现</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+
+
+    function disabledSubmitButton(){
+        $("#txian").attr({"disabled":"disabled"});     //控制按钮为禁用
+        var timeoutObj = setTimeout(function () {
+            $("#txian").removeAttr("disabled");//将按钮可用
+            /* 清除已设置的setTimeout对象 */
+            clearTimeout(timeoutObj)
+        }, 3000);
+    }
+
+    $(function () {
+        $.ajax({
+            url: "/agent/bankCard/getPrice",
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            success: function (res) {
+                $("#yue").html(res);
+            }
+        });
+        $.ajax({
+            url: "/agent/bankCard/getKh",
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            success: function (res) {
+                if (res != null) {
+                    $("#kh").html(res.bankCard);
+                    $("#names").html(res.cardholderName);
+                    $("#bankName").html(res.bankName);
+                }
+            }
+        });
+    })
+
+   function withdrawDeposit() {
+        var price = $("#moneys").val();
+        var yue = $("#yue").html();
+        if(price == null || price == undefined || price == ""){
+            alert("请输入提现金额");
+            return;
+        }
+        if(parseFloat(price) >= parseFloat(yue)){
+            alert("提现超额");
+            return;
+        }
+        $.ajax({
+            url: "/agent/bankCard/withdrawDeposit",
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                price: price
+            },
+            success: function (res) {
+                if (confirm(res.msg)) {
+                    location.href = "/agent/user/index";
+                }
+            }
+        });
+        //按钮失效3秒
+       disabledSubmitButton();
+    }
+</script>
+</html>

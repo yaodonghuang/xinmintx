@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.SysCardMapper">
+    
+    <resultMap type="SysCard" id="SysCardResult">
+        <result property="id"    column="id"    />
+        <result property="recordUrl"    column="record_url"    />
+        <result property="characters"    column="characters"    />
+        <result property="pictureUrl"    column="picture_url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="timeFrame"    column="time_frame"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysCardVo">
+        select id, record_url, characters, picture_url, create_time, time_frame, remark from sys_card
+    </sql>
+
+    <select id="selectSysCardList" parameterType="SysCard" resultMap="SysCardResult">
+        <include refid="selectSysCardVo"/>
+        <where>  
+            <if test="recordUrl != null  and recordUrl != ''"> and record_url = #{recordUrl}</if>
+            <if test="characters != null  and characters != ''"> and characters = #{characters}</if>
+            <if test="pictureUrl != null  and pictureUrl != ''"> and picture_url = #{pictureUrl}</if>
+            <if test="timeFrame != null "> and time_frame = #{timeFrame}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectSysCardById" parameterType="Long" resultMap="SysCardResult">
+        <include refid="selectSysCardVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysCard" parameterType="SysCard" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordUrl != null  and recordUrl != ''">record_url,</if>
+            <if test="characters != null  and characters != ''">characters,</if>
+            <if test="pictureUrl != null  and pictureUrl != ''">picture_url,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="timeFrame != null ">time_frame,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordUrl != null  and recordUrl != ''">#{recordUrl},</if>
+            <if test="characters != null  and characters != ''">#{characters},</if>
+            <if test="pictureUrl != null  and pictureUrl != ''">#{pictureUrl},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="timeFrame != null ">#{timeFrame},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCard" parameterType="SysCard">
+        update sys_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="recordUrl != null  and recordUrl != ''">record_url = #{recordUrl},</if>
+            <if test="characters != null  and characters != ''">characters = #{characters},</if>
+            <if test="pictureUrl != null  and pictureUrl != ''">picture_url = #{pictureUrl},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="timeFrame != null ">time_frame = #{timeFrame},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCardById" parameterType="Long">
+        delete from sys_card where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCardByIds" parameterType="String">
+        delete from sys_card where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

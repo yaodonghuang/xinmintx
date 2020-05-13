@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.UserExtMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.system.domain.UserExt">
+        <id column="id" property="id" />
+        <result column="goods_desc" property="goodsDesc" />
+        <result column="pay_type" property="payType" />
+        <result column="pay_status" property="payStatus" />
+        <result column="money_change" property="moneyChange" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+    <select id="selectUserById" resultMap="BaseResultMap">
+        select o.id, o.goods_desc, o.pay_type, o.pay_status, r.money_change, r.description, r.create_time from u_order o
+        inner join user_account_record r on o.id = r.order_id and r.user_id = #{id}
+        <where>
+            <if test="id != null "> and o.user_id = #{id}</if>
+            <if test="payType != null "> and o.pay_type = #{payType}</if>
+            <if test="goodsDesc != null  and goodsDesc != ''"> and o.goods_desc like concat('%', #{goodsDesc}, '%')</if>
+            <if test="payStatus != null  "> and o.pay_status = #{payStatus}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(r.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(r.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    <select id="selectById" resultType="com.xinmintx.system.domain.UserExt">
+        select o.id, o.goods_desc, o.pay_type, o.pay_status, r.money_change,r.create_time from u_order o
+        inner join user_account_record r on o.id = r.order_id and r.user_id = #{id}
+        where o.user_id = #{id}
+    </select>
+
+</mapper>

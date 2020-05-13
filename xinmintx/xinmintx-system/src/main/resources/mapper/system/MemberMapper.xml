@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberMapper">
+
+    <resultMap type="Member" id="MemberResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="name"    column="name"    />
+        <result property="cellphone"    column="cellphone"    />
+        <result property="gender"    column="gender"    />
+        <result property="idcard"    column="idcard"    />
+        <result property="recommender"    column="recommender"    />
+        <result property="memberType"    column="member_type"    />
+        <result property="isReview"    column="is_review"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="openid"    column="openid"    />
+        <result property="token"    column="token"    />
+        <result property="avatarUrl"    column="avatar_url"    />
+        <result property="platformCount"    column="platform_count"    />
+        <result property="merchantCount"    column="merchant_count"    />
+        <result property="branchOfficeCount"    column="branch_office_count"    />
+        <result property="birthGiftCount"    column="birth_gift_count"    />
+        <result property="integral"    column="integral"    />
+        <result property="newCurrency"    column="new_currency"    />
+        <result property="newBeans"    column="new_beans"    />
+        <result property="userId"    column="user_id"    />
+        <result property="freezeBeans"    column="freeze_beans"    />
+        <result property="freezeCurrency"    column="freeze_currency"    />
+        <result property="giftStart"    column="gift_start"    />
+        <result property="treeCode"    column="tree_code"    />
+        <result property="regionCode"    column="region_code"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="cardId"    column="card_id"    />
+        <result property="cardStatus"    column="card_status"    />
+        <result property="cardIndate"    column="card_indate"    />
+    </resultMap>
+
+    <resultMap id="restMemberTree" type="com.xinmintx.system.domain.MemberTree">
+        <result property="treeCode"    column="tree_code"    />
+        <result property="treeId"    column="tree_id"    />
+    </resultMap>
+
+    <sql id="selectMemberVo">
+        select id, order_id, name, cellphone, gender, idcard, recommender, member_type, is_review, create_user, create_time, update_user, update_time, openid, token, avatar_url, platform_count, merchant_count, branch_office_count, birth_gift_count, integral, new_currency, new_beans, user_id, freeze_beans, freeze_currency, gift_start, tree_code, region_code, birthday, card_id, card_status, card_indate from member
+    </sql>
+
+    <select id="selectMemberList" parameterType="Member" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        <where>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="cellphone != null  and cellphone != ''"> and cellphone = #{cellphone}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="idcard != null  and idcard != ''"> and idcard = #{idcard}</if>
+            <if test="recommender != null "> and recommender = #{recommender}</if>
+            <if test="memberType != null "> and member_type = #{memberType}</if>
+            <if test="isReview != null "> and is_review = #{isReview}</if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="updateUser != null  and updateUser != ''"> and update_user = #{updateUser}</if>
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+            <if test="avatarUrl != null  and avatarUrl != ''"> and avatar_url = #{avatarUrl}</if>
+            <if test="platformCount != null "> and platform_count = #{platformCount}</if>
+            <if test="merchantCount != null "> and merchant_count = #{merchantCount}</if>
+            <if test="branchOfficeCount != null "> and branch_office_count = #{branchOfficeCount}</if>
+            <if test="birthGiftCount != null "> and birth_gift_count = #{birthGiftCount}</if>
+            <if test="integral != null "> and integral = #{integral}</if>
+            <if test="newCurrency != null "> and new_currency = #{newCurrency}</if>
+            <if test="newBeans != null "> and new_beans = #{newBeans}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="freezeBeans != null "> and freeze_beans = #{freezeBeans}</if>
+            <if test="freezeCurrency != null "> and freeze_currency = #{freezeCurrency}</if>
+            <if test="giftStart != null "> and gift_start = #{giftStart}</if>
+            <if test="treeCode != null  and treeCode != ''"> and tree_code = #{treeCode}</if>
+            <if test="regionCode != null  and regionCode != ''"> and region_code = #{regionCode}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="cardId != null "> and card_id = #{cardId}</if>
+            <if test="cardStatus != null "> and card_status = #{cardStatus}</if>
+            <if test="cardIndate != null "> and card_indate = #{cardIndate}</if>
+        </where>
+    </select>
+
+    <select id="selectMemberListBuy" parameterType="Member" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="cellphone != null  and cellphone != ''"> and cellphone = #{cellphone}</if>
+            and avatar_url is not null and length(avatar_url) > 0
+        </where>
+    </select>
+
+    <select id="selectMemberById" parameterType="Long" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectTreeCode" resultMap="restMemberTree">
+        SELECT tree_code,tree_id
+        FROM member_tree
+        WHERE member_id IS NULL
+        LIMIT 30
+    </select>
+
+    <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
+        insert into member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null ">order_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone,</if>
+            <if test="gender != null ">gender,</if>
+            <if test="idcard != null  and idcard != ''">idcard,</if>
+            <if test="recommender != null ">recommender,</if>
+            <if test="memberType != null ">member_type,</if>
+            <if test="isReview != null ">is_review,</if>
+            <if test="createUser != null  and createUser != ''">create_user,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateUser != null  and updateUser != ''">update_user,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="openid != null  and openid != ''">openid,</if>
+            <if test="token != null  and token != ''">token,</if>
+            <if test="avatarUrl != null  and avatarUrl != ''">avatar_url,</if>
+            <if test="platformCount != null ">platform_count,</if>
+            <if test="merchantCount != null ">merchant_count,</if>
+            <if test="branchOfficeCount != null ">branch_office_count,</if>
+            <if test="birthGiftCount != null ">birth_gift_count,</if>
+            <if test="integral != null ">integral,</if>
+            <if test="newCurrency != null ">new_currency,</if>
+            <if test="newBeans != null ">new_beans,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="freezeBeans != null ">freeze_beans,</if>
+            <if test="freezeCurrency != null ">freeze_currency,</if>
+            <if test="giftStart != null ">gift_start,</if>
+            <if test="treeCode != null  and treeCode != ''">tree_code,</if>
+            <if test="regionCode != null  and regionCode != ''">region_code,</if>
+            <if test="birthday != null ">birthday,</if>
+            <if test="cardId != null ">card_id,</if>
+            <if test="cardStatus != null ">card_status,</if>
+            <if test="cardIndate != null ">card_indate,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null ">#{orderId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="cellphone != null  and cellphone != ''">#{cellphone},</if>
+            <if test="gender != null ">#{gender},</if>
+            <if test="idcard != null  and idcard != ''">#{idcard},</if>
+            <if test="recommender != null ">#{recommender},</if>
+            <if test="memberType != null ">#{memberType},</if>
+            <if test="isReview != null ">#{isReview},</if>
+            <if test="createUser != null  and createUser != ''">#{createUser},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateUser != null  and updateUser != ''">#{updateUser},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="openid != null  and openid != ''">#{openid},</if>
+            <if test="token != null  and token != ''">#{token},</if>
+            <if test="avatarUrl != null  and avatarUrl != ''">#{avatarUrl},</if>
+            <if test="platformCount != null ">#{platformCount},</if>
+            <if test="merchantCount != null ">#{merchantCount},</if>
+            <if test="branchOfficeCount != null ">#{branchOfficeCount},</if>
+            <if test="birthGiftCount != null ">#{birthGiftCount},</if>
+            <if test="integral != null ">#{integral},</if>
+            <if test="newCurrency != null ">#{newCurrency},</if>
+            <if test="newBeans != null ">#{newBeans},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="freezeBeans != null ">#{freezeBeans},</if>
+            <if test="freezeCurrency != null ">#{freezeCurrency},</if>
+            <if test="giftStart != null ">#{giftStart},</if>
+            <if test="treeCode != null  and treeCode != ''">#{treeCode},</if>
+            <if test="regionCode != null  and regionCode != ''">#{regionCode},</if>
+            <if test="birthday != null ">#{birthday},</if>
+            <if test="cardId != null ">#{cardId},</if>
+            <if test="cardStatus != null ">#{cardStatus},</if>
+            <if test="cardIndate != null ">#{cardIndate},</if>
+        </trim>
+    </insert>
+
+
+    <update id="updateMember" parameterType="Member">
+        update member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null ">order_id = #{orderId},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="cellphone != null  and cellphone != ''">cellphone = #{cellphone},</if>
+            <if test="gender != null ">gender = #{gender},</if>
+            <if test="idcard != null  and idcard != ''">idcard = #{idcard},</if>
+            <if test="recommender != null ">recommender = #{recommender},</if>
+            <if test="memberType != null ">member_type = #{memberType},</if>
+            <if test="isReview != null ">is_review = #{isReview},</if>
+            <if test="createUser != null  and createUser != ''">create_user = #{createUser},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateUser != null  and updateUser != ''">update_user = #{updateUser},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="openid != null  and openid != ''">openid = #{openid},</if>
+            <if test="token != null  and token != ''">token = #{token},</if>
+            <if test="avatarUrl != null  and avatarUrl != ''">avatar_url = #{avatarUrl},</if>
+            <if test="platformCount != null ">platform_count = #{platformCount},</if>
+            <if test="merchantCount != null ">merchant_count = #{merchantCount},</if>
+            <if test="branchOfficeCount != null ">branch_office_count = #{branchOfficeCount},</if>
+            <if test="birthGiftCount != null ">birth_gift_count = #{birthGiftCount},</if>
+            <if test="integral != null ">integral = #{integral},</if>
+            <if test="newCurrency != null ">new_currency = #{newCurrency},</if>
+            <if test="newBeans != null ">new_beans = #{newBeans},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="freezeBeans != null ">freeze_beans = #{freezeBeans},</if>
+            <if test="freezeCurrency != null ">freeze_currency = #{freezeCurrency},</if>
+            <if test="giftStart != null ">gift_start = #{giftStart},</if>
+            <if test="treeCode != null  and treeCode != ''">tree_code = #{treeCode},</if>
+            <if test="regionCode != null  and regionCode != ''">region_code = #{regionCode},</if>
+            <if test="birthday != null ">birthday = #{birthday},</if>
+            <if test="cardId != null ">card_id = #{cardId},</if>
+            <if test="cardStatus != null ">card_status = #{cardStatus},</if>
+            <if test="cardIndate != null ">card_indate = #{cardIndate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberById" parameterType="Long">
+        delete from member where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberByIds" parameterType="String">
+        delete from member where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateTreeCodeToNullByIds" parameterType="String">
+        update member_tree set member_id = null where member_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

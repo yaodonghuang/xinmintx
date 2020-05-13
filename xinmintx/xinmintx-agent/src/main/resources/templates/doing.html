@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/css/reset.css">
+		<link rel="stylesheet" href="/css/center.css">
+		<script src="/js/rem.js"></script>
+		<script src="/js/jquery.min.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	</head>
+
+	<body>
+		<div class="header">
+			<span onclick="window.history.go(-1)"></span>
+			正在销售
+		</div>
+		<ul class="doing_list" >
+			<li th:each="list:${commodityAndImages}">
+				<div  class="do_left" th:src="${list.ossUrl}">
+					<img class="left_l" th:if="${list.ossUrl != null}" th:src="${list.ossUrl}" >
+				</div>
+				<div class="doing_right">
+					<p class="doing_right_p1" th:text="${list.commodityName}" ></p>
+					<p class="doing_right_p2" th:text="${list.activityTitle}" ></p>
+					<p class="doing_right_p3">
+						<span class="p3_first">月销售</span>
+						<span class="p3_second" th:text="${list.salesVolume}"></span>
+					</p>
+				</div>
+			</li>
+		</ul>
+	</body>
+<script>
+	function selectShopping(id) {
+        location.href="/agent/group/jumpGroup/"+id;
+    }
+</script>
+</html>

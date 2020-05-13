@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-ptgood-edit" th:object="${goodPtgood}">
+            <input name="ptgoodsId" th:field="*{ptgoodsId}" type="hidden">
+            <input id="goodsId" name="goodsId" th:field="*{goodsId}" type="hidden"/>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">活动名称：</label>
+                <div class="col-sm-8">
+                    <input name="nameActivity" th:field="*{nameActivity}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">选择商品：</label>
+                <div class="col-sm-8">
+                    <input name="ptgoodsName" id="goodsListName" th:field="*{ptgoodsName}" class="form-control" onclick="selectGoods()" type="text" placeholder="请选择商品" required readonly>
+                </div>
+            </div>
+            <!--<div class="form-group">    -->
+                <!--<label class="col-sm-3 control-label">拼团商品名称：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input name="ptgoodsName" th:field="*{ptgoodsName}" class="form-control" type="text">-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">优惠价格(减去多少)：</label>
+                <div class="col-sm-8">
+                    <input name="ptPrice" th:field="*{ptPrice}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">拼团人数(2-10)：</label>
+                <div class="col-sm-8">
+                    <input name="ptSize" th:field="*{ptSize}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">拼团时间(小时)：</label>
+                <div class="col-sm-8">
+                    <input name="ptValidhours" th:field="*{ptValidhours}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">拼团有效期：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="startTime" th:value="${#dates.format(goodPtgood.startTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="endTime" th:value="${#dates.format(goodPtgood.endTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">商品拼团库存数量：</label>
+                <div class="col-sm-8">
+                    <input name="ptgoodsNumber" th:field="*{ptgoodsNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">启用：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="isSale" id="isSale" th:field="*{isSale}">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">拼团次数：</label>
+                <div class="col-sm-8">
+                    <input name="ptTimes" th:field="*{groupTimes}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">拼团类型：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="groupType" id="groupType" th:field="*{groupType}">
+                        <option value="1">代理商</option>
+                        <option value="2">惠商</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/ptgood";
+        $("#form-ptgood-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-ptgood-edit').serialize());
+            }
+        }
+
+        $("input[name='startTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='endTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='addtime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='uptime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='ptTimes']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        /*商品分类管理-新增-选择菜单树*/
+        function selectGoods() {
+            var url = prefix + "/selectGoods";
+            var options = {
+                title: '商品选择',
+                //width: "380",
+                url: url,
+                callBack: selectGood
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectGood(index, layero) {
+            var body = layer.getChildFrame('body', index);
+            $("#goodsId").val(body.find('#goodsId').val());
+            $("#goodsListName").val(body.find('#goodsListName').val());
+            layer.close(index);
+        }
+    </script>
+</body>
+</html>

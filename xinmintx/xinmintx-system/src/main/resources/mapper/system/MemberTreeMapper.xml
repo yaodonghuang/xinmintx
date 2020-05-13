@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinmintx.system.mapper.MemberTreeMapper" >
+    <resultMap id="BaseResultMap" type="com.xinmintx.system.domain.MemberTree">
+        <id column="tree_id" jdbcType="BIGINT" property="treeId" />
+        <result column="tree_code" jdbcType="VARCHAR" property="treeCode" />
+        <result column="member_id" jdbcType="INTEGER" property="memberId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="parent_tree_id" jdbcType="BIGINT" property="parentTreeId" />
+    </resultMap>
+    <sql id="selectMemberTreeVo">
+        select tree_id, tree_code, member_id, create_time, parent_tree_id from member_tree
+    </sql>
+    <update id="setTreeNoForMember" parameterType="map">
+    update member_tree
+    set member_id = #{id}
+    where tree_code = #{treeCode}
+  </update>
+    <delete id="deleteMemberTreeByIds">
+        delete from member_tree where tree_id in
+        <foreach item="treeId" collection="array" open="(" separator="," close=")">
+            #{treeId}
+        </foreach>
+    </delete>
+
+    <select id="ifExistsData" resultType="java.lang.Integer">
+    select count(*) from `member_tree`
+  </select>
+
+    <insert id="insert" parameterType="map" >
+        insert into member_tree (tree_id, tree_code, member_id, parent_tree_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.treeId}, #{item.treeCode}, #{item.memberId}, #{item.parentTreeId})
+        </foreach>
+    </insert>
+
+    <select id="getTreeCode" parameterType="map" resultType="java.lang.String">
+        SELECT tree_code FROM `member_tree`
+        WHERE member_id IS NULL
+        AND tree_code LIKE CONCAT(#{str},'%')
+        order by tree_code
+        LIMIT 1
+  </select>
+
+    <select id="ifExistsMember" parameterType="map" resultType="java.lang.Integer">
+       select count(*) from `member_tree` where member_id = #{id}
+   </select>
+
+    <update id="updateMemberIdToNull" parameterType="map">
+        update member_tree
+        set member_id = null
+        where member_id = #{id}
+    </update>
+
+    <select id="ifExistsTreeCode" parameterType="map" resultType="java.lang.Integer">
+        select member_id from member_tree where tree_code = #{str}
+    </select>
+
+    <select id="getUpperMemberId" parameterType="map" resultMap="BaseResultMap">
+        SELECT member_id,tree_id
+        FROM `member_tree`
+        WHERE tree_id =
+        (SELECT parent_tree_id FROM `member_tree` WHERE member_id = #{id})
+    </select>
+
+    <select id="getTreeIdByMemberId" parameterType="map" resultType="java.lang.Long">
+        select tree_id from member_tree where member_id = #{id}
+    </select>
+
+    <select id="getNextMemberQty" parameterType="map" resultMap="BaseResultMap">
+        SELECT tree_id, tree_code, member_id, parent_tree_id FROM member_tree
+        WHERE parent_tree_id = (SELECT tree_id FROM `member_tree` WHERE member_id = #{id})
+        AND member_id IS NOT NULL
+    </select>
+
+    <select id="getTreeCodeByMemberId" parameterType="map" resultType="java.lang.String">
+        select tree_code
+        from member_tree
+        where member_id = #{memberId}
+    </select>
+    <select id="selectMemberTreeList" resultMap="BaseResultMap">
+        <include refid="selectMemberTreeVo"/>
+        <where>
+            <if test="memberId == null "> member_id is null</if>
+            <if test="treeCode != null  and treeCode != ''"> and tree_code like concat('%', #{treeCode}, '%')</if>
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="parentTreeId != null "> and parent_tree_id = #{parentTreeId}</if>
+        </where>
+    </select>
+    <select id="selectMemberTreeById" resultType="com.xinmintx.system.domain.MemberTree">
+        <include refid="selectMemberTreeVo"/>
+        where tree_id = #{treeId}
+    </select>
+
+    <insert id="insertMemberList" parameterType="map">
+        insert into member (order_id, name,
+        gender, idcard,
+        member_type, is_review,
+        create_user, create_time, update_user,
+        update_time,
+        avatar_url, platform_count, merchant_count,
+        branch_office_count, birth_gift_count, integral,
+        new_currency, new_beans, user_id,
+        freeze_beans, freeze_currency, gift_start,
+        tree_code)
+        values
+        <foreach collection ="list" item="item" index= "index" separator =",">
+            (#{item.orderId,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR},
+            #{item.gender,jdbcType=INTEGER}, #{item.idcard,jdbcType=VARCHAR},
+            #{item.memberType,jdbcType=INTEGER}, #{item.isReview,jdbcType=INTEGER},
+            #{item.createUser,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.avatarUrl,jdbcType=VARCHAR}, #{item.platformCount,jdbcType=INTEGER}, #{item.merchantCount,jdbcType=INTEGER},
+            #{item.branchOfficeCount,jdbcType=INTEGER}, #{item.birthGiftCount,jdbcType=INTEGER}, #{item.integral,jdbcType=INTEGER},
+            #{item.newCurrency,jdbcType=DECIMAL}, #{item.newBeans,jdbcType=DECIMAL}, #{item.userId,jdbcType=INTEGER},
+            #{item.freezeBeans,jdbcType=DECIMAL}, #{item.freezeCurrency,jdbcType=DECIMAL}, #{item.giftStart,jdbcType=INTEGER},
+            #{item.treeCode,jdbcType=VARCHAR})
+        </foreach >
+    </insert>
+    <insert id="insertMemberTree">
+        insert into member_tree
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="treeCode != null  and treeCode != ''">tree_code,</if>
+            <if test="memberId != null ">member_id,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="parentTreeId != null ">parent_tree_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="treeCode != null  and treeCode != ''">#{treeCode},</if>
+            <if test="memberId != null ">#{memberId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="parentTreeId != null ">#{parentTreeId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMemberIdToMemberTree" parameterType="map">
+        UPDATE `member_tree` mt, member m
+        SET mt.member_id = m.`id`
+        WHERE mt.`member_id` IS NULL
+        AND mt.`tree_code` = m.`tree_code`
+    </update>
+
+    <update id="updateMemberTreeCode" parameterType="map">
+        update member
+        set tree_code = #{treeCode}
+        where id = #{id}
+    </update>
+    <update id="updateMemberTree">
+        update member_tree
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="treeCode != null  and treeCode != ''">tree_code = #{treeCode},</if>
+            <if test="memberId != null ">member_id = #{memberId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="parentTreeId != null ">parent_tree_id = #{parentTreeId},</if>
+        </trim>
+        where tree_id = #{treeId}
+    </update>
+    <delete id="deleteMemberTreeById" parameterType="Long">
+        delete from member_tree where tree_id = #{treeId}
+    </delete>
+</mapper>

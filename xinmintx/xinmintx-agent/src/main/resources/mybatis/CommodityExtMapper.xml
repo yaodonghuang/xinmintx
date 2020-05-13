@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.agent.mapper.CommodityExtMapper">
+    <resultMap id="BaseResultMap" type="com.xinmintx.agent.model.CommodityExt">
+        <id property="id" column="id"/>
+        <result property="commodityName" column="commodity_name"/>
+        <result property="linePrice" column="line_price"/>
+        <result property="price" column="price"/>
+        <result property="salesVolume" column="sales_volume"/>
+        <result property="ossUrl" column="oss_url"/>
+        <result property="kindUrl" column="kind_picture"/>
+        <result property="richUrl" column="rich_url"/>
+        <result property="kindId" column="id"/>
+        <result property="kindName" column="kind_name"/>
+        <result property="kindPrice" column="kind_price"/>
+        <result property="inventory" column="kind_repertory"/>
+        <result property="merchantName" column="merchant_name"/>
+        <result property="address" column="address"/>
+        <result property="parameter" column="parameter"/>
+        <result property="type" column="kind_type"/>
+        <result property="activityTitle" column="activity_title"/>
+    </resultMap>
+    <select id="selectGoods" parameterType="map" resultMap="BaseResultMap">
+        SELECT cy.id ,cy.commodity_name ,cy.activity_title,cy.line_price ,cy.price ,cy.sales_volume ,cd.oss_url ,ck.kind_name ,cty.`kind_price`,cty.`kind_repertory`,cty.`kind_picture` ,m.merchant_name ,m.address
+        FROM commodity cy
+        LEFT JOIN commodity_details cd ON cy.`id` = cd.`commodity_id`
+        LEFT JOIN commodity_kind ck ON cy.`id` = ck.`commodity_id`
+        LEFT JOIN commodity_typology cty ON ck.`kind_id` = cty.`kind_id` AND ck.`type_id` = cty.`type_id`
+        LEFT JOIN merchant m ON cy.`merchant_id` = m.`id`
+        WHERE cy.id IS NOT NULL AND cy.`audit`=1
+        <if test="name!=null">
+            and commodity_name like CONCAT('%',#{name},'%') or merchant_name like CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <select id="getParameter" resultType="java.lang.String">
+        select parameter from commodity
+        where id = #{id}
+    </select>
+    <select id="getGoodType" resultMap="BaseResultMap">
+        SELECT cy.id,ck.kind_name,cty.id kindId,cty.kind_type,cty.kind_price,cty.kind_repertory,cty.kind_picture FROM commodity cy
+        LEFT JOIN commodity_kind ck ON ck.`commodity_id` = cy.`id`
+        LEFT JOIN commodity_typology cty ON cty.`kind_id` = ck.`id`
+        WHERE cy.id = #{id}
+    </select>
+    <select id="selectUrl" resultType="java.lang.String">
+        SELECT oss_url FROM commodity_details cd
+        INNER JOIN commodity cy ON cd.`commodity_id`=cy.`id`
+        WHERE cy.id = #{id}
+        limit 1
+    </select>
+    <select id="getGoodById" resultMap="BaseResultMap">
+        SELECT cy.id ,cy.commodity_name ,cy.line_price ,cy.price ,cy.sales_volume ,cd.rich_url
+        FROM commodity cy
+        LEFT JOIN commodity_details cd ON cy.`id` = cd.`commodity_id`
+        where cy.id=#{id} and cy.id is not null
+        limit 1
+    </select>
+
+</mapper>

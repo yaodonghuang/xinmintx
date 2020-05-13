@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.agent.mapper.MerchantMapper">
+  <resultMap id="BaseResultMap" type="com.xinmintx.agent.model.Merchant">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="recommender" jdbcType="INTEGER" property="recommender" />
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+    <result column="cellphone" jdbcType="VARCHAR" property="cellphone" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+    <result column="merchant_type" jdbcType="INTEGER" property="merchantType" />
+    <result column="merchant_table" jdbcType="INTEGER" property="merchantTable" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="region_code" jdbcType="CHAR" property="regionCode" />
+    <result column="merchant_branch_office_id" jdbcType="INTEGER" property="merchantBranchOfficeId" />
+    <result column="turnover" jdbcType="DECIMAL" property="turnover" />
+    <result column="is_review" jdbcType="INTEGER" property="isReview" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="merchant_category" jdbcType="INTEGER" property="merchantCategory" />
+    <result column="per_capita" jdbcType="DECIMAL" property="perCapita" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="freezing_amount" jdbcType="DECIMAL" property="freezingAmount" />
+    <result column="cash_amount" jdbcType="DECIMAL" property="cashAmount" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="announcement" jdbcType="VARCHAR" property="announcement" />
+    <result column="idcard_front" jdbcType="VARCHAR" property="idcardFront" />
+    <result column="idcard_back" jdbcType="VARCHAR" property="idcardBack" />
+    <result column="bank_card_front" jdbcType="VARCHAR" property="bankCardFront" />
+    <result column="bank_card_back" jdbcType="VARCHAR" property="bankCardBack" />
+    <result column="door_head_photo" jdbcType="VARCHAR" property="doorHeadPhoto" />
+    <result column="store_photo_one" jdbcType="VARCHAR" property="storePhotoOne" />
+    <result column="store_photo_two" jdbcType="VARCHAR" property="storePhotoTwo" />
+    <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="other_photo" jdbcType="VARCHAR" property="otherPhoto" />
+    <result column="latitude" jdbcType="BIGINT" property="latitude" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="shop_specification" jdbcType="VARCHAR" property="shopSpecification" />
+    <result column="business_model" jdbcType="VARCHAR" property="businessModel" />
+    <result column="amount_raised" jdbcType="DECIMAL" property="amountRaised" />
+    <result column="merchant_category_detail" jdbcType="VARCHAR" property="merchantCategoryDetail" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_id, name, idcard, recommender, merchant_name, cellphone, bank_card, merchant_type, 
+    merchant_table, address, region_name, region_code, merchant_branch_office_id, turnover, 
+    is_review, create_time, create_user, update_time, update_user, merchant_category, 
+    per_capita, token, freezing_amount, cash_amount, shop_name, shop_address, avatar, 
+    announcement, idcard_front, idcard_back, bank_card_front, bank_card_back, door_head_photo, 
+    store_photo_one, store_photo_two, business_license, other_photo, latitude, longitude, 
+    shop_specification, business_model, amount_raised, merchant_category_detail
+  </sql>
+  <select id="selectByExample" parameterType="com.xinmintx.agent.model.MerchantExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from merchant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merchant
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinmintx.agent.model.MerchantExample">
+    delete from merchant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xinmintx.agent.model.Merchant" useGeneratedKeys="true">
+    insert into merchant (order_id, name, idcard, 
+      recommender, merchant_name, cellphone, 
+      bank_card, merchant_type, merchant_table, 
+      address, region_name, region_code, 
+      merchant_branch_office_id, turnover, is_review, 
+      create_time, create_user, update_time, 
+      update_user, merchant_category, per_capita, 
+      token, freezing_amount, cash_amount, 
+      shop_name, shop_address, avatar, 
+      announcement, idcard_front, idcard_back, 
+      bank_card_front, bank_card_back, door_head_photo, 
+      store_photo_one, store_photo_two, business_license, 
+      other_photo, latitude, longitude, 
+      shop_specification, business_model, amount_raised, 
+      merchant_category_detail)
+    values (#{orderId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{recommender,jdbcType=INTEGER}, #{merchantName,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, 
+      #{bankCard,jdbcType=VARCHAR}, #{merchantType,jdbcType=INTEGER}, #{merchantTable,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{regionName,jdbcType=VARCHAR}, #{regionCode,jdbcType=CHAR}, 
+      #{merchantBranchOfficeId,jdbcType=INTEGER}, #{turnover,jdbcType=DECIMAL}, #{isReview,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{merchantCategory,jdbcType=INTEGER}, #{perCapita,jdbcType=DECIMAL}, 
+      #{token,jdbcType=VARCHAR}, #{freezingAmount,jdbcType=DECIMAL}, #{cashAmount,jdbcType=DECIMAL}, 
+      #{shopName,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{announcement,jdbcType=VARCHAR}, #{idcardFront,jdbcType=VARCHAR}, #{idcardBack,jdbcType=VARCHAR}, 
+      #{bankCardFront,jdbcType=VARCHAR}, #{bankCardBack,jdbcType=VARCHAR}, #{doorHeadPhoto,jdbcType=VARCHAR}, 
+      #{storePhotoOne,jdbcType=VARCHAR}, #{storePhotoTwo,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, 
+      #{otherPhoto,jdbcType=VARCHAR}, #{latitude,jdbcType=BIGINT}, #{longitude,jdbcType=VARCHAR}, 
+      #{shopSpecification,jdbcType=VARCHAR}, #{businessModel,jdbcType=VARCHAR}, #{amountRaised,jdbcType=DECIMAL}, 
+      #{merchantCategoryDetail,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xinmintx.agent.model.Merchant" useGeneratedKeys="true">
+    insert into merchant
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="idcard != null">
+        idcard,
+      </if>
+      <if test="recommender != null">
+        recommender,
+      </if>
+      <if test="merchantName != null">
+        merchant_name,
+      </if>
+      <if test="cellphone != null">
+        cellphone,
+      </if>
+      <if test="bankCard != null">
+        bank_card,
+      </if>
+      <if test="merchantType != null">
+        merchant_type,
+      </if>
+      <if test="merchantTable != null">
+        merchant_table,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="regionName != null">
+        region_name,
+      </if>
+      <if test="regionCode != null">
+        region_code,
+      </if>
+      <if test="merchantBranchOfficeId != null">
+        merchant_branch_office_id,
+      </if>
+      <if test="turnover != null">
+        turnover,
+      </if>
+      <if test="isReview != null">
+        is_review,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="merchantCategory != null">
+        merchant_category,
+      </if>
+      <if test="perCapita != null">
+        per_capita,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="freezingAmount != null">
+        freezing_amount,
+      </if>
+      <if test="cashAmount != null">
+        cash_amount,
+      </if>
+      <if test="shopName != null">
+        shop_name,
+      </if>
+      <if test="shopAddress != null">
+        shop_address,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="announcement != null">
+        announcement,
+      </if>
+      <if test="idcardFront != null">
+        idcard_front,
+      </if>
+      <if test="idcardBack != null">
+        idcard_back,
+      </if>
+      <if test="bankCardFront != null">
+        bank_card_front,
+      </if>
+      <if test="bankCardBack != null">
+        bank_card_back,
+      </if>
+      <if test="doorHeadPhoto != null">
+        door_head_photo,
+      </if>
+      <if test="storePhotoOne != null">
+        store_photo_one,
+      </if>
+      <if test="storePhotoTwo != null">
+        store_photo_two,
+      </if>
+      <if test="businessLicense != null">
+        business_license,
+      </if>
+      <if test="otherPhoto != null">
+        other_photo,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="shopSpecification != null">
+        shop_specification,
+      </if>
+      <if test="businessModel != null">
+        business_model,
+      </if>
+      <if test="amountRaised != null">
+        amount_raised,
+      </if>
+      <if test="merchantCategoryDetail != null">
+        merchant_category_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="recommender != null">
+        #{recommender,jdbcType=INTEGER},
+      </if>
+      <if test="merchantName != null">
+        #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantType != null">
+        #{merchantType,jdbcType=INTEGER},
+      </if>
+      <if test="merchantTable != null">
+        #{merchantTable,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="regionName != null">
+        #{regionName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionCode != null">
+        #{regionCode,jdbcType=CHAR},
+      </if>
+      <if test="merchantBranchOfficeId != null">
+        #{merchantBranchOfficeId,jdbcType=INTEGER},
+      </if>
+      <if test="turnover != null">
+        #{turnover,jdbcType=DECIMAL},
+      </if>
+      <if test="isReview != null">
+        #{isReview,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCategory != null">
+        #{merchantCategory,jdbcType=INTEGER},
+      </if>
+      <if test="perCapita != null">
+        #{perCapita,jdbcType=DECIMAL},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="freezingAmount != null">
+        #{freezingAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashAmount != null">
+        #{cashAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="shopName != null">
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null">
+        #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="announcement != null">
+        #{announcement,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardFront != null">
+        #{idcardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardBack != null">
+        #{idcardBack,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardFront != null">
+        #{bankCardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardBack != null">
+        #{bankCardBack,jdbcType=VARCHAR},
+      </if>
+      <if test="doorHeadPhoto != null">
+        #{doorHeadPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="storePhotoOne != null">
+        #{storePhotoOne,jdbcType=VARCHAR},
+      </if>
+      <if test="storePhotoTwo != null">
+        #{storePhotoTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicense != null">
+        #{businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="otherPhoto != null">
+        #{otherPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=BIGINT},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="shopSpecification != null">
+        #{shopSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="businessModel != null">
+        #{businessModel,jdbcType=VARCHAR},
+      </if>
+      <if test="amountRaised != null">
+        #{amountRaised,jdbcType=DECIMAL},
+      </if>
+      <if test="merchantCategoryDetail != null">
+        #{merchantCategoryDetail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinmintx.agent.model.MerchantExample" resultType="java.lang.Long">
+    select count(*) from merchant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update merchant
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null">
+        idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recommender != null">
+        recommender = #{record.recommender,jdbcType=INTEGER},
+      </if>
+      <if test="record.merchantName != null">
+        merchant_name = #{record.merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellphone != null">
+        cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCard != null">
+        bank_card = #{record.bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantType != null">
+        merchant_type = #{record.merchantType,jdbcType=INTEGER},
+      </if>
+      <if test="record.merchantTable != null">
+        merchant_table = #{record.merchantTable,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionName != null">
+        region_name = #{record.regionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionCode != null">
+        region_code = #{record.regionCode,jdbcType=CHAR},
+      </if>
+      <if test="record.merchantBranchOfficeId != null">
+        merchant_branch_office_id = #{record.merchantBranchOfficeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.turnover != null">
+        turnover = #{record.turnover,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isReview != null">
+        is_review = #{record.isReview,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantCategory != null">
+        merchant_category = #{record.merchantCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.perCapita != null">
+        per_capita = #{record.perCapita,jdbcType=DECIMAL},
+      </if>
+      <if test="record.token != null">
+        token = #{record.token,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freezingAmount != null">
+        freezing_amount = #{record.freezingAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cashAmount != null">
+        cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shopName != null">
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopAddress != null">
+        shop_address = #{record.shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatar != null">
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.announcement != null">
+        announcement = #{record.announcement,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardFront != null">
+        idcard_front = #{record.idcardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardBack != null">
+        idcard_back = #{record.idcardBack,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCardFront != null">
+        bank_card_front = #{record.bankCardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCardBack != null">
+        bank_card_back = #{record.bankCardBack,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doorHeadPhoto != null">
+        door_head_photo = #{record.doorHeadPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storePhotoOne != null">
+        store_photo_one = #{record.storePhotoOne,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storePhotoTwo != null">
+        store_photo_two = #{record.storePhotoTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessLicense != null">
+        business_license = #{record.businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherPhoto != null">
+        other_photo = #{record.otherPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=BIGINT},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopSpecification != null">
+        shop_specification = #{record.shopSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessModel != null">
+        business_model = #{record.businessModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amountRaised != null">
+        amount_raised = #{record.amountRaised,jdbcType=DECIMAL},
+      </if>
+      <if test="record.merchantCategoryDetail != null">
+        merchant_category_detail = #{record.merchantCategoryDetail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update merchant
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      recommender = #{record.recommender,jdbcType=INTEGER},
+      merchant_name = #{record.merchantName,jdbcType=VARCHAR},
+      cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      bank_card = #{record.bankCard,jdbcType=VARCHAR},
+      merchant_type = #{record.merchantType,jdbcType=INTEGER},
+      merchant_table = #{record.merchantTable,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      region_name = #{record.regionName,jdbcType=VARCHAR},
+      region_code = #{record.regionCode,jdbcType=CHAR},
+      merchant_branch_office_id = #{record.merchantBranchOfficeId,jdbcType=INTEGER},
+      turnover = #{record.turnover,jdbcType=DECIMAL},
+      is_review = #{record.isReview,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      merchant_category = #{record.merchantCategory,jdbcType=INTEGER},
+      per_capita = #{record.perCapita,jdbcType=DECIMAL},
+      token = #{record.token,jdbcType=VARCHAR},
+      freezing_amount = #{record.freezingAmount,jdbcType=DECIMAL},
+      cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      shop_address = #{record.shopAddress,jdbcType=VARCHAR},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      announcement = #{record.announcement,jdbcType=VARCHAR},
+      idcard_front = #{record.idcardFront,jdbcType=VARCHAR},
+      idcard_back = #{record.idcardBack,jdbcType=VARCHAR},
+      bank_card_front = #{record.bankCardFront,jdbcType=VARCHAR},
+      bank_card_back = #{record.bankCardBack,jdbcType=VARCHAR},
+      door_head_photo = #{record.doorHeadPhoto,jdbcType=VARCHAR},
+      store_photo_one = #{record.storePhotoOne,jdbcType=VARCHAR},
+      store_photo_two = #{record.storePhotoTwo,jdbcType=VARCHAR},
+      business_license = #{record.businessLicense,jdbcType=VARCHAR},
+      other_photo = #{record.otherPhoto,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=BIGINT},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      shop_specification = #{record.shopSpecification,jdbcType=VARCHAR},
+      business_model = #{record.businessModel,jdbcType=VARCHAR},
+      amount_raised = #{record.amountRaised,jdbcType=DECIMAL},
+      merchant_category_detail = #{record.merchantCategoryDetail,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinmintx.agent.model.Merchant">
+    update merchant
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="recommender != null">
+        recommender = #{recommender,jdbcType=INTEGER},
+      </if>
+      <if test="merchantName != null">
+        merchant_name = #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantType != null">
+        merchant_type = #{merchantType,jdbcType=INTEGER},
+      </if>
+      <if test="merchantTable != null">
+        merchant_table = #{merchantTable,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="regionName != null">
+        region_name = #{regionName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionCode != null">
+        region_code = #{regionCode,jdbcType=CHAR},
+      </if>
+      <if test="merchantBranchOfficeId != null">
+        merchant_branch_office_id = #{merchantBranchOfficeId,jdbcType=INTEGER},
+      </if>
+      <if test="turnover != null">
+        turnover = #{turnover,jdbcType=DECIMAL},
+      </if>
+      <if test="isReview != null">
+        is_review = #{isReview,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCategory != null">
+        merchant_category = #{merchantCategory,jdbcType=INTEGER},
+      </if>
+      <if test="perCapita != null">
+        per_capita = #{perCapita,jdbcType=DECIMAL},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="freezingAmount != null">
+        freezing_amount = #{freezingAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashAmount != null">
+        cash_amount = #{cashAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="shopName != null">
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null">
+        shop_address = #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="announcement != null">
+        announcement = #{announcement,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardFront != null">
+        idcard_front = #{idcardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardBack != null">
+        idcard_back = #{idcardBack,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardFront != null">
+        bank_card_front = #{bankCardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardBack != null">
+        bank_card_back = #{bankCardBack,jdbcType=VARCHAR},
+      </if>
+      <if test="doorHeadPhoto != null">
+        door_head_photo = #{doorHeadPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="storePhotoOne != null">
+        store_photo_one = #{storePhotoOne,jdbcType=VARCHAR},
+      </if>
+      <if test="storePhotoTwo != null">
+        store_photo_two = #{storePhotoTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicense != null">
+        business_license = #{businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="otherPhoto != null">
+        other_photo = #{otherPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=BIGINT},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="shopSpecification != null">
+        shop_specification = #{shopSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="businessModel != null">
+        business_model = #{businessModel,jdbcType=VARCHAR},
+      </if>
+      <if test="amountRaised != null">
+        amount_raised = #{amountRaised,jdbcType=DECIMAL},
+      </if>
+      <if test="merchantCategoryDetail != null">
+        merchant_category_detail = #{merchantCategoryDetail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinmintx.agent.model.Merchant">
+    update merchant
+    set order_id = #{orderId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      recommender = #{recommender,jdbcType=INTEGER},
+      merchant_name = #{merchantName,jdbcType=VARCHAR},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      merchant_type = #{merchantType,jdbcType=INTEGER},
+      merchant_table = #{merchantTable,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      region_name = #{regionName,jdbcType=VARCHAR},
+      region_code = #{regionCode,jdbcType=CHAR},
+      merchant_branch_office_id = #{merchantBranchOfficeId,jdbcType=INTEGER},
+      turnover = #{turnover,jdbcType=DECIMAL},
+      is_review = #{isReview,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      merchant_category = #{merchantCategory,jdbcType=INTEGER},
+      per_capita = #{perCapita,jdbcType=DECIMAL},
+      token = #{token,jdbcType=VARCHAR},
+      freezing_amount = #{freezingAmount,jdbcType=DECIMAL},
+      cash_amount = #{cashAmount,jdbcType=DECIMAL},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      shop_address = #{shopAddress,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      announcement = #{announcement,jdbcType=VARCHAR},
+      idcard_front = #{idcardFront,jdbcType=VARCHAR},
+      idcard_back = #{idcardBack,jdbcType=VARCHAR},
+      bank_card_front = #{bankCardFront,jdbcType=VARCHAR},
+      bank_card_back = #{bankCardBack,jdbcType=VARCHAR},
+      door_head_photo = #{doorHeadPhoto,jdbcType=VARCHAR},
+      store_photo_one = #{storePhotoOne,jdbcType=VARCHAR},
+      store_photo_two = #{storePhotoTwo,jdbcType=VARCHAR},
+      business_license = #{businessLicense,jdbcType=VARCHAR},
+      other_photo = #{otherPhoto,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=BIGINT},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      shop_specification = #{shopSpecification,jdbcType=VARCHAR},
+      business_model = #{businessModel,jdbcType=VARCHAR},
+      amount_raised = #{amountRaised,jdbcType=DECIMAL},
+      merchant_category_detail = #{merchantCategoryDetail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.xinmintx.agent.model.MerchantExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from merchant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

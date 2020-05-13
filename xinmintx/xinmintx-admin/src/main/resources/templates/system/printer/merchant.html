@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('商家信息列表')"/>
+</head>
+<style>
+    .changeColor {
+        background-color: #31b0d5 !important;
+        color: white;
+    }
+</style>
+<body class="gray-bg">
+<input id="merchantId" name="id" type="hidden"/>
+<input id="merchantName" name="merchantName" type="hidden"/>
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+<!--            <form id="formId">-->
+<!--                <div class="select-list">-->
+<!--                    <ul>-->
+<!--                        <li>-->
+<!--                            <p>姓名：</p>-->
+<!--                            <input type="text" name="name"/>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <p>商户名称：</p>-->
+<!--                            <input type="text" name="merchantName"/>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i-->
+<!--                                    class="fa fa-search"></i>&nbsp;搜索</a>-->
+<!--                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i-->
+<!--                                    class="fa fa-refresh"></i>&nbsp;重置</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </form>-->
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:merchant:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:merchant:remove')}]];
+    var prefix = ctx + "system/merchant";
+
+    $(function () {
+        var options = {
+            url: prefix + "/lists",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "商家信息",
+            columns: [
+                {
+                    field: 'id',
+                    title: '修改人姓名',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '姓名'
+                },
+                {
+                    field: 'merchantName',
+                    title: '商户名称'
+                },
+                {
+                    field: 'merchantType',
+                    title: '入驻类型 ',
+                    formatter: function (value, row) {
+                        if (value == 1) {
+                            return "基本商户";
+                        }
+                        if (value == 2) {
+                            return "黄金商户";
+                        }
+                        if (value == 3) {
+                            return "社区商户";
+                        }
+                    }
+                },
+                {
+                    field: 'isReview',
+                    title: '是否审核',
+                    formatter: function isReview(value, row, index) {
+                        if (value === 0) {
+                            return "未审核";
+                        }
+                        if (value === 1) {
+                            return "已审核";
+                        }
+                    }
+                }],
+            onClickRow: function (row, $element) {
+                $('.changeColor').removeClass('changeColor');
+                $($element).addClass('changeColor');
+                $("#merchantId").val(row.id);
+                $("#merchantName").val(row.merchantName);
+            }
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>我的课堂</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/statementDetail.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.qrcode.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <p>
+        <img src="/images/back_icon.png" alt="" onclick="window.history.go(-1)">
+        我的课堂
+    </p>
+</div>
+<div class="user_menu">
+    <img th:src="${user.avatar}">
+    <div class="user_menu_right">
+        <p class="user_name" th:text="${user.name}"></p> <input type="hidden" id="id" th:value="${user.id}">
+        <p class="user_detail">我的学员: <span class="first_span" th:text="${studentNum}"></span> 升级学员: <span th:text="${upgradeStudentNum}"></span></p>
+    </div>
+</div>
+<div class="teacher_card" onclick="jumpMyyJ()">
+    <p class="teacher_card_text">我的业绩</p>
+    <p class="teacher_card_type">高级讲师</p>
+    <p class="teacher_card_num">******</p>
+</div>
+<div class="my_student">
+    <div class="my_student_top">
+        <p class="my_student_p1"><span></span>我的学员</p>
+        <p class="my_student_p2" onclick="jumpTeacherList()">查看更多 <img src="/images/right.png" alt="" ></p>
+    </div>
+</div>
+<ul class="student_list" >
+    <li th:each="users:${users}"><p><span class="student_name" th:text="${users.name}"></span><span class="student_tel" th:text="${users.cellphone}"></span></p></li>
+</ul>
+<div class="my_student">
+    <div class="my_student_top">
+        <p class="my_student_p1"><span></span>二维码</p>
+    </div>
+</div>
+<div class="code">
+    <div id="qr_code"></div>
+</div>
+</body>
+<script>
+
+    $(function () {
+        var id = $("#id").val();
+        $("#qr_code").qrcode({
+            text: "https://agent2.xinmintx.cn/api/student/addStudent/" + id
+        });
+    })
+
+    function jumpMyyJ() {
+        location.href="/agent/teacher/jumpMyyJ"
+    }
+function jumpTeacherList() {
+    location.href="/agent/teacher/jumpStudent"
+}
+</script>
+</html>

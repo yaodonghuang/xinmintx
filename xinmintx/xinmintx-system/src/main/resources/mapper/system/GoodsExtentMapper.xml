@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsExtentMapper">
+    <resultMap id="GoodsResultMap" type="com.xinmintx.system.domain.GoodsExtent">
+        <result property="id"    column="id"    />
+        <result property="source"    column="source"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="firstCode"    column="parent_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="choiceness"    column="choiceness"    />
+        <result property="hotSale"    column="hot_sale"    />
+        <result property="preorder"    column="preorder"    />
+        <result property="goodsListName"    column="goods_list_name"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="content"    column="content"    />
+        <result property="turnsPhoto"    column="turns_photo"    />
+        <result property="speType"    column="spe_type"    />
+        <result property="price"    column="price"    />
+        <result property="agencyPrice"    column="agency_price"    />
+        <result property="bazaarPrice"    column="bazaar_price"    />
+        <result property="procurementPrice"    column="procurement_price"    />
+        <result property="linePrice"    column="line_price"    />
+        <result property="giftBag"    column="gift_bag"    />
+        <result property="twoPrice"    column="two_price"    />
+        <result property="threePrice"    column="three_price"    />
+        <result property="fourPrice"    column="four_price"    />
+        <result property="fivePrice"    column="five_price"    />
+        <result property="sixPrice"    column="six_price"    />
+        <result property="sevenPrice"    column="seven_price"    />
+        <result property="eightPrice"    column="eight_price"    />
+        <result property="ninePrice"    column="nine_price"    />
+        <result property="tenPrice"    column="ten_price"    />
+        <result property="stockNum"    column="stock_num"    />
+        <result property="salesInitial"    column="sales_initial"    />
+        <result property="activityTitle"    column="activity_title"    />
+        <result property="salesActual"    column="sales_actual"    />
+        <result property="status"    column="status"    />
+        <result property="sort"    column="sort"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="specName"    column="name"    />
+        <result property="specValue"    column="value"    />
+        <result property="skuId"    column="sku_id"    />
+        <result property="skuStockNum"    column="stock_num"    />
+        <result property="skuPrice"    column="price"    />
+        <result property="skuPhoto"    column="photo_id"    />
+        <result property="goodsWeight"    column="goods_weight"    />
+    </resultMap>
+
+    <sql id="selectGoodsVo">
+        select id, source, relate_id, type_id, goods_list_name, goods_name, content, turns_photo, spe_type, price, line_price, stock_num, sales_initial, activity_title, sales_actual, status, sort, is_delete, create_time, update_time from goods
+    </sql>
+
+    <select id="selectGoodsById" parameterType="Long" resultMap="GoodsResultMap">
+        select g.*,gt.parent_id from goods g
+        left join goods_type gt on g.type_id = gt.id
+        where g.id = #{id}
+    </select>
+    <select id="selectType" resultMap="GoodsResultMap">
+        select gs.`name`,gsv.`value`,gk.sku_id,gk.price,gk.stock_num,gk.goods_weight from goods g
+        left join goods_spec gs on g.id = gs.goods_id
+        left join goods_spec_value gsv on g.id = gsv.goods_id and gs.id = gsv.spec_id
+        left join goods_sku gk on g.id = gk.goods_id and gsv.id = gk.spec_value_id
+        where gs.goods_id = #{id} and gsv.goods_id = #{id} and gk.goods_id = #{id} and g.spe_type = #{typeId}
+    </select>
+    <select id="selectTypeId" resultType="java.lang.Integer">
+        select g.parent_id from goods_type g
+        where g.id = #{id} and g.parent_id = g.id and g.level = 3
+    </select>
+
+
+</mapper>

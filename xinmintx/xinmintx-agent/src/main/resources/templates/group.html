@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/group.css">
+    <link rel="stylesheet" href="/css/swiper.min.css">
+    <script src='/js/rem.js'></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script src="/js/sharelink.js"></script>
+
+</head>
+<body>
+<div class="header_bg">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" th:each="pictyre:${pictyre}"><img th:src="${pictyre}"></div>
+        </div>
+    </div>
+    <div class="header_bg_top">
+        <img src="/images/back.png" alt="" class="back" onclick="window.history.go(-1)">
+    </div>
+</div>
+<div class="money">
+    <div class="money_top">
+        <p class="money_p1">￥<span th:text="${commodityExt.price}"></span></p>
+        <input type="hidden" th:value="${commodityExt.id}" id="itermId">
+        <p class="money_pp">￥<span th:text="${commodityExt.linePrice}"></span></p>
+        <p class="money_p2">累计已拼<span th:text="${commodityExt.salesVolume}"></span>件</p>
+    </div>
+    <p class="money_p3" th:text="${commodityExt.commodityName}"></p>
+</div>
+<div class="list">
+    <p class="list_title">团购 5人团</p>
+    <ul class="list_content">
+        <li>
+            <div class="content_contaner">
+                <img src="/images/icon1.png" alt="" class="head">
+                <p class="contaner_name">网名</p>
+                <div class="contaner_right">
+                    <p class="right_text">
+                        还差<span>2人</span>拼成
+                    </p>
+                    <ul class="contaner_list">
+                        <li>
+                            <img src="/images/icon2.png" alt="" class="head_icon">
+                        </li>
+                        <li>
+                            <img src="/images/icon2.png" alt="" class="head_icon">
+                        </li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content_right">
+                <p class="content_right_p">还剩<span>20:20:19</span></p>
+                <div class="content_right_btn">
+                    拼团
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="content_contaner">
+                <img src="/images/icon1.png" alt="" class="head">
+                <p class="contaner_name">网名</p>
+                <div class="contaner_right">
+                    <p class="right_text">
+                        还差<span>2人</span>拼成
+                    </p>
+                    <ul class="contaner_list">
+                        <li>
+                            <img src="/images/icon2.png" alt="" class="head_icon">
+                        </li>
+                        <li>
+                            <img src="/images/icon2.png" alt="" class="head_icon">
+                        </li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content_right">
+                <p class="content_right_p">还剩<span>20:20:19</span></p>
+                <div class="content_right_btn">
+                    拼团
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="content_contaner">
+                <img src="/images/icon1.png" alt="" class="head">
+                <p class="contaner_name">网名</p>
+                <div class="contaner_right">
+                    <p class="right_text">
+                        还差<span>2人</span>拼成
+                    </p>
+                    <ul class="contaner_list">
+                        <li>
+                            <img src="/images/icon2.png" alt="" class="head_icon">
+                        </li>
+                        <li>
+                            <img src="/images/icon2.png" alt="" class="head_icon">
+                        </li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content_right">
+                <p class="content_right_p">还剩<span>20:20:19</span></p>
+                <div class="content_right_btn">
+                    拼团
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="evaluate">
+    <div class="evaluate_content">
+        <p class="evaluate_content_p1">
+            商品评价&nbsp;(<span>1635</span>)
+        </p>
+        <p class="evaluate_content_p2">
+            查看全部<img src="/images/right_1.png" alt="">
+        </p>
+    </div>
+    <div class="evaluate_foot">
+        <ul class="evaluate_list">
+            <li>
+                <img src="/images/shop%20.png" alt="">
+                店铺
+            </li>
+            <li>
+                <img src="/images/dialogue.png" alt="">
+                客服
+            </li>
+            <li>
+                <img src="/images/collect.png" alt="">
+                店铺
+            </li>
+        </ul>
+        <div onclick="dakai()" class="evaluate_btn ">
+            发起拼团
+        </div>
+    </div>
+</div>
+<div class="tanchu">
+    <div class="tanchu_tiao1">
+        <div class="tanchu_tiao1_div1" id="picture"><img class="tanchu_tiao1_img1" th:src="${type.kindUrl}"/></div>
+        <div class="tanchu_tiao1_div2" onclick="guanbi()"><img class="tanchu_tiao1_img2" src="/images/×@2x.png"/></div>
+        <p class="tanchu_tiao1_p1" th:text="${type.kindPrice}"></p>
+        <p class="tanchu_tiao1_p2">选择 颜色</p>
+    </div>
+    <div class="tanchu_tiao2">
+        <div class="tanchu_tiao2_div1">类型</div>
+        <div class="tanchu_tiao2_div2">
+            <input type="hidden" id="typeId" th:value="${typeList[0].id}">
+            <span class="tanchu_tiao2_s1" th:each="list:${typeList}" th:text="${list.kindName}" th:onclick="|javascript:getType(${list.id})|"></span>
+        </div>
+        <div class="tanchu_tiao2_div1">颜色</div>
+        <div class="tanchu_tiao2_div2" id="yanse" th:onclick="|javascript:getType()|">
+
+        </div>
+    </div>
+    <div class="tijiao">
+        <button class="tijiao_button1" onclick="account()">提交</button>
+    </div>
+</div>
+<div class="footer" th:utext="${commodityExt.richUrl}">
+</div>
+<script src="/js/swiper.min.js"></script>
+<script>
+    $(function () {
+        var typeId = $("#typeId").val();
+        getType(typeId);
+
+        // showType()
+    });
+
+    function getType(id) {
+        $.ajax({
+            url: "/agent/group/getType/" + id,
+            method: "POST",
+            success: function (res) {
+                var _html = "";
+                for (var i = 0; i < res.length; i++) {
+                    _html += "<span class='tanchu_tiao2_s1'>"+res[i].kindType+"</span>";
+                }
+                $("#yanse").html(_html);
+            }
+        })
+    }
+    // var id = $("#itermId").val();
+    // function showType() {
+    //     $.ajax({
+    //         url: "/agent/group/showType/" + id,
+    //         method: "POST",
+    //         success: function (res) {
+    //             var _html = "";
+    //             for (var i = 0; i < res.length; i++) {
+    //                 _html += "<span class='tanchu_tiao2_s1'>"+res[i].kindType+"</span>";
+    //             }
+    //             $("#yanse").html(_html);
+    //         }
+    //     })
+    // }
+
+    var swiper = new Swiper('.swiper-container', {
+        pagination: {
+            el: '.swiper-pagination',
+            dynamicBullets: true,
+        },
+        autoplay: {
+            delay: 2000,
+        },
+    });
+
+    function dakai() {
+        var aa = document.getElementsByClassName('tanchu')[0];
+        aa.style.display = 'block'
+    }
+
+    function guanbi() {
+        var aa = document.getElementsByClassName('tanchu')[0];
+        aa.style.display = 'none'
+    }
+
+    function account() {
+        var id = $("#itermId").val();
+        location.href = "/agent/SelfBuying/jumpOrder?id=" + id;
+    }
+</script>
+</body>
+</html>

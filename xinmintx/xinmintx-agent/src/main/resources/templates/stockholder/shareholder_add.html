@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>高级合伙人管理</title>
+    <link rel="stylesheet" href="/css/list.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/agent-index.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/load.css">
+</head>
+<body>
+<div class="big_bg">
+<div class="header_title">
+    <p class="header_title_p">
+        <span onclick="window.history.go(-1)"></span>
+        高级合伙人管理
+    </p>
+</div>
+<div class="header_search" >
+    <img src="/images/upload/search.png" alt="" class="search_img">
+    <input type="number" id="add_search" name="search" class="search_input" th:value="${user.cellphone}">
+    <input type="button" value="搜索" onclick="partnerByPhone()" class="">
+</div>
+<ul class="list_add" >
+    <li>
+        <label for="name">姓名:</label>
+        <input th:value="${user.name}" name="name" id="name" readonly/>
+    </li>
+    <li>
+        <label for="tel">电话:</label>
+        <input th:value="${user.cellphone}" name="tel" id="tel" readonly/>
+    </li>
+    <li>
+        <label for="sex">性别:</label>
+        <input th:value="${user.gender}==1 ? '男':'女'" name="sex" id="sex" readonly/>
+    </li>
+    <li>
+        <label for="card">身份证号:</label>
+        <input th:value="${user.idcard}" name="card" id="card" readonly/>
+    </li>
+    <input type="button" value="升级高级合伙人" class="list_add_btn" onclick="updateUserRole()"/>
+</ul>
+</div>
+<div class="warning">
+    <div class="warning_content">
+        <p class="warning_title">提示</p>
+        <p class="warning_text"></p>
+        <p class="warning_btn"  onclick="fn()">确定</p>
+    </div>
+</div>
+<div class="success">
+    <div class="success_content">
+        <p class="success_text">提交成功</p>
+        <div class="success_btn" onclick="success()">我知道了</div>
+    </div>
+</div>
+</body>
+<script>
+    function fn() {
+        $('.warning').hide();
+        return;
+    }
+    function success() {
+        $('.success').hide();
+        location.href = "/agent/shareholder/jumpShareholder";
+    }
+    function partnerByPhone() {
+        var cellphone = $("#add_search").val();
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(cellphone)) {
+            alert("手机号有误！");
+            $('.warning').show()
+            $('.warning_text').text('您好！手机号有误！');
+            return;
+        }
+        ;
+        $.ajax({
+            url: "/agent/partner/getParterPhone",
+            method: "GET",
+            data: {
+                "cellphone": cellphone
+            },
+            contentType: "application/x-www-form-urlencoded",
+            success: function (res) {
+                if (res != "" || res != null) {
+                    $("#name").val(res.name);
+                    $("#tel").val(res.cellphone);
+                    $("#sex").val(res.gender);
+                    $("#card").val(res.idcard);
+                } else {
+                    // alert("合伙人不存在！");
+                    $('.warning').show()
+                    $('.warning_text').text('您好！合伙人不存在！');
+                }
+            }
+        });
+    }
+    function updateUserRole() {
+        var cellphone = $("#tel").val();
+        $.ajax({
+            url: "/agent/shareholder/updateUserRole",
+            method: "POST",
+            data: {
+                "cellphone": cellphone
+            },
+            contentType: "application/x-www-form-urlencoded",
+            success: function (res) {
+                if (res) {
+                    $('.success').show();
+                }
+            }
+        });
+    }
+</script>
+</html>

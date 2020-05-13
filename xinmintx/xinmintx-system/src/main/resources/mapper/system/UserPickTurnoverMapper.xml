@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.UserPickTurnoverMapper">
+    
+    <resultMap type="UserPickTurnover" id="UserPickTurnoverResult">
+        <result property="id"    column="id"    />
+        <result property="userIdPickup"    column="user_id_pickup"    />
+        <result property="turnover"    column="turnover"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectUserPickTurnoverVo">
+        select id, user_id_pickup, turnover from user_pick_turnover
+    </sql>
+
+    <select id="selectUserPickTurnoverList" parameterType="UserPickTurnover" resultMap="UserPickTurnoverResult">
+        select p.id, p.user_id_pickup, p.turnover,u.name from user_pick_turnover p
+        inner join `user` u on  p.user_id_pickup = u.id
+        <where>  
+            <if test="userIdPickup != null "> and user_id_pickup = #{userIdPickup}</if>
+            <if test="turnover != null "> and turnover = #{turnover}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserPickTurnoverById" parameterType="Long" resultMap="UserPickTurnoverResult">
+        <include refid="selectUserPickTurnoverVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUserPickTurnover" parameterType="UserPickTurnover" useGeneratedKeys="true" keyProperty="id">
+        insert into user_pick_turnover
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userIdPickup != null ">user_id_pickup,</if>
+            <if test="turnover != null ">turnover,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userIdPickup != null ">#{userIdPickup},</if>
+            <if test="turnover != null ">#{turnover},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserPickTurnover" parameterType="UserPickTurnover">
+        update user_pick_turnover
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userIdPickup != null ">user_id_pickup = #{userIdPickup},</if>
+            <if test="turnover != null ">turnover = #{turnover},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserPickTurnoverById" parameterType="Long">
+        delete from user_pick_turnover where id = #{id}
+    </delete>
+
+    <delete id="deleteUserPickTurnoverByIds" parameterType="String">
+        delete from user_pick_turnover where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

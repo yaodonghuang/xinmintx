@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body style="overflow-x: hidden">
+<div class="header"></div>
+<form id="login_form">
+    <ul class="form">
+        <li>
+            <span class="icon1"></span>
+            <input type="tel" value="" name="phone" id="cellphone" placeholder="请输入手机号">
+            <input class="sub" type="button" value="获取验证码" id="searchButton" onclick="getCode();"/>
+            <input type="hidden" th:value="${openid}" id="openid">
+            <input type="hidden" th:value="${userId}" id="userId">
+        </li>
+        <li>
+            <span class="icon2"></span>
+            <input type="number" value="" name="code" id="idcode" placeholder="输入验证码">
+        </li>
+    </ul>
+</form>
+<button type="button" onclick="login()"></button>
+<div class="warning">
+    <div class="warning_content">
+        <p class="warning_title">提示</p>
+        <p class="warning_text"></p>
+        <p class="warning_btn" onclick="fn()">确定</p>
+    </div>
+</div>
+</body>
+<script>
+    function fn() {
+        $('.warning').hide();
+        return;
+    }
+
+    var time = 60;
+
+    function sendEmail() {
+        var cellphone = $("#cellphone").val();
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(cellphone)) {
+            return;
+        }
+        if (time == 0) {//重新获取验证码
+            $("#searchButton").attr("disabled", false);
+            $("#searchButton").val("获取验证码");
+            time = 60;
+            return false;//清除定时器
+        } else {
+            $("#searchButton").attr("disabled", true);
+            $("#searchButton").val("重新发送(" + time + ")");
+            time--;
+        }
+        //设置一个定时器
+        setTimeout(function () {
+            sendEmail()
+        }, 1000);
+    }
+
+    function getCode() {
+        var phone = $("#cellphone").val();
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(phone)) {
+            // alert("手机号有误");
+            $('.warning').show()
+            $('.warning_text').text('您好！您输入的号码有误！');
+            return;
+        }
+        $.ajax({
+            url: "/agent/user/getCode",
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: $("#login_form").serialize(),
+            success: function (res) {
+                if (res === "500" || res === "400") {
+                    $('.warning').show()
+                    $('.warning_text').text('您好！您输入的账号不存在！');
+                } else {
+                    sendEmail();
+                }
+            }
+        });
+    }
+
+    function login() {
+        var phone = $("#cellphone").val();
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(phone)) {
+            // alert("手机号有误");
+            $('.warning').show();
+            $('.warning_text').text('您好！您输入的号码有误！');
+            return;
+        }
+        ;
+        if (idcode === undefined || idcode === null || idcode === "") {
+            // alert("亲，验证码不能为空");
+            $('.warning').show();
+            $('.warning_text').text('您好！验证码不能为空！');
+            return;
+        }
+        $.ajax({
+            url: "/agent/user/login",
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: $("#login_form").serialize(),
+            success: function (res) {
+                if (res.code === 200) {
+                    //登录成功之后获取用户授权
+                    //TODO 正式环境取消注释
+                    var host = window.location.host;
+                    if (host.indexOf("localhost") < 0) {
+                        getUserInfo();
+                    }else{
+                        location.href = "/agent/user/index";
+                    }
+                } else {
+                    alert(res.msg);
+                }
+            }
+        })
+    }
+
+    $(function () {
+        //TODO 正式环境取消注释
+        var host = window.location.host;
+        if (host.indexOf("localhost") < 0) {
+            getUser();
+        }
+    });
+
+    function getUser() {
+        var openid = $("#openid").val();
+        var userId = $("#userId").val();
+        if (openid === undefined || openid === "" || openid === null || openid.length < 1) {
+            //用户登录前获取openid
+            //TODO 正式环境取消注释
+            getOpenId();
+        } else if (userId !== undefined && userId !== "" && userId !== null && userId.length > 0) {
+            //用户已存在,但是token不存在或者已经超时,需要用户再次授权
+            //调用授权方法
+            //TODO 正式环境取消注释
+            getUserInfo();
+        }
+    }
+
+    function getOpenId() {
+        var host = window.location.host;
+        var appid;
+        if (host.indexOf("agent2") > -1) {
+            appid = "wxfae6eed7965225be"
+        } else {
+            appid = "wxb1a5bf33a2cf0b4d";
+        }
+        var redirect_uri = "http://" + host + "/agent/user/getOpenid";
+        window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(redirect_uri) + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+    }
+
+    function getUserInfo() {
+        var host = window.location.host;
+        var appid;
+        if (host.indexOf("agent2") > -1) {
+            appid = "wxfae6eed7965225be"
+        } else {
+            appid = "wxb1a5bf33a2cf0b4d";
+        }
+        var redirect_uri = "http://" + host + "/agent/user/getUserInfo";
+        window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(redirect_uri) + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+    }
+</script>
+</html>

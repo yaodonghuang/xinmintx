@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>代理商服务</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/agent.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/agent-index.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <h2 class="header_h">代理商服务</h2>
+        <div class="header_content">
+            <div class="header_top">
+                <div class="header_top_left">
+                    <div class="use">
+                        <img th:src="${numberMedol.avatar}">
+                    </div>
+                    <ul class="user_cont">
+                        <li>
+                            <span class="name" th:text="${numberMedol.username}"></span>
+                            <span class="user_cont_span1">Boss</span>
+                        </li>
+                        <li>
+                            <span class="money" onclick="balanceStatement()">余额:</span>
+                            <span class="money_n" th:text="${numberMedol.balance}" onclick="balanceStatement()"></span>
+                            <span class="user_cont_span2" onclick="deposit()">提现</span>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="header_top_right" >
+                    <li onclick="listCompany()">
+                        <p th:text="${numberMedol.companyNumber}" class="header_top_right_p"></p>
+                        <span class="span3">分公司</span>
+                    </li>
+
+                    <li onclick="listPartner()">
+                        <p th:text="${numberMedol.partnerNumber}" class="header_top_right_p"></p>
+                        <span class="span3">合伙人</span>
+                    </li>
+                </ul>
+            </div>
+            <ul class="header_bottom">
+                <li onclick="listSilver()">
+                    <p th:text="${numberMedol.silverNumber}" class="header_top_right_p"></p>
+                    <span class="span3">新民金卡</span>
+                </li>
+                <li onclick="listAgent()">
+                    <p th:text="${numberMedol.agentNumber}" class="header_top_right_p"></p>
+                    <span class="span3">代理</span>
+                </li>
+                <li onclick="listMerchant()">
+                    <p th:text="${numberMedol.merchantNumber}" class="header_top_right_p"></p>
+                    <span class="span3">商户</span>
+                </li>
+                <li onclick="listStaff()">
+                    <p th:text="${numberMedol.staffNumber}" class="header_top_right_p"></p>
+                    <span class="span3">员工</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+<!--代理商主页头部结束-->
+
+    <div class="essential">
+        <img src="/images/agent.img/icon1.png" alt="" class="essential_icon">
+        必备功能
+        <span class="essential_y1"></span>
+        <span class="essential_y2"></span>
+    </div>
+    <ul class="essential_list">
+        <li>
+            <img src="/images/agent.img/agentIcon1.png" alt="" class="agentIcon1" onclick="addAgency()">
+            增加代理
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon2.png" alt="" class="agentIcon2" onclick="addCommercialTenant()">
+            增加商户
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon3.png" alt="" class="agentIcon3" onclick="addSilverCard()">
+            增加新民金卡
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon4.png" alt="" class="agentIcon4" onclick="addStaff()">
+            增加员工
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon13.png" alt="" class="agentIcon13" onclick="addCompany()">
+            增加分公司
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon6.png" alt="" class="agentIcon6" onclick="addPartner()">
+            增加合伙人
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon7.png" alt="" class="agentIcon7" onclick="dataGram()">
+            资料包
+        </li>
+        <li>
+            <img src="/images/agent.img/agentIcon8.png" alt="" class="agentIcon7" onclick="setIndex()">
+            设置
+        </li>
+        <li>
+            <img src="/images/agent.img/stockholder.png" alt="" class="agentIcon14" onclick="shareholder()">
+            高级合伙人
+        </li>
+        <li onclick="goProcurementMarket()">
+            <img src="/images/agent.img/agentIcon14.png" alt="" class="agentIcon15">
+            采购市场</li>
+        <li onclick="myClass()">
+            <img src="/images/class.png" class="agentIcon16">
+            我的课堂
+        </li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+<!--必备功能结束-->
+</body>
+</html>

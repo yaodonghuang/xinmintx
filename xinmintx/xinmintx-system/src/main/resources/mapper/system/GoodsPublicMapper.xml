@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.GoodsPublicMapper">
+    
+    <resultMap type="GoodsPublic" id="GoodsPublicResult">
+        <result property="id"    column="id"    />
+        <result property="photoUrl"    column="photo_url"    />
+        <result property="place"    column="place"    />
+        <result property="type"    column="type"    />
+        <result property="sort"    column="sort"    />
+        <result property="status"    column="status"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGoodsPublicVo">
+        select id, photo_url, place, type, sort, status, start_time, end_time, create_time, update_time from goods_public
+    </sql>
+
+    <select id="selectGoodsPublicList" parameterType="GoodsPublic" resultMap="GoodsPublicResult">
+        <include refid="selectGoodsPublicVo"/>
+        <where>  
+            <if test="photoUrl != null  and photoUrl != ''"> and photo_url = #{photoUrl}</if>
+            <if test="place != null "> and place = #{place}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsPublicById" parameterType="Long" resultMap="GoodsPublicResult">
+        <include refid="selectGoodsPublicVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsPublic" parameterType="GoodsPublic" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_public
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="photoUrl != null  and photoUrl != ''">photo_url,</if>
+            <if test="place != null ">place,</if>
+            <if test="type != null ">type,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="status != null ">status,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="endTime != null ">end_time,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="photoUrl != null  and photoUrl != ''">#{photoUrl},</if>
+            <if test="place != null ">#{place},</if>
+            <if test="type != null ">#{type},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="endTime != null ">#{endTime},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsPublic" parameterType="GoodsPublic">
+        update goods_public
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="photoUrl != null  and photoUrl != ''">photo_url = #{photoUrl},</if>
+            <if test="place != null ">place = #{place},</if>
+            <if test="type != null ">type = #{type},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="endTime != null ">end_time = #{endTime},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsPublicById" parameterType="Long">
+        delete from goods_public where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsPublicByIds" parameterType="String">
+        delete from goods_public where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

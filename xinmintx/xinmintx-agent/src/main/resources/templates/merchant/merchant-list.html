@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>推荐商户</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/amount.css">
+    <script src="/js/rem.js"></script>
+</head>
+<body>
+    <div class="header">
+        <span class="back" onclick="window.history.go(-1)"></span>
+        推荐商户
+    </div>
+    <ul class="list">
+        <li th:each="list : ${merchantList}">
+            <div class="list_top">
+                <div class="list_left"></div>
+                <div class="list_right">
+                    <p class="list_right_p1" >
+                        <span th:text="${list.name}"></span>
+                        <span class="list_right_p1_icon"></span>
+                    </p>
+                    <p class="list_right_p2">
+                        地址:
+                        <span th:text="${list.address}"></span>
+                        <span  class="right_p2_add" th:text="${list.regionName}"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="list_bottom">
+                <p class="list_bottom_p1">今日营业额：<span>0</span></p>
+                <p class="list_bottom_p2">我的收入：<span>0</span></p>
+            </div>
+        </li>
+    </ul>
+</body>
+</html>

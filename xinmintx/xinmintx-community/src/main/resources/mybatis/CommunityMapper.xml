@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.CommunityMapper">
+    <resultMap id="MerchantMap" type="com.xinmintx.community.model.Merchant" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="order_id" property="orderId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+        <result column="recommender" property="recommender" jdbcType="INTEGER" />
+        <result column="merchant_name" property="merchantName" jdbcType="VARCHAR" />
+        <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+        <result column="merchant_type" property="merchantType" jdbcType="INTEGER" />
+        <result column="merchant_table" property="merchantTable" jdbcType="INTEGER" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+        <result column="region_code" property="regionCode" jdbcType="CHAR" />
+        <result column="merchant_branch_office_id" property="merchantBranchOfficeId" jdbcType="INTEGER" />
+        <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+        <result column="is_review" property="isReview" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+        <result column="merchant_category" property="merchantCategory" jdbcType="INTEGER" />
+        <result column="per_capita" property="perCapita" jdbcType="DECIMAL" />
+        <result column="token" property="token" jdbcType="VARCHAR" />
+        <result column="freezing_amount" property="freezingAmount" jdbcType="DECIMAL" />
+        <result column="cash_amount" property="cashAmount" jdbcType="DECIMAL" />
+        <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+        <result column="shop_address" property="shopAddress" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="announcement" property="announcement" jdbcType="VARCHAR" />
+        <result column="idcard_front" property="idcardFront" jdbcType="VARCHAR" />
+        <result column="idcard_back" property="idcardBack" jdbcType="VARCHAR" />
+        <result column="bank_card_front" property="bankCardFront" jdbcType="VARCHAR" />
+        <result column="bank_card_back" property="bankCardBack" jdbcType="VARCHAR" />
+        <result column="door_head_photo" property="doorHeadPhoto" jdbcType="VARCHAR" />
+        <result column="store_photo_one" property="storePhotoOne" jdbcType="VARCHAR" />
+        <result column="store_photo_two" property="storePhotoTwo" jdbcType="VARCHAR" />
+        <result column="business_license" property="businessLicense" jdbcType="VARCHAR" />
+        <result column="other_photo" property="otherPhoto" jdbcType="VARCHAR" />
+        <result column="latitude" property="latitude" jdbcType="BIGINT" />
+        <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+        <result column="shop_specification" property="shopSpecification" jdbcType="VARCHAR" />
+        <result column="business_model" property="businessModel" jdbcType="VARCHAR" />
+        <result column="amount_raised" property="amountRaised" jdbcType="DECIMAL" />
+        <result column="merchant_category_detail" property="merchantCategoryDetail" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="MemberMap" type="com.xinmintx.community.model.Member" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="order_id" property="orderId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="INTEGER" />
+        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+        <result column="recommender" property="recommender" jdbcType="INTEGER" />
+        <result column="member_type" property="memberType" jdbcType="INTEGER" />
+        <result column="is_review" property="isReview" jdbcType="INTEGER" />
+        <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="token" property="token" jdbcType="VARCHAR" />
+        <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+        <result column="platform_count" property="platformCount" jdbcType="INTEGER" />
+        <result column="merchant_count" property="merchantCount" jdbcType="INTEGER" />
+        <result column="birth_gift_count" property="birthGiftCount" jdbcType="INTEGER" />
+        <result column="integral" property="integral" jdbcType="INTEGER" />
+        <result column="new_currency" property="newCurrency" jdbcType="DECIMAL" />
+        <result column="region_code" property="regionCode" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="MerchantGoodsMap" type="com.xinmintx.community.model.MerchantGoods" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="community_price" property="communityPrice" jdbcType="DECIMAL" />
+        <result column="online_price" property="onlinePrice" jdbcType="DECIMAL" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="shelf_status" property="shelfStatus" jdbcType="INTEGER" />
+        <collection property="picList" ofType="com.xinmintx.community.model.MerchantGoodsPic"
+                    resultMap="GoodsPicMap"
+                    columnPrefix="mgp_">
+        </collection>
+    </resultMap>
+
+    <resultMap id="GoodsPicMap" type="com.xinmintx.community.model.MerchantGoodsPic" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="mgoods_id" property="mgoodsId" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pic" property="pic" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="mgColumnss">
+        ${alias}.`id`	                    ${prefix}id,
+        ${alias}.`merchant_id`	            ${prefix}merchant_id,
+        ${alias}.`type`	                    ${prefix}type,
+        ${alias}.`create_time`	            ${prefix}create_time,
+        ${alias}.`shelf_status`	            ${prefix}shelf_status,
+        ${alias}.`name`	                    ${prefix}name,
+        ${alias}.`description`	            ${prefix}description,
+        ${alias}.`community_price`	        ${prefix}community_price,
+        ${alias}.`online_price`	            ${prefix}online_price
+    </sql>
+
+    <sql id="mgpColumnss">
+        ${alias}.id	                 ${prefix}id,
+        ${alias}.mgoods_id	         ${prefix}mgoods_id,
+        ${alias}.`create_time`	     ${prefix}create_time,
+        ${alias}.pic	             ${prefix}pic
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id, order_id, name, idcard, recommender, merchant_name, cellphone, bank_card, merchant_type,
+        merchant_table, address, region_name, region_code, merchant_branch_office_id, turnover,
+        is_review, create_time, create_user, update_time, update_user, merchant_category,
+        per_capita, token, freezing_amount, cash_amount, shop_name, shop_address, avatar,
+        announcement, idcard_front, idcard_back, bank_card_front, bank_card_back, door_head_photo,
+        store_photo_one, store_photo_two, business_license, other_photo, latitude, longitude,
+        shop_specification, business_model, amount_raised, merchant_category_detail
+    </sql>
+
+    <update id="upNotice">
+        update community
+        set notice = #{notice}
+        where
+        id = #{id}
+        and create_id = #{memberId}
+    </update>
+
+    <update id="upIcon">
+        update community
+        set icon = #{icon}
+        where
+        id = #{id}
+        and create_id = #{memberId}
+    </update>
+
+    <select id="getMemberByToken" parameterType="map" resultMap="MemberMap">
+        select id, member_type,platform_count,merchant_count,integral,new_currency,birth_gift_count, region_code, openid
+        from member
+        where token = #{token}
+    </select>
+
+    <insert id="insert" parameterType="com.xinmintx.community.model.Community" useGeneratedKeys="true" keyProperty="id">
+        insert into community (type, name,
+          create_id, region_code)
+        values (#{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+          #{createId,jdbcType=BIGINT}, #{regionCode,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="ifExistsCommunity" parameterType="map" resultType="Integer">
+        select 1 from dual where exists(select 1 from community where `name` = #{com.name} and region_code = #{com.regionCode})
+    </select>
+
+    <insert id="insertCommunityMemberInfo" parameterType="map" >
+        insert into community_member (community_id, member_id)
+        values (#{communityId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertCommunityProprieter">
+         insert into community_member (community_id, member_id,rank)
+        values (#{communityId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT},#{rank,jdbcType=INTEGER})
+    </insert>
+
+    <select id="ifJoinCommunity" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from community_member where community_id = #{communityId} and member_id = #{memberId})
+    </select>
+    <select id="queryCommunity" resultType="com.xinmintx.community.model.Community">
+        select c.id,type,name,create_id,c.create_time,region_code,icon
+         from community c
+         LEFT JOIN community_member cm
+         on  community_id = c.id
+         where region_code = #{regionCode}
+         and cm.member_id not in (#{memberId})
+         group by c.id
+    </select>
+    <select id="myCommunity" resultType="com.xinmintx.community.model.Community">
+        select c.id,type,name,create_id,c.create_time,region_code,icon,member_name
+        from community c
+        left join community_member cm
+        on  community_id = c.id
+        where
+        member_id =#{memberId}
+    </select>
+
+    <select id="ifPresident" parameterType="map" resultType="java.lang.Integer">
+        select 1 from dual where exists(select 1 from community where id = #{communityId} and create_id = #{createId})
+    </select>
+
+    <select id="ifMember" parameterType="map" resultType="java.lang.Long">
+        select id from member where id = #{memberId}
+    </select>
+    <select id="getCountByCommunityId" resultType="java.lang.Integer">
+        select count(id) from community_member where community_id = #{communityId}
+    </select>
+
+
+    <update id="updatePredisent" parameterType="map">
+        update community
+        <set >
+            <if test="createId != null" >
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateMemberRegion" parameterType="map">
+        update member set region_code = #{regionCode} where id = #{id}
+    </update>
+
+    <select id="getMerchantIdsByCommunityId" parameterType="map" resultType="java.lang.Long">
+        SELECT
+          cm.merchant_id
+          FROM
+          community c
+          LEFT JOIN `community_merchant` cm
+            ON c.id = cm.community_id
+          WHERE c.`id` = #{communityId}
+    </select>
+
+    <update id="updateMemberName" parameterType="map">
+        update community_member
+        set member_name = #{memberName}
+        where community_id = #{communityId}
+        and member_id = #{memberId}
+    </update>
+
+    <update id="upAssist">
+        update community_member
+        set deputy_help = #{deputyHelp}
+        where community_id = #{communityId}
+        and member_id = #{memberId}
+    </update>
+
+    <select id="getByCommunityId" resultType="map">
+      select
+        ct.type,
+        t.name,
+        t.cellphone,
+        t.id,
+        CONCAT(t.region_name,",",t.address) address,
+        t.merchant_name,
+        t.avatar
+      from community_merchant ct
+      left join merchant t on t.id = ct.merchant_id
+      where ct.community_id =#{communityId}
+    </select>
+    <select id="getMerchantIdByPhone" resultType="java.lang.Integer">
+        select id from merchant where cellphone =#{phone}
+    </select>
+    <select id="queryProprieter" resultType="java.lang.Integer">
+        select id
+        from community
+        where
+        id = #{id}
+        and
+        create_id =#{memberId}
+    </select>
+    <select id="queryCommunityById" resultType="com.xinmintx.community.model.Community">
+        select c.id,type,name,create_id,c.create_time,region_code,icon,member_name,c.notice,c.consignee_address,cm.cloaking,cm.deputy_help
+        from community c
+        left join community_member cm
+        on  community_id = c.id
+        where
+        member_id =#{memberId}
+        and
+        c.id = #{id}
+    </select>
+
+    <select id="getGoodsListByIds" parameterType="map" resultMap="MerchantGoodsMap">
+        SELECT
+        <include refid="mgColumnss">
+            <property name="alias" value="mg"/>
+            <property name="prefix" value=""/>
+        </include>,
+        <include refid="mgpColumnss">
+            <property name="alias" value="mgp"/>
+            <property name="prefix" value="mgp_"/>
+        </include>
+        FROM
+        merchant  m
+        LEFT JOIN `merchant_goods` mg
+        ON m.`id` = mg.`merchant_id`
+        LEFT JOIN `merchant_goods_pic` mgp
+        ON mg.`id` = mgp.`mgoods_id`
+        WHERE m.`is_review` = '1'
+        and mg.shelf_status = '1'
+        <if test="goodsName != null and goodsName != ''">
+            AND mg.`name` like CONCAT('%',#{goodsName},'%')
+        </if>
+        <if test="type != null and type != ''">
+            AND mg.`type` = #{type}
+        </if>
+        AND m.`id` IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        order by mg.create_time desc
+    </select>
+    <select id="queryProprieterName" resultType="com.xinmintx.community.model.Community">
+        select cm.member_name,mb.cellphone
+        from community_member cm
+        left join member mb
+        on mb.id = cm.member_id
+        where
+        member_id = #{createId}
+        and
+        community_id = #{id}
+    </select>
+    <select id="getPresidentByCommunityId" resultType="java.lang.Integer">
+        select create_id createId from community where id=#{communityId}
+    </select>
+    <select id="getCommunityMemberList" resultType="com.xinmintx.community.model.MemberExt">
+        select cm.member_id,cm.member_name,m.avatar_url,cm.rank
+        from community_member cm
+        left join member m
+        on cm.member_id = m.id
+        where
+        community_id = #{communityId}
+    </select>
+
+    <select id="getMemberById" parameterType="map" resultMap="MemberMap">
+        select id, member_type,platform_count,merchant_count,integral,new_currency,birth_gift_count, region_code, openid
+        from member
+        where id = #{memberId}
+    </select>
+    <select id="queryMember" resultType="java.lang.String">
+        select name from member
+        where id = #{memberId}
+    </select>
+    <select id="queryMemberInfo" resultType="com.xinmintx.community.model.Member">
+        select name,cellphone
+        from member
+        where
+        id = #{intValue}
+    </select>
+
+    <delete id="outOfCommunity" parameterType="map">
+        delete from community_member where member_id = #{memberId} and community_id = #{communityId}
+    </delete>
+
+    <select id="getAddressCodeById" parameterType="map" resultType="java.lang.String">
+        select region_code from community where id = #{communityId}
+    </select>
+
+    <select id="getMerchantList" parameterType="map" resultMap="MerchantMap">
+        select
+        <include refid="Base_Column_List" />
+        from merchant
+        where merchant_type = '3'
+        <if test="addressCode != null and addressCode != ''">
+            and region_code = #{addressCode}
+        </if>
+    </select>
+
+    <update id="updatePresentToMember" parameterType="map">
+        update community_member set rank = #{rank}
+        where community_id = #{communityId}
+        <if test="memberId != null and memberId != ''">
+            and member_id = #{memberId}
+        </if>
+    </update>
+
+    <select id="queryMerchantGoods" resultType="com.xinmintx.community.model.MerchantGoods">
+        select id,name,merchant_id,type,community_price,online_price,description,create_time,shelf_status,bigdecimal
+        from merchant_goods
+        where
+        id = #{goodsId}
+    </select>
+
+
+
+
+    <select id="queryMerchantGoodsPic" resultType="com.xinmintx.community.model.MerchantGoodsPic">
+        select id,mgoods_id,pic
+        from merchant_goods_pic
+        where
+        mgoods_id = #{goodsId}
+    </select>
+
+    <select id="queryGoodsOrder" resultType="com.xinmintx.community.model.PurchaseHistory">
+        select m.avatar_url,m.name,gd.quantity,gd.create_time
+        from goods_order_detail gd
+        LEFT JOIN member m
+        on gd.member_id = m.id
+        where
+        gd.goods_id = #{goodsId}
+        and gd.order_state = 5
+    </select>
+    <select id="queryAddress" resultType="com.xinmintx.community.model.Community">
+        select consignee_address,name,icon,phone_number,consignee_money
+        from community
+        where id = #{communityId}
+    </select>
+    <select id="fuzzyQueryCommunity" resultType="com.xinmintx.community.model.Community">
+        <bind name="pattern" value="'%' + name + '%'" />
+        select id,type,name,create_id,create_time,region_code,icon
+        FROM community
+        where
+        region_code = #{regionCode}
+        and
+        name like #{pattern}
+    </select>
+
+    <select id="getMerchantInfoList" parameterType="map" resultType="com.xinmintx.community.model.CommunityMerchant">
+        select merchant_id,`type` from community_merchant where community_id = #{communityId}
+    </select>
+    <select id="queryCommunityInfo" resultType="com.xinmintx.community.model.Community">
+         select id,type,name,create_id,create_time,region_code,icon,notice,consignee_address
+        from community
+        where
+        id = #{id}
+    </select>
+    <select id="queryCommunityMerchant" resultType="java.lang.Integer">
+        select count(id) from community_merchant
+         where community_id = #{communityId}
+         and type = #{type}
+    </select>
+    <select id="queryCommunityDeputy" resultType="java.lang.Integer">
+        select count(id) from community_deputy
+        where
+        community_id =#{communityId}
+        and
+        type = #{type}
+    </select>
+
+    <select id="getUserIdByPhone" parameterType="map" resultType="java.lang.Integer">
+        select id from user where cellphone = #{phone} and user_role = #{type}
+    </select>
+</mapper>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:include="include :: header('商品列表')" />
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/createSkuTable.js"></script>
+    <script type="text/javascript" src="/js/customSku.js"></script>
+    <link rel="stylesheet" href="/css/sku_style.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <script src="/js/getSetSkuVals.js"></script>
+    <th:block th:include="include :: datetimepicker-css"/>
+    <link rel="stylesheet" href="/css/main/bootstrap.min14ed.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/main/font-awesome.min93e3.css">
+    <link rel="stylesheet" href="/css/sku_style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/skins.css">
+    <link rel="stylesheet" href="/xinmintx/css/ry-ui.css">
+    <script src="/xinmintx/js/ry-ui.js"></script>
+    <script src="/js/layer.js"></script>
+    <style type="text/css">
+        .btn{
+            line-height: 26px!important;
+            height: 26px !important;
+            padding: 0 4px!important;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" th:value="${goodId}" id="goodId">
+<div class="clear"></div>
+<div class="form-group">
+    <input type="button" style="height: 30px" class="btn btn-success" onclick="selectGoods()" value="查看当前商品规格">
+</div>
+<ul>
+    <li><label><input type="checkbox" class="sku_value" propvalid='21' value="惠商天下" />惠商天下</label></li>
+</ul>
+<div class="clear"></div>
+<div style="display: block;" th:each="selectSpec:${selectSpec}">
+    <div class="clear"></div>
+    <ul class="SKU_TYPE">
+        <li is_required='0' th:attr="propid=${selectSpec.nameCode},sku-type-name=${selectSpec.name}">
+            <a href="javascript:void(0);" class="delCusSkuType">移除</a>
+            <input type="text" class="cusSkuTypeInput" th:value="${selectSpec.name}"/>：
+        </li>
+    </ul>
+    <ul>
+        <li th:each="values:${selectSpec.values}">
+            <input type="checkbox" class="model_sku_val" th:attr="propid=${selectSpec.nameCode},propvalid=${values.code}" th:value="${values.name}" />
+
+            <input type="text" class="cusSkuValInput" th:value="${values.name}"/>
+
+        </li>
+        <button class="cloneSkuVal btn btn-success fa fa-plus">添加自定义属性值</button>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!--<ul class="SKU_TYPE" th:each="selectSpec:${selectSpec}">-->
+    <!--<li is_required='1'  th:attr="propid=#{selectSpec.nameCode}" th:attr="sku-type-name=#{selectSpec.name}" th:text="${selectSpec}"></li>-->
+<!--</ul>-->
+<!--<ul th:each="values:${selectSpec.values}">-->
+    <!--<li><label><input type="checkbox" class="sku_value" th:attr="propid=#{values.nameCode}" th:attr="propvalid=#{selectSpec.nameCode}"  value="中国大陆版" />中国大陆版</label></li>-->
+<!--</ul>-->
+<div class="clear"></div>
+<button class="cloneSku btn btn-success fa fa-plus">添加自定义sku属性</button>
+<input th:value="${maxSpec}" id="maxPropid" type="hidden">
+<input th:value="${MaxSpecValue}" id="maxPropvalid" type="hidden">
+<!--sku模板,用于克隆,生成自定义sku-->
+<div id="skuCloneModel" style="display: none;">
+    <div class="clear"></div>
+    <ul class="SKU_TYPE">
+        <li is_required='0' propid='' sku-type-name="">
+            <a href="javascript:void(0);" class="delCusSkuType">移除</a>
+            <input type="text" class="cusSkuTypeInput" />：
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <input type="checkbox" class="model_sku_val" propvalid='' value="" />
+
+            <input type="text" class="cusSkuValInput" />
+        </li>
+        <!--<div class="form-group">-->
+            <!--<a class="btn btn-success" onclick="bao()">-->
+                <!--<i class="fa fa-plus"></i>1选取规格-->
+            <!--</a>-->
+        <!--</div>-->
+        <button class="cloneSkuVal btn btn-success fa fa-plus">添加自定义属性值</button>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!--单个sku值克隆模板-->
+<li style="display: none;" id="onlySkuValCloneModel">
+    <input type="checkbox" class="model_sku_val" propvalid='' value="" />
+    <input type="text" class="cusSkuValInput" />
+    <a href="javascript:void(0);" class="delCusSkuVal">删除</a>
+</li>
+<div class="clear"></div>
+
+<div id="skuTable"></div>
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+<div class="form-group">
+    <a class="btn btn-success" onclick="bao()">
+        <i class="fa fa-plus"></i>1选取规格
+    </a>
+</div>
+<div class="form-group">
+    <a class="btn btn-success" th:onclick="|javascript:hhh(${goodId})|">
+        <i class="fa fa-plus"></i>2确认保存
+    </a>
+</div>
+<th:block th:include="include :: footer" />
+<!--<button th:onclick="|javascript:hhh(${goodId})|" id="but" >2确认保存</button>-->
+<script>
+    //保存规格组 与 值 到数据库中
+    function bao(){
+        $("#butbao").attr("disabled",true);
+        $('.model_sku_val').css({display:'block'});
+        zzz();
+    }
+
+    /*商品分类管理-新增-选择菜单树*/
+    function selectGoods() {
+        var id = $("#goodId").val();
+        var options = {
+            title: '商品选择',
+            //width: "380",
+            url: "/system/goods/jumpGoods/"+id,
+            callBack: selectGood
+        };
+        $.modal.openOptions(options);
+    }
+    function selectGood(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#goodsId").val(body.find('#goodsId').val());
+        $("#goodsListName").val(body.find('#goodsListName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

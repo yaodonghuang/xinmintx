@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.CommunityMerchantMapper">
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into community_merchant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="communityMerchant.communityId != null">
+                community_id,
+            </if>
+            <if test="communityMerchant.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="communityMerchant.type != null">
+                type,
+            </if>
+            <if test="communityMerchant.createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="communityMerchant.communityId != null">
+                #{communityMerchant.communityId},
+            </if>
+            <if test="communityMerchant.merchantId != null">
+                #{communityMerchant.merchantId},
+            </if>
+            <if test="communityMerchant.type != null">
+                #{communityMerchant.type},
+            </if>
+            <if test="communityMerchant.createTime != null">
+                #{communityMerchant.createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByCommunityIdAndMerchantIdAndType" >
+        delete from community_merchant where merchant_id =#{merchantId} and community_id =#{communityId} and type =#{type}
+    </delete>
+    <select id="getCommunitysByMerchantId" resultType="java.util.Map">
+        select
+            c.id communityId,
+            c.name communityName,
+            m.id presidentId,
+            m.name presidentName,
+            m.cellphone presidentCellphone,
+--             c.lon,
+--             c.lat,
+--             t.lon,
+--             t.lat,
+--             c.address,
+               d.fee,
+               d.delivery_time,
+               d.type,
+            cm.type
+        from community_merchant cm
+        left join merchant t on t.id = cm.merchant_id
+        left join merchant_delivery d on d.merchant_id = t.id
+        left join community c on c.id = cm.community_id
+        left join member m on m.id = c.create_id
+        where cm.merchant_id = #{merchantId}
+
+    </select>
+    <select id="isExistByCommunityAndType" resultType="java.lang.Boolean">
+        select if(count(id) = 0,0,1) from community_merchant where community_id =#{communityId} and type =#{type}
+    </select>
+
+
+</mapper>

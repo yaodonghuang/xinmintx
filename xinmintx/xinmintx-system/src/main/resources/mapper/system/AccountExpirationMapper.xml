@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.AccountExpirationMapper">
+    
+    <resultMap type="AccountExpiration" id="AccountExpirationResult">
+        <result property="id"    column="id"    />
+        <result property="userRole"    column="user_role"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="daysNo"    column="days_no"    />
+        <result property="dayTime"    column="day_time"    />
+    </resultMap>
+
+    <sql id="selectAccountExpirationVo">
+        select id, user_role, role_name, days_no, day_time from account_expiration
+    </sql>
+
+    <select id="selectAccountExpirationList" parameterType="AccountExpiration" resultMap="AccountExpirationResult">
+        <include refid="selectAccountExpirationVo"/>
+        <where>  
+            <if test="userRole != null "> and user_role = #{userRole}</if>
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+            <if test="daysNo != null "> and days_no = #{daysNo}</if>
+            <if test="dayTime != null "> and day_time = #{dayTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectAccountExpirationById" parameterType="Long" resultMap="AccountExpirationResult">
+        <include refid="selectAccountExpirationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAccountExpiration" parameterType="AccountExpiration" useGeneratedKeys="true" keyProperty="id">
+        insert into account_expiration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userRole != null ">user_role,</if>
+            <if test="roleName != null  and roleName != ''">role_name,</if>
+            <if test="daysNo != null ">days_no,</if>
+            <if test="dayTime != null ">day_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userRole != null ">#{userRole},</if>
+            <if test="roleName != null  and roleName != ''">#{roleName},</if>
+            <if test="daysNo != null ">#{daysNo},</if>
+            <if test="dayTime != null ">#{dayTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAccountExpiration" parameterType="AccountExpiration">
+        update account_expiration
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userRole != null ">user_role = #{userRole},</if>
+            <if test="roleName != null  and roleName != ''">role_name = #{roleName},</if>
+            days_no = #{daysNo},
+            day_time = #{dayTime},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAccountExpirationById" parameterType="Long">
+        delete from account_expiration where id = #{id}
+    </delete>
+
+    <delete id="deleteAccountExpirationByIds" parameterType="String">
+        delete from account_expiration where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

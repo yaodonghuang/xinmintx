@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增收货地址</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/location_add_l.css">
+    <script src="/js/rem.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.form.js"></script>
+</head>
+<body class="color">
+<div class="header">
+    <p>
+        <span class="back" onclick="window.history.go(-1)"></span>
+        新增收货地址
+    </p>
+</div>
+<form action="" method="post" enctype="multipart/form-data" id="addMerchant-form" class="address_form">
+    <div class="up">
+        <ul>
+            <li>
+                <label for="name">姓名</label>
+                <input type="text" id="name" name="name">
+            </li>
+            <li>
+                <label for="cellphone">手机号</label>
+                <input type="text" id="cellphone" name="cellphone">
+            </li>
+            <li>
+                <label for="map">地区</label>
+                <input type="text" id="map" name="region">
+            </li>
+            <li>
+                <label for="maps">地址</label>
+                <input type="text" id="maps" name="address">
+            </li>
+            <li>
+                <label>设为默认地址</label>
+                <div class="switch">
+                    <div class="kaiguan"></div>
+                </div>
+            </li>
+            <input type="button" value="确认上传" id="btns" onclick="saveAddress()">
+        </ul>
+    </div>
+</form>
+<div class="warning">
+    <div class="warning_content">
+        <p class="warning_title">提示</p>
+        <p class="warning_text"></p>
+        <p class="warning_btn" onclick="fn()">确定</p>
+    </div>
+</div>
+
+<script>
+    var num = false;
+    var bt = 0;
+    $(".switch").on("click", function () {
+        num = !num
+        if(num != null){
+            $(".switch").toggleClass("bgchage");
+            $(".kaiguan").toggleClass("right");
+        }
+        if (num==true){
+            bt=1;
+        }else {
+            bt=0;
+        }
+        return bt;
+    });
+
+    function fn() {
+        $('.warning').hide();
+        return;
+    }
+
+    function saveAddress() {
+        var name = $("#name").val();
+        var cellphone = $("#cellphone").val();
+        var map = $("#maps").val();
+        var maps = $("#maps").val();
+        if (name === undefined || name === null || name === "" || name.length < 1) {
+            // alert("姓名不能为空");
+            $('.warning').show()
+            $('.warning_text').text('您好！姓名不能为空！');
+            return false;
+        }
+        if (map === undefined || map === null || map === "" || map.length < 1) {
+            // alert("地区不能为空");
+            $('.warning').show()
+            $('.warning_text').text('您好！地区不能为空！');
+            return false;
+        }
+        if (maps === undefined || maps === null || maps === "" || maps.length < 1) {
+            // alert("地址不能为空");
+            $('.warning').show()
+            $('.warning_text').text('您好！地址不能为空！');
+            return false;
+        }
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(cellphone)) {
+            // alert("手机号有误！");
+            $('.warning').show()
+            $('.warning_text').text('您好！手机号有误！！');
+            return false;
+        }
+        $.ajax({
+            url: "/agent/address/saveAddress?bt="+bt,
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: $("#addMerchant-form").serialize(),
+            success: function (res) {
+                if (res) {
+                    alert("添加成功")
+                    location.href = "/agent/address/selectAddres"
+                } else {
+                    alert("添加失败")
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

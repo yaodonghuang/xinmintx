@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.community.mapper.CommunityVotingRescissionNoticeMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into community_voting_rescission_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="communityVotingRescissionNotice.communityId != null">
+                community_id,
+            </if>
+            <if test="communityVotingRescissionNotice.createUser != null">
+                create_user,
+            </if>
+            <if test="communityVotingRescissionNotice.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="communityVotingRescissionNotice.type != null">
+                type,
+            </if>
+            <if test="communityVotingRescissionNotice.createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="communityVotingRescissionNotice.communityId != null">
+                #{communityVotingRescissionNotice.communityId},
+            </if>
+            <if test="communityVotingRescissionNotice.createUser != null">
+                #{communityVotingRescissionNotice.createUser},
+            </if>
+            <if test="communityVotingRescissionNotice.merchantId != null">
+                #{communityVotingRescissionNotice.merchantId},
+            </if>
+            <if test="communityVotingRescissionNotice.type != null">
+                #{communityVotingRescissionNotice.type},
+            </if>
+            <if test="communityVotingRescissionNotice.createTime != null">
+                #{communityVotingRescissionNotice.createTime},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByCommunityIdAndMerchantIdAndType">
+        delete from community_voting_rescission_notice where community_id =#{communityId} and merchant_id =#{merchantId} and type =#{type}
+    </delete>
+    <select id="isVotingByCommunityIdAndType" resultType="java.lang.Boolean">
+        select if(count(id) = 0,0,1) from community_voting_rescission_notice where community_id =#{communityId} and type =#{type}
+    </select>
+
+</mapper>

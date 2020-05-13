@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.RoleShareMapper">
+    
+    <resultMap type="RoleShare" id="RoleShareResult">
+        <result property="id"    column="id"    />
+        <result property="userRole"    column="user_role"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="recommendType"    column="recommend_type"    />
+        <result property="description"    column="description"    />
+        <result property="money"    column="money"    />
+        <result property="recommendRole"    column="recommend_role"    />
+        <result property="recommendName"    column="recommend_name"    />
+    </resultMap>
+
+    <sql id="selectRoleShareVo">
+        select id, user_role, role_name, recommend_type, description, money, recommend_role, recommend_name from role_share
+    </sql>
+
+    <select id="selectRoleShareList" parameterType="RoleShare" resultMap="RoleShareResult">
+        <include refid="selectRoleShareVo"/>
+        <where>  
+            <if test="userRole != null "> and user_role = #{userRole}</if>
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+            <if test="recommendType != null "> and recommend_type = #{recommendType}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="money != null "> and money = #{money}</if>
+            <if test="recommendRole != null "> and recommend_role = #{recommendRole}</if>
+            <if test="recommendName != null  and recommendName != ''"> and recommend_name like concat('%', #{recommendName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRoleShareById" parameterType="Long" resultMap="RoleShareResult">
+        <include refid="selectRoleShareVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRoleShare" parameterType="RoleShare" useGeneratedKeys="true" keyProperty="id">
+        insert into role_share
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userRole != null ">user_role,</if>
+            <if test="roleName != null  and roleName != ''">role_name,</if>
+            <if test="recommendType != null ">recommend_type,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="money != null ">money,</if>
+            <if test="recommendRole != null ">recommend_role,</if>
+            <if test="recommendName != null  and recommendName != ''">recommend_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userRole != null ">#{userRole},</if>
+            <if test="roleName != null  and roleName != ''">#{roleName},</if>
+            <if test="recommendType != null ">#{recommendType},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="money != null ">#{money},</if>
+            <if test="recommendRole != null ">#{recommendRole},</if>
+            <if test="recommendName != null  and recommendName != ''">#{recommendName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRoleShare" parameterType="RoleShare">
+        update role_share
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userRole != null ">user_role = #{userRole},</if>
+            <if test="roleName != null  and roleName != ''">role_name = #{roleName},</if>
+            <if test="recommendType != null ">recommend_type = #{recommendType},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="money != null ">money = #{money},</if>
+            <if test="recommendRole != null ">recommend_role = #{recommendRole},</if>
+            <if test="recommendName != null  and recommendName != ''">recommend_name = #{recommendName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoleShareById" parameterType="Long">
+        delete from role_share where id = #{id}
+    </delete>
+
+    <delete id="deleteRoleShareByIds" parameterType="String">
+        delete from role_share where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

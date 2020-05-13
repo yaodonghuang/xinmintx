@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.MemberBenefitMapper">
+    
+    <resultMap type="MemberBenefit" id="MemberBenefitResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="percent"    column="percent"    />
+    </resultMap>
+
+    <sql id="selectMemberBenefitVo">
+        select id, type, percent from member_benefit
+    </sql>
+
+    <select id="selectMemberBenefitList" parameterType="MemberBenefit" resultMap="MemberBenefitResult">
+        <include refid="selectMemberBenefitVo"/>
+        <where>  
+            <if test="type != null "> and type = #{type}</if>
+            <if test="percent != null "> and percent = #{percent}</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberBenefitById" parameterType="Long" resultMap="MemberBenefitResult">
+        <include refid="selectMemberBenefitVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMemberBenefit" parameterType="MemberBenefit" useGeneratedKeys="true" keyProperty="id">
+        insert into member_benefit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null ">type,</if>
+            <if test="percent != null ">percent,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null ">#{type},</if>
+            <if test="percent != null ">#{percent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberBenefit" parameterType="MemberBenefit">
+        update member_benefit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null ">type = #{type},</if>
+            <if test="percent != null ">percent = #{percent},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberBenefitById" parameterType="Long">
+        delete from member_benefit where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberBenefitByIds" parameterType="String">
+        delete from member_benefit where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

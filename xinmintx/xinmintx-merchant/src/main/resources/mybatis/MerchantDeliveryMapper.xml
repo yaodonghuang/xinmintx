@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.merchant.mapper.MerchantDeliveryMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into merchant_delivery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merchantDelivery.merchantId != null">
+                merchant_id,
+            </if>
+            <if test="merchantDelivery.communityId != null">
+                community_id,
+            </if>
+            <if test="merchantDelivery.type != null">
+                type,
+            </if>
+            <if test="merchantDelivery.fee != null">
+                fee,
+            </if>
+            <if test="merchantDelivery.deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="merchantDelivery.distance != null">
+                distance,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merchantDelivery.merchantId != null">
+                #{merchantDelivery.merchantId},
+            </if>
+            <if test="merchantDelivery.communityId != null">
+                #{merchantDelivery.communityId},
+            </if>
+            <if test="merchantDelivery.type != null">
+                #{merchantDelivery.type},
+            </if>
+            <if test="merchantDelivery.fee != null">
+                #{merchantDelivery.fee},
+            </if>
+            <if test="merchantDelivery.deliveryTime != null">
+                #{merchantDelivery.deliveryTime},
+            </if>
+            <if test="merchantDelivery.distance != null">
+                #{merchantDelivery.distance},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateById">
+        update merchant_delivery
+        <set>
+            <if test="merchantDelivery.merchantId != null">
+                merchant_id = #{merchantDelivery.merchantId},
+            </if>
+            <if test="merchantDelivery.communityId != null">
+                community_id =#{merchantDelivery.communityId},
+            </if>
+            <if test="merchantDelivery.type != null">
+                type =#{merchantDelivery.type},
+            </if>
+            <if test="merchantDelivery.fee != null">
+                fee =#{merchantDelivery.fee},
+            </if>
+            <if test="merchantDelivery.deliveryTime != null">
+                delivery_time =#{merchantDelivery.deliveryTime},
+            </if>
+            <if test="merchantDelivery.distance != null">
+                distance =#{merchantDelivery.distance},
+            </if>
+        </set>
+        where id = #{merchantDelivery.id}
+    </update>
+    <select id="getByMerchantIdAndCommunityId" resultType="com.xinmintx.merchant.dto.DeliveryVo">
+        select
+            id deliveryId,
+            fee,
+            distance,
+            delivery_time,
+            community_id,
+            type
+         from merchant_delivery
+         where merchant_id =#{merchantId} and community_id =#{communityId}
+    </select>
+
+</mapper>

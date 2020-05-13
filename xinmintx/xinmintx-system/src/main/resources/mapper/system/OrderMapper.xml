@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinmintx.system.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="outTradeNo"    column="out_trade_no"    />
+        <result property="prepayId"    column="prepay_id"    />
+        <result property="goodsDesc"    column="goods_desc"    />
+        <result property="totalFee"    column="total_fee"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="payTime"    column="pay_time"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, order_no, out_trade_no, prepay_id, goods_desc, total_fee, pay_type, pay_status, transaction_id, create_time, pay_time from order
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no = #{outTradeNo}</if>
+            <if test="prepayId != null  and prepayId != ''"> and prepay_id = #{prepayId}</if>
+            <if test="goodsDesc != null  and goodsDesc != ''"> and goods_desc = #{goodsDesc}</if>
+            <if test="totalFee != null "> and total_fee = #{totalFee}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="payStatus != null  and payStatus != ''"> and pay_status = #{payStatus}</if>
+            <if test="transactionId != null "> and transaction_id = #{transactionId}</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        insert into order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null  and orderNo != ''">order_no,</if>
+            <if test="outTradeNo != null  and outTradeNo != ''">out_trade_no,</if>
+            <if test="prepayId != null  and prepayId != ''">prepay_id,</if>
+            <if test="goodsDesc != null  and goodsDesc != ''">goods_desc,</if>
+            <if test="totalFee != null ">total_fee,</if>
+            <if test="payType != null  and payType != ''">pay_type,</if>
+            <if test="payStatus != null  and payStatus != ''">pay_status,</if>
+            <if test="transactionId != null ">transaction_id,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="payTime != null ">pay_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null  and orderNo != ''">#{orderNo},</if>
+            <if test="outTradeNo != null  and outTradeNo != ''">#{outTradeNo},</if>
+            <if test="prepayId != null  and prepayId != ''">#{prepayId},</if>
+            <if test="goodsDesc != null  and goodsDesc != ''">#{goodsDesc},</if>
+            <if test="totalFee != null ">#{totalFee},</if>
+            <if test="payType != null  and payType != ''">#{payType},</if>
+            <if test="payStatus != null  and payStatus != ''">#{payStatus},</if>
+            <if test="transactionId != null ">#{transactionId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="payTime != null ">#{payTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null  and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="outTradeNo != null  and outTradeNo != ''">out_trade_no = #{outTradeNo},</if>
+            <if test="prepayId != null  and prepayId != ''">prepay_id = #{prepayId},</if>
+            <if test="goodsDesc != null  and goodsDesc != ''">goods_desc = #{goodsDesc},</if>
+            <if test="totalFee != null ">total_fee = #{totalFee},</if>
+            <if test="payType != null  and payType != ''">pay_type = #{payType},</if>
+            <if test="payStatus != null  and payStatus != ''">pay_status = #{payStatus},</if>
+            <if test="transactionId != null ">transaction_id = #{transactionId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="payTime != null ">pay_time = #{payTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Long">
+        delete from order where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

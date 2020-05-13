@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:include="include :: header('修改规格')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+    <script src="/js/jquery.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<form id="form">
+    <input type="hidden" name="id" th:value="${goodsSku.id}">
+    <tr>
+        <td>商品售价：</td>
+        <td>
+            <input type="text" name="price" th:value="${goodsSku.price}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>商品代理价：</td>
+        <td>
+            <input type="text" name="agentPrice" th:value="${goodsSku.agentPrice}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>商品采购价：</td>
+        <td>
+            <input type="text" name="purchasePrice" th:value="${goodsSku.purchasePrice}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>商品e卡价：</td>
+        <td>
+            <input type="text" name="ePrice" th:value="${goodsSku.ePrice}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>商品金卡价：</td>
+        <td>
+            <input type="text" name="glodPrice" th:value="${goodsSku.glodPrice}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>库存：</td>
+        <td>
+                <input type="text" name="stockNum" th:value="${goodsSku.stockNum}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>重量：</td>
+        <td>
+            <input type="text" name="goodsWeight" th:value="${goodsSku.goodsWeight}">
+        </td>
+    </tr><br>
+    <tr>
+        <td>图片：</td>
+        <td>
+            <img th:src="${url}" width="100px" height="100px" id="photo">
+            <input type="file" onchange="carousel()" id="files"  accept="image/*">
+            <input type="hidden" id="photoUrl" name="photoUrl" >
+        </td>
+    </tr><br>
+    <a class="btn btn-success" onclick="queren()">
+        <i class="fa fa-plus"></i> 确认修改
+    </a>
+<!--    <input type="button" style="color: #0d8ddb" value="确认修改" onclick="queren()">-->
+</form>
+</body>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script>
+    function carousel() {
+        var files = document.getElementById("files").files[0];
+        var formData = new FormData();
+        formData.append("file", files);
+        debugger;
+        $.ajax({
+            url: "/system/goods/imageUpload",
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $("#photo").attr('src',data);
+                $("#photoUrl").attr('value',data);
+            }
+        });
+
+    };
+    function queren() {
+        $.post(
+            "/system/goods/update",
+            $("#form").serialize(),
+            function (data) {
+                alert("修改成功")
+            }
+        )
+    }
+</script>
+</html>

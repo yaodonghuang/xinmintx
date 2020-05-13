@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>地址列表</title>
+		<link rel="stylesheet" href="/css/reset.css">
+		<link rel="stylesheet" href="/css/location_l.css">
+		<script src="/js/rem.js"></script>
+		<script src="/js/jquery.min.js"></script>
+	</head>
+	<body class="color">
+		<div class="header">
+			<p class="tp">
+				<span class="back" onclick="window.history.go(-1)"></span>
+				地址列表
+			</p>
+		</div>
+		<div class="tiao1" th:each="list:${list}" th:onclick="|javascript:getUpdate(${list.id})|">
+			<img class="img" src="/images/upload/gogogo.png" >
+			<p class="p1"><span class="tiao1_s1" th:text="${list.name}"></span><span class="tiao1_s2" th:text="${list.cellphone}"></span></p>
+			<p class="tiao1_p1" th:text="${list.address}"></p>
+		</div>
+		<div class="dianzi"></div>
+		<div class="add_add">
+			<span class="add" onclick="addAddress()">新增收货地址</span>
+		</div>
+	</body>
+<script>
+	function addAddress() {
+		location.href="/agent/address/addAddress";
+    }
+    function getUpdate(id) {
+		location.href = "/agent/address/getUpdate?id="+id;
+	}
+</script>
+</html>
